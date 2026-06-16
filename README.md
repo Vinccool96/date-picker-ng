@@ -1,11 +1,11 @@
 # Date Picker
 
 This is a configurable date-picker build for Angular applications.  
-Supports latest (Angular 15) version. For older versions please checkout the CHANGELOG.md file.
+Supports latest (Angular 21) version. For older versions please checkout the CHANGELOG.md file.
 
 [DEMO](https://wondrous-crostata-172891.netlify.app/)
 
-[![npm version](https://badge.fury.io/js/ng2-date-picker.svg)](https://badge.fury.io/js/ng2-date-picker) [![Build Status](https://travis-ci.org/vlio20/angular-datepicker.svg?branch=master)](https://travis-ci.org/vlio20/angular-datepicker) [![Package Quality](http://npm.packagequality.com/shield/ng2-date-picker.svg)](http://packagequality.com/#?package=ng2-date-picker)
+[![npm version](https://badge.fury.io/js/date-picker-ng.svg)](https://badge.fury.io/js/date-picker-ng) [![Build Status](https://travis-ci.org/vinccool96/date-picker-ng.svg?branch=master)](https://travis-ci.org/vinccool/date-picker-ng) [![Package Quality](http://npm.packagequality.com/shield/ng2-date-picker.svg)](http://packagequality.com/#?package=ng2-date-picker)
 
 ## Screenshots
 
@@ -34,7 +34,7 @@ Supports latest (Angular 15) version. For older versions please checkout the CHA
 3. Add `DpDatePickerModule` to your module imports:
 
 ```ts
- @NgModule({ ... imports: [ ... DpDatePickerModule ] })
+ @NgModule({ imports: [ ... DpDatePickerModule ] })
 ```
 
 4. Add `@import '~@angular/cdk/overlay-prebuilt.css';` to your global styles (usually styles.(scss/sass/css/less). You could also add it via the angular.json file under the styles attribute:
@@ -54,16 +54,6 @@ Supports latest (Angular 15) version. For older versions please checkout the CHA
             ],
    ...
 ```
-
-## Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).  
-<a href="graphs/contributors"><img src="https://opencollective.com/angular-datepicker/contributors.svg?width=890" /></a>
-
-## Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/angular-datepicker#backer)]  
-<a href="https://opencollective.com/angular-datepicker#backers" target="_blank"><img src="https://opencollective.com/angular-datepicker/backers.svg?width=890"></a>
 
 ## Usage
 
@@ -166,53 +156,66 @@ Here are the available configurations:
 In order to use the date-picker api user the `@ViewChild` annotation in the date-picker containing component class, take at the example below:  
 Container component:
 
-````ts import {Component, ViewChild} from '@angular/core';
-import {DatePickerComponent} from 'ng2-date-picker';
+```ts
+import { Component, ViewChild } from '@angular/core';
+import { DatePickerComponent } from 'date-picker-ng';
 
 @Component({
-selector: 'my-container',
-template: `
-<div>
- <h1>Container</h1> <dp-date-picker #dayPicker></dp-date-picker> <button (click)="open()"></button> <button (click)="close()"></button></div>
-`
-});
+  selector: 'my-container',
+  template: `
+    <div>
+      <h1>Container</h1>
+      <dp-date-picker #dayPicker></dp-date-picker> <button (click)="open()"></button>
+      <button (click)="close()"></button>
+    </div>
+  `,
+})
 class MyContainer {
- @ViewChild('dayPicker') datePicker: DatePickerComponent;
- open() { this.datePicker.api.open(); }
- close() { this.datePicker.api.close(); }} ```
+  @ViewChild('dayPicker') datePicker: DatePickerComponent;
+  open() {
+    this.datePicker.api.open();
+  }
+  close() {
+    this.datePicker.api.close();
+  }
+}
+```
 
 If you want to use API with [`Directive`](#directive) - you can do it by using `#dateDirectivePicker`, like below:
+
 ```ts
-import {Component, ViewChild} from '@angular/core';
-import {DatePickerDirective} from 'ng2-date-picker';
+import { Component, ViewChild } from '@angular/core';
+import { DatePickerDirective } from 'date-picker-ng';
 
 @Component({
-selector: 'my-container',
-template: `
-<div>
- <input #dateDirectivePicker="dpDayPicker"> <button (click)="close()"></button></div>
-`
-});
+  selector: 'my-container',
+  template: ` <div><input #dateDirectivePicker="dpDayPicker" /> <button (click)="close()"></button></div> `,
+})
 class MyContainer {
- @ViewChild('dateDirectivePicker') datePickerDirective: DatePickerDirective;     close() {
- this.datePickerDirective.api.close(); }} ```
+  @ViewChild('dateDirectivePicker') datePickerDirective: DatePickerDirective;
+  close() {
+    this.datePickerDirective.api.close();
+  }
+}
+```
 
 Here is the list of APIs:
 
-| Name                 | Signature                          | Description                      |
-|----------------------|:----------------------------------:|----------------------------------|
-| open                 | `() => void`                       | Opens the date picker            |
-| close                | `() => void`                       | Closes the date picker           |
-| moveCalendarTo       | `(to: Dayjs \| String) => void`   | Moves calendar to specific date  |
+| Name           |            Signature            | Description                     |
+| -------------- | :-----------------------------: | ------------------------------- |
+| open           |          `() => void`           | Opens the date picker           |
+| close          |          `() => void`           | Closes the date picker          |
+| moveCalendarTo | `(to: Dayjs \| String) => void` | Moves calendar to specific date |
 
 ## Inline - Day Calendar
 
 You can use the `<dp-day-calendar>` component to display the calendar widget without an associated input box.
 
 i.e.
+
 ```html
 <dp-day-calendar [(ngModel)]="selectedDate" [config]="config"></dp-day-calendar>
-````
+```
 
 ### Attributes:
 
@@ -514,18 +517,3 @@ Internet explorer 10 doesn't support hidden attribut, but you can use a css rule
   display: none !important;
 }
 ```
-
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/angular-datepicker#sponsor)]
-
-<a href="https://opencollective.com/angular-datepicker/sponsor/0/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/0/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/1/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/1/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/2/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/2/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/3/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/3/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/4/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/4/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/5/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/5/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/6/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/6/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/7/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/7/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/8/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/8/avatar.svg"></a>  
-<a href="https://opencollective.com/angular-datepicker/sponsor/9/website" target="_blank"><img src="https://opencollective.com/angular-datepicker/sponsor/9/avatar.svg"></a>

@@ -3,6 +3,46 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "date-picker-ng": {
+      "projectType": "library",
+      "root": "projects/date-picker-ng",
+      "sourceRoot": "projects/date-picker-ng/src",
+      "prefix": "dp",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/date-picker-ng/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/date-picker-ng/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/date-picker-ng/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/date-picker-ng/src/test.ts",
+            "tsConfig": "projects/date-picker-ng/tsconfig.spec.json",
+            "karmaConfig": "projects/date-picker-ng/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/**/*.ts",
+              "projects/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "ng2-date-picker-demo": {
       "root": "",
       "sourceRoot": "src",
@@ -120,46 +160,6 @@
             "lintFilePatterns": [
               "src/**/*.ts",
               "src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "ng2-date-picker": {
-      "projectType": "library",
-      "root": "projects/ng2-date-picker",
-      "sourceRoot": "projects/ng2-date-picker/src",
-      "prefix": "dp",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/ng2-date-picker/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/ng2-date-picker/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/ng2-date-picker/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/ng2-date-picker/src/test.ts",
-            "tsConfig": "projects/ng2-date-picker/tsconfig.spec.json",
-            "karmaConfig": "projects/ng2-date-picker/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/ng2-date-picker/**/*.ts",
-              "projects/ng2-date-picker/**/*.html"
             ]
           }
         }

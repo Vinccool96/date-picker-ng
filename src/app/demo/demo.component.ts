@@ -1,14 +1,14 @@
-import debounce from '../../../projects/ng2-date-picker/src/lib/common/decorators/decorators';
-import { IDatePickerConfig } from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker-config.model';
-import { DatePickerComponent } from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker.component';
-import { DatePickerDirective } from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker.directive';
+import debounce from '../../../projects/date-picker-ng/src/lib/common/decorators/decorators';
+import { IDatePickerConfig } from '../../../projects/date-picker-ng/src/lib/date-picker/date-picker-config.model';
+import { DatePickerComponent } from '../../../projects/date-picker-ng/src/lib/date-picker/date-picker.component';
+import { DatePickerDirective } from '../../../projects/date-picker-ng/src/lib/date-picker/date-picker.directive';
 import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs';
 import { GaService } from './common/services/ga/ga.service';
-import { ECalendarValue } from '../../../projects/ng2-date-picker/src/lib/common/types/calendar-value-enum';
-import { INavEvent } from '../../../projects/ng2-date-picker/src/lib/common/models/navigation-event.model';
-import { ISelectionEvent } from '../../../projects/ng2-date-picker/src/lib/common/types/selection-event.model';
+import { ECalendarValue } from '../../../projects/date-picker-ng/src/lib/common/types/calendar-value-enum';
+import { INavEvent } from '../../../projects/date-picker-ng/src/lib/common/models/navigation-event.model';
+import { ISelectionEvent } from '../../../projects/date-picker-ng/src/lib/common/types/selection-event.model';
 
 @Component({
   selector: 'dp-demo',

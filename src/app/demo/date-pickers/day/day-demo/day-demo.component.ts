@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DateComponent } from '../../../common/date-component.component';
 import { UntypedFormControl } from '@angular/forms';
-import { IDatePickerConfig } from '../../../../../../projects/ng2-date-picker/src/public-api';
+import { IDatePickerConfig } from '../../../../../../projects/date-picker-ng/src/public-api';
 import { DEF_CONF } from '../../../common/conts/consts';
 
 @Component({

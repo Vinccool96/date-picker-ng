@@ -1,4 +1,4 @@
-import { ECalendarValue, IDatePickerConfig } from '../../../../../projects/ng2-date-picker/src/public-api';
+import { ECalendarValue, IDatePickerConfig } from '../../../../../projects/date-picker-ng/src/public-api';
 
 export const DEF_CONF: IDatePickerConfig = {
   firstDayOfWeek: 'su',

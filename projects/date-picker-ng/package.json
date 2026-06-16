@@ -1,11 +1,11 @@
 {
-  "name": "ng2-date-picker",
+  "name": "date-picker-ng",
   "version": "21.0.1",
   "author": "Vlad Ioffe",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vlio20/angular-datepicker.git"
+    "url": "https://github.com/vinccool/date-picker-ng.git"
   },
   "keywords": [
     "angular2",
@@ -16,7 +16,8 @@
     "ng-datepicker",
     "angular",
     "picker",
-    "angular-datepicker"
+    "angular-datepicker",
+    "date-picker-ng"
   ],
   "peerDependencies": {
     "@angular/common": "^21.1.3",

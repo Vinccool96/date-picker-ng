@@ -1,6 +1,6 @@
 {
-  "name": "ng2-date-picker-demo",
-  "author": "Vlad Ioffe",
+  "name": "date-picker-ng-workspace",
+  "author": "Vincent Girard <vinccool96@gmail.com> (https://vinccool96.github.io/)",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -8,23 +8,22 @@
     "start": "ng serve",
     "start:open": "ng serve --o",
     "build": "ng build",
-    "build:lib": "ng build ng2-date-picker",
+    "build:lib": "ng build date-picker-ng",
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
-    "test:ci:lib": "ng test ng2-date-picker --watch=true --browsers=ChromeHeadless",
+    "test:ci:lib": "ng test date-picker-ng --watch=true --browsers=ChromeHeadless",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
-    "build:index": "node build.js",
     "build:demo": "rm -rf dist/ && ng build ng2-date-picker-demo --configuration production && npm run build:index",
-    "release": "npm run build:lib && cd dist/ng2-date-picker && npm publish"
+    "release": "npm run build:lib && cd dist/date-picker-ng && npm publish"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vlio20/angular-datepicker.git"
+    "url": "https://github.com/vinccool/date-picker-ng.git"
   },
   "keywords": [
     "angular2",
@@ -35,7 +34,8 @@
     "ng-datepicker",
     "angular",
     "picker",
-    "angular-datepicker"
+    "angular-datepicker",
+    "date-picker-ng"
   ],
   "devDependencies": {
     "@angular-devkit/build-angular": "^21.1.3",
