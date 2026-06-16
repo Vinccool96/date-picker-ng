@@ -16,6 +16,7 @@
     "format:fix": "prettier --write .",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
+    "lint:lib": "ng lint date-picker-ng",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "build:demo": "rm -rf dist/ && ng build ng2-date-picker-demo --configuration production && npm run build:index",

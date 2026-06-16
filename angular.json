@@ -41,6 +41,15 @@
             ]
           }
         }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "prefix": "dp",
+          "style": "less"
+        },
+        "@schematics/angular:directive": {
+          "prefix": "dp"
+        }
       }
     },
     "ng2-date-picker-demo": {
@@ -168,36 +177,16 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "dp",
-      "style": "less",
-      "type": "component"
+      "prefix": "demo",
+      "style": "less"
     },
     "@schematics/angular:directive": {
-      "prefix": "dp",
-      "type": "directive"
-    },
-    "@schematics/angular:service": {
-      "type": "service"
-    },
-    "@schematics/angular:guard": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:interceptor": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:module": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:pipe": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:resolver": {
-      "typeSeparator": "."
+      "prefix": "demo"
     }
   },
   "cli": {
     "schematicCollections": [
-      "@angular-eslint/schematics"
+      "angular-eslint"
     ]
   }
 }
