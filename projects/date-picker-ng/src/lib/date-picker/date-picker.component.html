@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'dp-open': areCalendarsShown }" dir="ltr" #trigger>
+<div [class.dp-open]="areCalendarsShown" dir="ltr" #trigger>
   <div
     [attr.data-hidden]="componentConfig.hideInputContainer"
     [hidden]="componentConfig.hideInputContainer"
@@ -37,7 +37,7 @@
               (onRightNav)="onRightNavClick($event)"
               (onSelect)="dateSelected($event, 'day', selectEvent.SELECTION, false)"
               [config]="dayCalendarConfig"
-              [displayDate]="displayDate"
+              [displayDate]="displayDate()"
               [ngModel]="_selected"
               [theme]="theme"
             >
@@ -51,7 +51,7 @@
               (onRightNav)="onRightNavClick($event)"
               (onSelect)="dateSelected($event, 'month', selectEvent.SELECTION, false)"
               [config]="dayCalendarConfig"
-              [displayDate]="displayDate"
+              [displayDate]="displayDate()"
               [ngModel]="_selected"
               [theme]="theme"
             >
@@ -75,7 +75,7 @@
               (onLeftNav)="onLeftNavClick($event)"
               (onRightNav)="onRightNavClick($event)"
               [config]="dayTimeCalendarConfig"
-              [displayDate]="displayDate"
+              [displayDate]="displayDate()"
               [ngModel]="_selected && _selected[0]"
               [theme]="theme"
             >

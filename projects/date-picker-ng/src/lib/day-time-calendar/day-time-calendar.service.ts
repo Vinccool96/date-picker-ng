@@ -24,7 +24,7 @@ export class DayTimeCalendarService {
     private timeSelectService: TimeSelectService,
   ) {}
 
-  getConfig(config: IDayTimeCalendarConfig): IDayTimeCalendarConfigInternal {
+  public getConfig(config: IDayTimeCalendarConfig | undefined): IDayTimeCalendarConfigInternal {
     const _config = {
       ...this.DEFAULT_CONFIG,
       ...this.timeSelectService.getConfig(config),
@@ -36,7 +36,7 @@ export class DayTimeCalendarService {
     return _config as IDayTimeCalendarConfigInternal;
   }
 
-  updateDay(current: Dayjs, day: Dayjs, config: IDayCalendarConfigInternal): Dayjs {
+  public updateDay(current: Dayjs | undefined, day: Dayjs, config: IDayCalendarConfigInternal): Dayjs {
     const time = current ? current : dayjsRef();
     let updated = dayjsRef(day.format(DAY_FORMAT) + time.format(TIME_FORMAT), COMBINED_FORMAT);
 
@@ -53,7 +53,7 @@ export class DayTimeCalendarService {
     return updated;
   }
 
-  updateTime(current: Dayjs, time: Dayjs): Dayjs {
+  public updateTime(current: Dayjs | undefined, time: Dayjs): Dayjs {
     const day = current ? current : dayjsRef();
 
     return dayjsRef(day.format(DAY_FORMAT) + time.format(TIME_FORMAT), COMBINED_FORMAT);

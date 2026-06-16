@@ -24,7 +24,7 @@ export class MonthCalendarService {
 
   constructor(private utilsService: UtilsService) {}
 
-  getConfig(config: IMonthCalendarConfig): IMonthCalendarConfigInternal {
+  public getConfig(config: IMonthCalendarConfig | undefined): IMonthCalendarConfigInternal {
     const _config = <IMonthCalendarConfigInternal>{
       ...this.DEFAULT_CONFIG,
       ...this.utilsService.clearUndefined(config),
@@ -36,15 +36,16 @@ export class MonthCalendarService {
     return _config;
   }
 
-  generateYear(config: IMonthCalendarConfig, year: Dayjs, selected: Dayjs[] = null): IMonth[][] {
+  public generateYear(config: IMonthCalendarConfig, year: Dayjs, selected: Dayjs[] | null = null): IMonth[][] {
     let index = year.startOf('year');
+    const numOfMonthRows = config.numOfMonthRows as number;
 
-    return this.utilsService.createArray(config.numOfMonthRows).map(() => {
-      return this.utilsService.createArray(12 / config.numOfMonthRows).map(() => {
+    return this.utilsService.createArray(numOfMonthRows).map(() => {
+      return this.utilsService.createArray(12 / numOfMonthRows).map(() => {
         const date = dayjsRef(index);
         const month = {
           date,
-          selected: !!selected.find((s) => index.isSame(s, 'month')),
+          selected: !!selected?.find((s) => index.isSame(s, 'month')),
           currentMonth: index.isSame(dayjsRef(), 'month'),
           disabled: this.isMonthDisabled(date, config),
           text: this.getMonthBtnText(config, date),
@@ -69,15 +70,15 @@ export class MonthCalendarService {
     return !!(config.max && date.isAfter(config.max, 'month'));
   }
 
-  shouldShowLeft(min: Dayjs, currentMonthView: Dayjs): boolean {
+  public shouldShowLeft(min: Dayjs | undefined, currentMonthView: Dayjs): boolean {
     return min ? min.isBefore(currentMonthView, 'year') : true;
   }
 
-  shouldShowRight(max: Dayjs, currentMonthView: Dayjs): boolean {
+  public shouldShowRight(max: Dayjs | undefined, currentMonthView: Dayjs): boolean {
     return max ? max.isAfter(currentMonthView, 'year') : true;
   }
 
-  getHeaderLabel(config: IMonthCalendarConfig, year: Dayjs): string {
+  public getHeaderLabel(config: IMonthCalendarConfig, year: Dayjs): string {
     if (config.yearFormatter) {
       return config.yearFormatter(year);
     }
@@ -102,7 +103,9 @@ export class MonthCalendarService {
   }
 
   private static validateConfig(config: IMonthCalendarConfigInternal): void {
-    if (config.numOfMonthRows < 1 || config.numOfMonthRows > 12 || !Number.isInteger(12 / config.numOfMonthRows)) {
+    const numOfMonthRows = config.numOfMonthRows as number;
+
+    if (numOfMonthRows < 1 || numOfMonthRows > 12 || !Number.isInteger(12 / numOfMonthRows)) {
       throw new Error('numOfMonthRows has to be between 1 - 12 and divide 12 to integer');
     }
   }

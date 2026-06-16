@@ -4,6 +4,6 @@ import { SelectEvent } from './selection-event.enum';
 
 export interface ISelectionEvent {
   date: SingleCalendarValue;
-  granularity: UnitType;
+  granularity: UnitType | null;
   type: SelectEvent;
 }

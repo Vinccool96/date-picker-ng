@@ -5,7 +5,7 @@
       (onLabelClick)="toggleCalendarMode(CalendarMode.Month)"
       (onLeftNav)="onLeftNavClick()"
       (onRightNav)="onRightNavClick()"
-      [isLabelClickable]="componentConfig.enableMonthSelector"
+      [isLabelClickable]="componentConfig.enableMonthSelector ?? false"
       [label]="navLabel"
       [showGoToCurrent]="_shouldShowCurrent"
       [showLeftNav]="showLeftNav"

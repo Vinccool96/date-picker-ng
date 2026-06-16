@@ -17,15 +17,21 @@ export interface DateLimits {
   maxTime?: SingleCalendarValue;
 }
 
+interface Validator {
+  key: string;
+  isValid(): boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-  static debounce(func: Function, wait: number) {
+  public static debounce(func: Function, wait: number): () => void {
     let timeout;
-    return function () {
-      const context = this,
-        args = arguments;
+    return function (): void {
+      // @ts-expect-error What the hell?
+      const context = this;
+      const args = arguments;
       timeout = clearTimeout(timeout);
       setTimeout(() => {
         func.apply(context, args);
@@ -33,11 +39,11 @@ export class UtilsService {
     };
   }
 
-  createArray(size: number): number[] {
-    return new Array(size).fill(1);
+  public createArray(size: number): number[] {
+    return new Array<number>(size).fill(1);
   }
 
-  convertToDayjs(date: SingleCalendarValue, format: string): Dayjs {
+  public convertToDayjs(date: SingleCalendarValue | null | undefined, format: string | undefined): Dayjs | null {
     if (!date) {
       return null;
     } else if (typeof date === 'string') {
@@ -47,7 +53,7 @@ export class UtilsService {
     }
   }
 
-  isDateValid(date: string, format: string): boolean {
+  isDateValid(date: string, format: string | undefined): boolean {
     if (date === '') {
       return true;
     }
@@ -56,7 +62,12 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  getDefaultDisplayDate(current: Dayjs, selected: Dayjs[], allowMultiSelect: boolean, minDate: Dayjs): Dayjs {
+  public getDefaultDisplayDate(
+    current: Dayjs | null | undefined,
+    selected: Dayjs[],
+    allowMultiSelect: boolean | undefined,
+    minDate: Dayjs | undefined,
+  ): Dayjs {
     if (current) {
       return dayjsRef(current.toDate());
     } else if (minDate && minDate.isAfter(dayjsRef())) {
@@ -73,7 +84,7 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  getInputType(value: CalendarValue, allowMultiSelect: boolean): ECalendarValue {
+  public getInputType(value: CalendarValue, allowMultiSelect: boolean | undefined): ECalendarValue {
     if (Array.isArray(value)) {
       if (!value.length) {
         return ECalendarValue.DayjsArr;
@@ -98,16 +109,18 @@ export class UtilsService {
     let retVal: Dayjs[];
     switch (this.getInputType(value, config.allowMultiSelect)) {
       case ECalendarValue.String:
-        retVal = value ? [dayjsRef(<string>value, config.format, true)] : [];
+        retVal = value ? [dayjsRef(value as string, config.format, true)] : [];
         break;
       case ECalendarValue.StringArr:
-        retVal = (<string[]>value).map((v) => (v ? dayjsRef(v, config.format, true) : null)).filter(Boolean);
+        retVal = (value as string[])
+          .map((v) => (v ? dayjsRef(v, config.format, true) : null))
+          .filter((value) => value !== null);
         break;
       case ECalendarValue.Dayjs:
-        retVal = value ? [dayjsRef((<Dayjs>value).toDate())] : [];
+        retVal = value ? [dayjsRef((value as Dayjs).toDate())] : [];
         break;
       case ECalendarValue.DayjsArr:
-        retVal = (<Dayjs[]>value || []).map((v) => dayjsRef(v.toDate()));
+        retVal = ((value as Dayjs[]) || []).map((v) => dayjsRef(v.toDate()));
         break;
       default:
         retVal = [];
@@ -117,33 +130,37 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  convertFromDayjsArray(format: string, value: Dayjs[], convertTo: ECalendarValue): CalendarValue {
+  public convertFromDayjsArray(
+    format: string | undefined,
+    value: (Dayjs | undefined)[],
+    convertTo: ECalendarValue,
+  ): CalendarValue | undefined {
     switch (convertTo) {
       case ECalendarValue.String:
         return value[0] && value[0].format(format);
       case ECalendarValue.StringArr:
-        return value.filter(Boolean).map((v) => v.format(format));
+        return value.filter((v) => v !== undefined).map((v) => v.format(format));
       case ECalendarValue.Dayjs:
         return value[0] ? dayjsRef(value[0].toDate()) : value[0];
       case ECalendarValue.DayjsArr:
-        return value ? value.map((v) => dayjsRef(v.toDate())) : value;
+        return value ? value.map((v) => dayjsRef(v?.toDate())) : value;
       default:
-        return value;
+        return value as unknown as CalendarValue;
     }
   }
 
-  convertToString(value: CalendarValue, format: string): string {
+  convertToString(value: CalendarValue, format: string | undefined): string {
     let tmpVal: string[];
 
     if (typeof value === 'string') {
       tmpVal = [value];
     } else if (Array.isArray(value)) {
       if (value.length) {
-        tmpVal = (<SingleCalendarValue[]>value).map((v) => {
-          return this.convertToDayjs(v, format).format(format);
+        tmpVal = (value as SingleCalendarValue[]).map((v) => {
+          return (this.convertToDayjs(v, format) as Dayjs).format(format);
         });
       } else {
-        tmpVal = <string[]>value;
+        tmpVal = value as string[];
       }
     } else if (dayjsRef.isDayjs(value)) {
       tmpVal = [value.format(format)];
@@ -164,7 +181,12 @@ export class UtilsService {
     return obj;
   }
 
-  updateSelected(isMultiple: boolean, currentlySelected: Dayjs[], date: IDate, granularity: UnitType = 'day'): Dayjs[] {
+  updateSelected(
+    isMultiple: boolean | undefined,
+    currentlySelected: Dayjs[],
+    date: IDate,
+    granularity: UnitType = 'day',
+  ): Dayjs[] {
     if (isMultiple) {
       return !date.selected
         ? currentlySelected.concat([date.date])
@@ -174,16 +196,20 @@ export class UtilsService {
     }
   }
 
-  closestParent(element: HTMLElement, selector: string): HTMLElement {
+  public closestParent(element: HTMLElement | null | undefined, selector: string): HTMLElement | undefined {
     if (!element) {
       return undefined;
     }
-    const match = <HTMLElement>element.querySelector(selector);
+    const match = element.querySelector(selector) as HTMLElement;
     return match || this.closestParent(element.parentElement, selector);
   }
 
-  onlyTime(m: Dayjs): Dayjs {
-    return m && dayjsRef.isDayjs(m) && dayjsRef(m.format('HH:mm:ss'), 'HH:mm:ss');
+  onlyTime(m: Dayjs | null | undefined): Dayjs {
+    if (dayjsRef.isDayjs(m)) {
+      return dayjsRef(m.format('HH:mm:ss'), 'HH:mm:ss');
+    } else {
+      return dayjsRef();
+    }
   }
 
   granularityFromType(calendarType: CalendarMode): UnitType {
@@ -197,14 +223,14 @@ export class UtilsService {
     }
   }
 
-  createValidator(
+  public createValidator(
     { minDate, maxDate, minTime, maxTime }: DateLimits,
-    format: string,
+    format: string | undefined,
     calendarType: CalendarMode,
   ): DateValidator {
     let isValid: boolean;
     let value: Dayjs[];
-    const validators = [];
+    const validators: Validator[] = [];
     const granularity = this.granularityFromType(calendarType);
 
     if (minDate) {
@@ -292,17 +318,22 @@ export class UtilsService {
       .filter(Boolean);
   }
 
-  getValidDayjsArray(value: string, format: string): Dayjs[] {
+  getValidDayjsArray(value: string, format: string | undefined): Dayjs[] {
     return this.datesStringToStringArray(value)
       .filter((d) => this.isDateValid(d, format))
       .map((d) => dayjsRef(d, format));
   }
 
-  shouldShowCurrent(showGoToCurrent: boolean, mode: CalendarMode, min: Dayjs, max: Dayjs): boolean {
-    return showGoToCurrent && mode !== 'time' && this.isDateInRange(dayjsRef(), min, max);
+  public shouldShowCurrent(
+    showGoToCurrent: boolean | undefined,
+    mode: CalendarMode,
+    min: Dayjs | undefined,
+    max: Dayjs | undefined,
+  ): boolean {
+    return showGoToCurrent === true && mode !== 'time' && this.isDateInRange(dayjsRef(), min, max);
   }
 
-  isDateInRange(date: Dayjs, from: Dayjs, to: Dayjs): boolean {
+  public isDateInRange(date: Dayjs | undefined, from: Dayjs | undefined, to: Dayjs | undefined): boolean {
     if (!date) {
       return false;
     }
@@ -322,7 +353,7 @@ export class UtilsService {
     return date.isBetween(from, to, 'day', '[]');
   }
 
-  convertPropsToDayjs(obj: { [key: string]: any }, format: string, props: string[]): void {
+  public convertPropsToDayjs(obj: Record<string, any>, format: string | undefined, props: string[]): void {
     props.forEach((prop) => {
       if (obj.hasOwnProperty(prop)) {
         obj[prop] = this.convertToDayjs(obj[prop], format);
@@ -348,7 +379,7 @@ export class UtilsService {
     return false;
   }
 
-  getNativeElement(elem: HTMLElement | string | ElementRef): HTMLElement {
+  public getNativeElement(elem: HTMLElement | string | ElementRef<HTMLElement> | undefined): HTMLElement | null {
     if (!elem) {
       return null;
     } else if (typeof elem === 'string') {

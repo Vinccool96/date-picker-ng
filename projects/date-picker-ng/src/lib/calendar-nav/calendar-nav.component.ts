@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   HostBinding,
+  input,
   Input,
   Output,
   ViewEncapsulation,
@@ -14,28 +15,27 @@ import {
   styleUrls: ['./calendar-nav.component.less'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class CalendarNavComponent {
-  @Input() label: string;
-  @Input() isLabelClickable: boolean = false;
-  @Input() showLeftNav: boolean = true;
-  @Input() showLeftSecondaryNav: boolean = false;
-  @Input() showRightNav: boolean = true;
-  @Input() showRightSecondaryNav: boolean = false;
-  @Input() leftNavDisabled: boolean = false;
-  @Input() leftSecondaryNavDisabled: boolean = false;
-  @Input() rightNavDisabled: boolean = false;
-  @Input() rightSecondaryNavDisabled: boolean = false;
-  @Input() showGoToCurrent: boolean = true;
-  @HostBinding('class') @Input() theme: string;
+  public readonly label = input.required<string>();
+  public readonly isLabelClickable = input(false);
+  public readonly showLeftNav = input(true);
+  public readonly showLeftSecondaryNav = input(false);
+  public readonly showRightNav = input(true);
+  public readonly showRightSecondaryNav = input(false);
+  public readonly leftNavDisabled = input(false);
+  public readonly leftSecondaryNavDisabled = input(false);
+  public readonly rightNavDisabled = input(false);
+  public readonly rightSecondaryNavDisabled = input(false);
+  public readonly showGoToCurrent = input(true);
+  @HostBinding('class') @Input() theme!: string;
 
-  @Output() onLeftNav: EventEmitter<null> = new EventEmitter();
-  @Output() onLeftSecondaryNav: EventEmitter<null> = new EventEmitter();
-  @Output() onRightNav: EventEmitter<null> = new EventEmitter();
-  @Output() onRightSecondaryNav: EventEmitter<null> = new EventEmitter();
-  @Output() onLabelClick: EventEmitter<null> = new EventEmitter();
-  @Output() onGoToCurrent: EventEmitter<null> = new EventEmitter();
+  @Output() onLeftNav = new EventEmitter<null>();
+  @Output() onLeftSecondaryNav = new EventEmitter<null>();
+  @Output() onRightNav = new EventEmitter<null>();
+  @Output() onRightSecondaryNav = new EventEmitter<null>();
+  @Output() onLabelClick = new EventEmitter<null>();
+  @Output() onGoToCurrent = new EventEmitter<null>();
 
   leftNavClicked() {
     this.onLeftNav.emit();

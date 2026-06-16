@@ -9,7 +9,7 @@ import { ITimeSelectConfig } from '../time-select/time-select-config.model';
 import { CalendarMode } from '../common/types/calendar-mode';
 import { Dayjs } from 'dayjs';
 import { IDayTimeCalendarConfig } from '../day-time-calendar/day-time-calendar-config.model';
-import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { ConnectedPosition, ConnectionPositionPair } from '@angular/cdk/overlay';
 
 @Injectable({
   providedIn: 'root',
@@ -92,7 +92,7 @@ export class DatePickerService {
     return this.daytimeCalendarService.getConfig(pickerConfig);
   }
 
-  getTimeConfig(pickerConfig: IDatePickerConfig): ITimeSelectConfig {
+  public getTimeConfig(pickerConfig: IDatePickerConfig): ITimeSelectConfig {
     return this.timeSelectService.getConfig(pickerConfig);
   }
 
@@ -116,7 +116,7 @@ export class DatePickerService {
     return this.utilsService.convertToDayjsArray(datesStrArr, config);
   }
 
-  getOverlayPosition({ drops, opens }: IDatePickerConfig): ConnectionPositionPair[] | undefined {
+  public getOverlayPosition({ drops, opens }: IDatePickerConfig): ConnectedPosition[] | undefined {
     if (!drops && !opens) {
       return undefined;
     }

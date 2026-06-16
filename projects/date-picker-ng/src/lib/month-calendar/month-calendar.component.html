@@ -6,7 +6,7 @@
     (onLeftSecondaryNav)="onLeftSecondaryNavClick()"
     (onRightNav)="onRightNavClick()"
     (onRightSecondaryNav)="onRightSecondaryNavClick()"
-    [isLabelClickable]="componentConfig.isNavHeaderBtnClickable"
+    [isLabelClickable]="componentConfig.isNavHeaderBtnClickable ?? false"
     [label]="navLabel"
     [showGoToCurrent]="shouldShowCurrent()"
     [showLeftNav]="showLeftNav"

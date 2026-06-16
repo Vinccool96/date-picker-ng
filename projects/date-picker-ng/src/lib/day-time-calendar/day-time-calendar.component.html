@@ -5,16 +5,14 @@
   (onRightNav)="onRightNavClick($event)"
   (onSelect)="dateSelected($event)"
   [config]="componentConfig"
-  [displayDate]="displayDate"
+  [displayDate]="displayDate()"
   [ngModel]="_selected"
   [theme]="theme"
->
-</dp-day-calendar>
+/>
 <dp-time-select
   #timeSelect
   (onChange)="timeChange($event)"
   [config]="componentConfig"
   [ngModel]="_selected"
   [theme]="theme"
->
-</dp-time-select>
+/>

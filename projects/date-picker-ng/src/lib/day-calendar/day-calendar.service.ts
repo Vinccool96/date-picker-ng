@@ -28,7 +28,7 @@ export class DayCalendarService {
 
   constructor(private utilsService: UtilsService) {}
 
-  getConfig(config: IDayCalendarConfig): IDayCalendarConfigInternal {
+  public getConfig(config: IDayCalendarConfig | undefined): IDayCalendarConfigInternal {
     const _config = {
       ...this.DEFAULT_CONFIG,
       ...this.utilsService.clearUndefined(config),
@@ -42,20 +42,17 @@ export class DayCalendarService {
   generateDaysMap(firstDayOfWeek: WeekDays) {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
     const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
-    return daysArr.reduce(
-      (map, day, index) => {
-        map[day] = index;
+    return daysArr.reduce<Record<string, number>>((map, day, index) => {
+      map[day] = index;
 
-        return map;
-      },
-      <{ [key: string]: number }>{},
-    );
+      return map;
+    }, {});
   }
 
-  generateMonthArray(config: IDayCalendarConfigInternal, month: Dayjs, selected: Dayjs[]): IDay[][] {
+  public generateMonthArray(config: IDayCalendarConfigInternal, month: Dayjs, selected: Dayjs[]): IDay[][] {
     const parsedMonth = month.isValid() ? dayjsRef(month.toDate()) : dayjsRef();
     let monthArray: IDay[][] = [];
-    const firstDayOfWeekIndex = this.DAYS.indexOf(config.firstDayOfWeek);
+    const firstDayOfWeekIndex = this.DAYS.indexOf(config.firstDayOfWeek as WeekDays);
     let firstDayOfBoard = parsedMonth.startOf('month');
 
     while (firstDayOfBoard.day() !== firstDayOfWeekIndex) {
@@ -100,7 +97,7 @@ export class DayCalendarService {
   }
 
   generateWeekdays(firstDayOfWeek: WeekDays): Dayjs[] {
-    const weekdayNames: { [key: string]: Dayjs } = {
+    const weekdayNames: Record<string, Dayjs> = {
       su: dayjsRef().day(0),
       mo: dayjsRef().day(1),
       tu: dayjsRef().day(2),
@@ -113,7 +110,7 @@ export class DayCalendarService {
     const daysMap = this.generateDaysMap(firstDayOfWeek);
 
     for (const dayKey in daysMap) {
-      if (daysMap.hasOwnProperty(dayKey)) {
+      if (Object.prototype.hasOwnProperty.call(daysMap, dayKey)) {
         weekdays[daysMap[dayKey]] = weekdayNames[dayKey];
       }
     }
@@ -143,26 +140,23 @@ export class DayCalendarService {
   }
 
   // todo:: add unit tests
-  shouldShowLeft(min: Dayjs, currentMonthView: Dayjs): boolean {
+  public shouldShowLeft(min: Dayjs | null | undefined, currentMonthView: Dayjs | null | undefined): boolean {
     return min ? min.isBefore(currentMonthView, 'month') : true;
   }
 
   // todo:: add unit tests
-  shouldShowRight(max: Dayjs, currentMonthView: Dayjs): boolean {
+  public shouldShowRight(max: Dayjs | null | undefined, currentMonthView: Dayjs | null | undefined): boolean {
     return max ? max.isAfter(currentMonthView, 'month') : true;
   }
 
   generateDaysIndexMap(firstDayOfWeek: WeekDays) {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
     const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
-    return daysArr.reduce(
-      (map, day, index) => {
-        map[index] = day;
+    return daysArr.reduce<Record<number, string>>((map, day, index) => {
+      map[index] = day;
 
-        return map;
-      },
-      <{ [key: number]: string }>{},
-    );
+      return map;
+    }, {});
   }
 
   getMonthCalendarConfig(componentConfig: IDayCalendarConfigInternal): IMonthCalendarConfig {

@@ -1,31 +1,34 @@
 import { CalendarMode } from '../common/types/calendar-mode';
 import { IDatePickerDirectiveConfig } from './date-picker-directive-config.model';
-import { IDpDayPickerApi } from './date-picker.api';
 import { DatePickerComponent } from './date-picker.component';
 import {
   ComponentFactoryResolver,
   Directive,
+  effect,
   ElementRef,
   EventEmitter,
   HostListener,
-  Input,
+  inject,
+  input,
   OnInit,
   Optional,
   Output,
+  signal,
   ViewContainerRef,
 } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { AbstractControl, NgControl } from '@angular/forms';
 import { INavEvent } from '../common/models/navigation-event.model';
 import { UtilsService } from '../common/services/utils/utils.service';
 import { CalendarValue } from '../common/types/calendar-value';
 import { ISelectionEvent } from '../common/types/selection-event.model';
 import { SingleCalendarValue } from '../common/types/single-calendar-value';
 import { Dayjs } from 'dayjs';
+import { Observable } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Directive({
   exportAs: 'dpDayPicker',
   selector: '[dpDayPicker]',
-  standalone: false,
 })
 export class DatePickerDirective implements OnInit {
   @Output() open = new EventEmitter<void>();
@@ -35,161 +38,89 @@ export class DatePickerDirective implements OnInit {
   @Output() onLeftNav: EventEmitter<INavEvent> = new EventEmitter();
   @Output() onRightNav: EventEmitter<INavEvent> = new EventEmitter();
   @Output() onSelect: EventEmitter<ISelectionEvent> = new EventEmitter();
-  datePicker: DatePickerComponent;
-  api: IDpDayPickerApi;
+  private readonly datePicker = this.createDatePicker();
+  public readonly api = this.datePicker.api;
+  public readonly theme = input.required<string>();
+  public readonly dpDayPicker = input.required<IDatePickerDirectiveConfig>();
+  private readonly config = signal<IDatePickerDirectiveConfig>({});
+  public readonly mode = input<CalendarMode>('day');
+  public readonly minDate = input<SingleCalendarValue>();
+  public readonly maxDate = input<SingleCalendarValue>();
+  public readonly minTime = input<SingleCalendarValue>();
+  public readonly maxTime = input<SingleCalendarValue>();
+  public readonly displayDate = input<SingleCalendarValue | null>(null);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly elemRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly componentFactoryResolver = inject(ComponentFactoryResolver);
+  public readonly formControl = inject(NgControl, { optional: true });
+  public readonly utilsService = inject(UtilsService);
 
-  constructor(
-    public readonly viewContainerRef: ViewContainerRef,
-    public readonly elemRef: ElementRef,
-    public readonly componentFactoryResolver: ComponentFactoryResolver,
-    @Optional() public readonly formControl: NgControl,
-    public readonly utilsService: UtilsService,
-  ) {}
-
-  private _config: IDatePickerDirectiveConfig;
-
-  get config(): IDatePickerDirectiveConfig {
-    return this._config;
-  }
-
-  @Input('dpDayPicker') set config(config: IDatePickerDirectiveConfig) {
-    this._config = {
-      ...config,
-      hideInputContainer: true,
-      inputElementContainer: config.inputElementContainer ?? this.elemRef,
-    };
-    this.updateDatepickerConfig();
-    this.markForCheck();
-  }
-
-  private _theme: string;
-
-  get theme(): string {
-    return this._theme;
-  }
-
-  @Input() set theme(theme: string) {
-    this._theme = theme;
-    if (this.datePicker) {
-      this.datePicker.theme = theme;
-    }
-
-    this.markForCheck();
-  }
-
-  private _mode: CalendarMode = 'day';
-
-  get mode(): CalendarMode {
-    return this._mode;
-  }
-
-  @Input() set mode(mode: CalendarMode) {
-    this._mode = mode;
-    if (this.datePicker) {
-      this.datePicker.mode = mode;
-    }
-
-    this.markForCheck();
-  }
-
-  private _minDate: SingleCalendarValue;
-
-  get minDate(): SingleCalendarValue {
-    return this._minDate;
-  }
-
-  @Input() set minDate(minDate: SingleCalendarValue) {
-    this._minDate = minDate;
-    if (this.datePicker) {
-      this.datePicker.minDate = minDate;
-      this.datePicker.ngOnInit();
-    }
-
-    this.markForCheck();
-  }
-
-  private _maxDate: SingleCalendarValue;
-
-  get maxDate(): SingleCalendarValue {
-    return this._maxDate;
-  }
-
-  @Input() set maxDate(maxDate: SingleCalendarValue) {
-    this._maxDate = maxDate;
-    if (this.datePicker) {
-      this.datePicker.maxDate = maxDate;
-      this.datePicker.ngOnInit();
-    }
-
-    this.markForCheck();
-  }
-
-  private _minTime: SingleCalendarValue;
-
-  get minTime(): SingleCalendarValue {
-    return this._minTime;
-  }
-
-  @Input() set minTime(minTime: SingleCalendarValue) {
-    this._minTime = minTime;
-    if (this.datePicker) {
-      this.datePicker.minTime = minTime;
-      this.datePicker.ngOnInit();
-    }
-
-    this.markForCheck();
-  }
-
-  private _maxTime: SingleCalendarValue;
-
-  get maxTime(): SingleCalendarValue {
-    return this._maxTime;
-  }
-
-  @Input() set maxTime(maxTime: SingleCalendarValue) {
-    this._maxTime = maxTime;
-    if (this.datePicker) {
-      this.datePicker.maxTime = maxTime;
-      this.datePicker.ngOnInit();
-    }
-
-    this.markForCheck();
-  }
-
-  private _displayDate: Dayjs | string;
-
-  get displayDate(): Dayjs | string {
-    return this._displayDate;
-  }
-
-  @Input() set displayDate(displayDate: Dayjs | string) {
-    this._displayDate = displayDate;
-    this.updateDatepickerConfig();
-
-    this.markForCheck();
+  public constructor() {
+    effect(() => {
+      this.datePicker.theme = this.theme();
+      this.markForCheck();
+    });
+    effect(() => {
+      const config = this.dpDayPicker();
+      this.config.set({
+        ...config,
+        hideInputContainer: true,
+        inputElementContainer: config.inputElementContainer ?? this.elemRef,
+      });
+      this.updateDatepickerConfig();
+      this.markForCheck();
+    });
+    effect(() => {
+      this.datePicker.mode = this.mode();
+      this.markForCheck();
+    });
+    effect(() => {
+      this.datePicker.minDate.set(this.minDate());
+      this.datePicker.initialize();
+      this.markForCheck();
+    });
+    effect(() => {
+      this.datePicker.maxDate.set(this.maxDate());
+      this.datePicker.initialize();
+      this.markForCheck();
+    });
+    effect(() => {
+      this.datePicker.minTime.set(this.minTime());
+      this.datePicker.initialize();
+      this.markForCheck();
+    });
+    effect(() => {
+      this.datePicker.maxTime.set(this.maxTime());
+      this.datePicker.initialize();
+      this.markForCheck();
+    });
+    toObservable(this.displayDate).subscribe(() => {
+      this.updateDatepickerConfig();
+      this.markForCheck();
+    });
   }
 
   ngOnInit(): void {
-    this.datePicker = this.createDatePicker();
-    this.api = this.datePicker.api;
     this.updateDatepickerConfig();
     this.attachModelToDatePicker();
-    this.datePicker.theme = this.theme;
+    this.datePicker.theme = this.theme();
   }
 
-  createDatePicker(): DatePickerComponent {
+  private createDatePicker(): DatePickerComponent {
     const factory = this.componentFactoryResolver.resolveComponentFactory(DatePickerComponent);
     return this.viewContainerRef.createComponent(factory).instance;
   }
 
   attachModelToDatePicker() {
-    if (!this.formControl) {
+    const formControl = this.formControl;
+
+    if (formControl === null) {
       return;
     }
 
-    this.datePicker.onViewDateChange(this.formControl.value);
+    this.datePicker.onViewDateChange(formControl.value);
 
-    this.formControl.valueChanges.subscribe((value) => {
+    (formControl.valueChanges as Observable<CalendarValue>).subscribe((value) => {
       if (value !== this.datePicker.inputElementValue) {
         const strVal = this.utilsService.convertToString(value, this.datePicker.componentConfig.format);
         this.datePicker.onViewDateChange(strVal);
@@ -203,14 +134,14 @@ export class DatePickerDirective implements OnInit {
         const isMultiselectEmpty = setup && Array.isArray(value) && !value.length;
 
         if (!isMultiselectEmpty && !changedByInput) {
-          this.formControl.control.setValue(this.datePicker.inputElementValue);
+          (formControl.control as AbstractControl).setValue(this.datePicker.inputElementValue);
         }
       }
 
       const errors = this.datePicker.validateFn(value);
 
       if (!setup) {
-        this.formControl.control.markAsDirty({
+        (formControl.control as AbstractControl).markAsDirty({
           onlySelf: true,
         });
       } else {
@@ -218,15 +149,16 @@ export class DatePickerDirective implements OnInit {
       }
 
       if (errors) {
-        if (errors.hasOwnProperty('format')) {
-          const { given } = errors['format'];
+        if (Object.prototype.hasOwnProperty.call(errors, 'format')) {
+          const { given } = errors['format'] as { given: string };
           this.datePicker.inputElementValue = given;
+
           if (!changedByInput) {
-            this.formControl.control.setValue(given);
+            (formControl.control as AbstractControl).setValue(given);
           }
         }
 
-        this.formControl.control.setErrors(errors);
+        (formControl.control as AbstractControl).setErrors(errors);
       }
     });
   }
@@ -255,29 +187,27 @@ export class DatePickerDirective implements OnInit {
   }
 
   private updateDatepickerConfig() {
-    if (this.datePicker) {
-      this.datePicker.minDate = this.minDate;
-      this.datePicker.maxDate = this.maxDate;
-      this.datePicker.minTime = this.minTime;
-      this.datePicker.maxTime = this.maxTime;
-      this.datePicker.mode = this.mode || 'day';
-      this.datePicker.displayDate = this.displayDate;
-      this.datePicker.config = this.config;
-      this.datePicker.open = this.open;
-      this.datePicker.close = this.close;
-      this.datePicker.onChange = this.onChange;
-      this.datePicker.onGoToCurrent = this.onGoToCurrent;
-      this.datePicker.onLeftNav = this.onLeftNav;
-      this.datePicker.onRightNav = this.onRightNav;
-      this.datePicker.onSelect = this.onSelect;
+    this.datePicker.minDate.set(this.minDate());
+    this.datePicker.maxDate.set(this.maxDate());
+    this.datePicker.minTime.set(this.minTime());
+    this.datePicker.maxTime.set(this.maxTime());
+    this.datePicker.mode = this.mode();
+    this.datePicker.displayDate.set(this.displayDate());
+    this.datePicker.config.set(this.dpDayPicker());
+    this.datePicker.open = this.open;
+    this.datePicker.close = this.close;
+    this.datePicker.onChange = this.onChange;
+    this.datePicker.onGoToCurrent = this.onGoToCurrent;
+    this.datePicker.onLeftNav = this.onLeftNav;
+    this.datePicker.onRightNav = this.onRightNav;
+    this.datePicker.onSelect = this.onSelect;
 
-      this.datePicker.init();
+    this.datePicker.init();
 
-      if (this.datePicker.componentConfig.disableKeypress) {
-        this.elemRef.nativeElement.setAttribute('readonly', true);
-      } else {
-        this.elemRef.nativeElement.removeAttribute('readonly');
-      }
+    if (this.datePicker.componentConfig.disableKeypress) {
+      this.elemRef.nativeElement.setAttribute('readonly', 'true');
+    } else {
+      this.elemRef.nativeElement.removeAttribute('readonly');
     }
   }
 }

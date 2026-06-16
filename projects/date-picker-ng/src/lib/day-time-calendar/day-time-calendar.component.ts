@@ -7,19 +7,21 @@ import {
   EventEmitter,
   forwardRef,
   HostBinding,
+  input,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  UntypedFormControl,
+  FormsModule,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  UntypedFormControl,
   ValidationErrors,
   Validator,
 } from '@angular/forms';
@@ -34,6 +36,7 @@ import { DayTimeCalendarService } from './day-time-calendar.service';
 import { DateValidator } from '../common/types/validator.type';
 import { DayCalendarComponent } from '../day-calendar/day-calendar.component';
 import { INavEvent } from '../common/models/navigation-event.model';
+import { TimeSelectComponent } from '../time-select/time-select.component';
 
 @Component({
   selector: 'dp-day-time-calendar',
@@ -56,24 +59,24 @@ import { INavEvent } from '../common/models/navigation-event.model';
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [DayCalendarComponent, TimeSelectComponent, FormsModule],
 })
 export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
-  @Input() config: IDayTimeCalendarConfig;
-  @Input() displayDate: SingleCalendarValue;
-  @Input() minDate: SingleCalendarValue;
-  @Input() maxDate: SingleCalendarValue;
-  @HostBinding('class') @Input() theme: string;
-  @Output() onChange: EventEmitter<IDate> = new EventEmitter();
-  @Output() onGoToCurrent: EventEmitter<void> = new EventEmitter();
-  @Output() onLeftNav: EventEmitter<INavEvent> = new EventEmitter();
-  @Output() onRightNav: EventEmitter<INavEvent> = new EventEmitter();
-  @ViewChild('dayCalendar') dayCalendarRef: DayCalendarComponent;
-  isInited: boolean = false;
-  componentConfig: IDayTimeCalendarConfigInternal;
-  inputValue: CalendarValue;
-  inputValueType: ECalendarValue;
-  validateFn: DateValidator;
+  public readonly config = input<IDayTimeCalendarConfig>();
+  public readonly displayDate = input<SingleCalendarValue | null>(null);
+  public readonly minDate = input<SingleCalendarValue>();
+  public readonly maxDate = input<SingleCalendarValue>();
+  @HostBinding('class') @Input() theme!: string;
+  @Output() onChange = new EventEmitter<IDate>();
+  @Output() onGoToCurrent = new EventEmitter<void>();
+  @Output() onLeftNav = new EventEmitter<INavEvent>();
+  @Output() onRightNav = new EventEmitter<INavEvent>();
+  public readonly dayCalendarRef = viewChild.required<DayCalendarComponent>('dayCalendar');
+  isInited = false;
+  componentConfig: IDayTimeCalendarConfigInternal = {};
+  inputValue: CalendarValue = '';
+  inputValueType!: ECalendarValue;
+  validateFn!: DateValidator;
   api = {
     moveCalendarTo: this.moveCalendarTo.bind(this),
   };
@@ -84,13 +87,13 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
     public cd: ChangeDetectorRef,
   ) {}
 
-  _selected: Dayjs;
+  _selected: Dayjs | undefined;
 
-  get selected(): Dayjs {
+  get selected(): Dayjs | undefined {
     return this._selected;
   }
 
-  set selected(selected: Dayjs) {
+  set selected(selected: Dayjs | undefined) {
     this._selected = selected;
     this.onChangeCallback(this.processOnChangeCallback(selected));
   }
@@ -101,7 +104,7 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
   }
 
   init() {
-    this.componentConfig = this.dayTimeCalendarService.getConfig(this.config);
+    this.componentConfig = this.dayTimeCalendarService.getConfig(this.config());
     this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
   }
 
@@ -126,7 +129,7 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
       })[0];
       this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
     } else {
-      this.selected = null;
+      this.selected = undefined;
     }
 
     this.cd.markForCheck();
@@ -141,14 +144,14 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
   registerOnTouched(fn: any): void {}
 
   validate(formControl: UntypedFormControl): ValidationErrors | any {
-    if (this.minDate || this.maxDate) {
+    if (this.minDate() || this.maxDate()) {
       return this.validateFn(formControl.value);
     } else {
       return () => null;
     }
   }
 
-  processOnChangeCallback(value: Dayjs): CalendarValue {
+  processOnChangeCallback(value: Dayjs | undefined): CalendarValue | undefined {
     return this.utilsService.convertFromDayjsArray(
       this.componentConfig.format,
       [value],
@@ -159,8 +162,8 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
   initValidators() {
     this.validateFn = this.utilsService.createValidator(
       {
-        minDate: this.minDate,
-        maxDate: this.maxDate,
+        minDate: this.minDate(),
+        maxDate: this.maxDate(),
       },
       undefined,
       'daytime',
@@ -180,12 +183,12 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
   }
 
   emitChange() {
-    this.onChange.emit({ date: this.selected, selected: false });
+    this.onChange.emit({ date: this.selected as Dayjs, selected: false });
   }
 
-  moveCalendarTo(to: SingleCalendarValue) {
+  moveCalendarTo(to: SingleCalendarValue | null) {
     if (to) {
-      this.dayCalendarRef.moveCalendarTo(to);
+      this.dayCalendarRef().moveCalendarTo(to);
     }
   }
 

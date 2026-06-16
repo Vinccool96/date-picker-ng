@@ -17,7 +17,10 @@ export { TimeSelectComponent } from './time-select/time-select.component';
 export { MonthCalendarComponent } from './month-calendar/month-calendar.component';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    FormsModule,
+    OverlayModule,
     DatePickerComponent,
     DatePickerDirective,
     DayCalendarComponent,
@@ -26,7 +29,6 @@ export { MonthCalendarComponent } from './month-calendar/month-calendar.componen
     TimeSelectComponent,
     DayTimeCalendarComponent,
   ],
-  imports: [CommonModule, FormsModule, OverlayModule],
   exports: [
     DatePickerComponent,
     DatePickerDirective,
