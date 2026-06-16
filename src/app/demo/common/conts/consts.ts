@@ -1,4 +1,4 @@
-import {ECalendarValue, IDatePickerConfig} from '../../../../../projects/ng2-date-picker/src/public-api';
+import { ECalendarValue, IDatePickerConfig } from '../../../../../projects/ng2-date-picker/src/public-api';
 
 export const DEF_CONF: IDatePickerConfig = {
   firstDayOfWeek: 'su',
@@ -34,5 +34,5 @@ export const DEF_CONF: IDatePickerConfig = {
   returnedValueType: ECalendarValue.String,
   unSelectOnClick: true,
   hideOnOutsideClick: true,
-  numOfMonthRows: 3
+  numOfMonthRows: 3,
 };

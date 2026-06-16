@@ -1,12 +1,10 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {UtilsService} from '../common/services/utils/utils.service';
-import {CalendarNavComponent} from '../calendar-nav/calendar-nav.component';
-import {TimeSelectComponent} from './time-select.component';
-import {TimeSelectService} from './time-select.service';
-import {MonthCalendarComponent} from '../month-calendar/month-calendar.component';
-import {dayjsRef} from '../common/dayjs/dayjs.ref';
-
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
+import { TimeSelectComponent } from './time-select.component';
+import { TimeSelectService } from './time-select.service';
+import { MonthCalendarComponent } from '../month-calendar/month-calendar.component';
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 
 describe('Component: TimeSelectComponent', () => {
   let component: TimeSelectComponent;
@@ -15,7 +13,7 @@ describe('Component: TimeSelectComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TimeSelectComponent, CalendarNavComponent, MonthCalendarComponent],
-      providers: [TimeSelectService, UtilsService]
+      providers: [TimeSelectService, UtilsService],
     }).compileComponents();
   }));
 

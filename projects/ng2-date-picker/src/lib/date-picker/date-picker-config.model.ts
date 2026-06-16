@@ -1,8 +1,8 @@
-import {TDrops, TOpens} from '../common/types/poistions.type';
-import {IDayCalendarConfig, IDayCalendarConfigInternal} from '../day-calendar/day-calendar-config.model';
-import {IMonthCalendarConfig, IMonthCalendarConfigInternal} from '../month-calendar/month-calendar-config';
-import {ITimeSelectConfig, ITimeSelectConfigInternal} from '../time-select/time-select-config.model';
-import {ElementRef} from '@angular/core';
+import { TDrops, TOpens } from '../common/types/poistions.type';
+import { IDayCalendarConfig, IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
+import { IMonthCalendarConfig, IMonthCalendarConfigInternal } from '../month-calendar/month-calendar-config';
+import { ITimeSelectConfig, ITimeSelectConfigInternal } from '../time-select/time-select-config.model';
+import { ElementRef } from '@angular/core';
 
 export interface IConfig {
   closeOnSelect?: boolean;
@@ -19,15 +19,7 @@ export interface IConfig {
   hideOnOutsideClick?: boolean;
 }
 
-export interface IDatePickerConfig extends IConfig,
-                                           IDayCalendarConfig,
-                                           IMonthCalendarConfig,
-                                           ITimeSelectConfig {
+export interface IDatePickerConfig extends IConfig, IDayCalendarConfig, IMonthCalendarConfig, ITimeSelectConfig {}
 
-}
-
-export interface IDatePickerConfigInternal extends IConfig,
-                                                   IDayCalendarConfigInternal,
-                                                   IMonthCalendarConfigInternal,
-                                                   ITimeSelectConfigInternal {
-}
+export interface IDatePickerConfigInternal
+  extends IConfig, IDayCalendarConfigInternal, IMonthCalendarConfigInternal, ITimeSelectConfigInternal {}

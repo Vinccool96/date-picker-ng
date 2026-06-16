@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {WeekDays} from '../common/types/week-days.type';
-import {UtilsService} from '../common/services/utils/utils.service';
-import {IDay} from './day.model';
-import {IDayCalendarConfig, IDayCalendarConfigInternal} from './day-calendar-config.model';
-import {IMonthCalendarConfig} from '../month-calendar/month-calendar-config';
-import {Dayjs} from 'dayjs';
-import {dayjsRef} from '../common/dayjs/dayjs.ref';
+import { WeekDays } from '../common/types/week-days.type';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { IDay } from './day.model';
+import { IDayCalendarConfig, IDayCalendarConfigInternal } from './day-calendar-config.model';
+import { IMonthCalendarConfig } from '../month-calendar/month-calendar-config';
+import { Dayjs } from 'dayjs';
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DayCalendarService {
   readonly DEFAULT_CONFIG: IDayCalendarConfig = {
@@ -22,17 +22,16 @@ export class DayCalendarService {
     monthFormat: 'MMM, YYYY',
     enableMonthSelector: true,
     dayBtnFormat: 'DD',
-    unSelectOnClick: true
+    unSelectOnClick: true,
   };
   private readonly DAYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
 
-  constructor(private utilsService: UtilsService) {
-  }
+  constructor(private utilsService: UtilsService) {}
 
   getConfig(config: IDayCalendarConfig): IDayCalendarConfigInternal {
     const _config = {
       ...this.DEFAULT_CONFIG,
-      ...this.utilsService.clearUndefined(config)
+      ...this.utilsService.clearUndefined(config),
     };
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);
@@ -43,11 +42,14 @@ export class DayCalendarService {
   generateDaysMap(firstDayOfWeek: WeekDays) {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
     const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
-    return daysArr.reduce((map, day, index) => {
-      map[day] = index;
+    return daysArr.reduce(
+      (map, day, index) => {
+        map[day] = index;
 
-      return map;
-    }, <{[key: string]: number}>{});
+        return map;
+      },
+      <{ [key: string]: number }>{},
+    );
   }
 
   generateMonthArray(config: IDayCalendarConfigInternal, month: Dayjs, selected: Dayjs[]): IDay[][] {
@@ -65,21 +67,20 @@ export class DayCalendarService {
     const nextMonth = parsedMonth.add(1, 'month');
     const today = dayjsRef();
 
-    const daysOfCalendar: IDay[] = this.utilsService.createArray(42)
-      .reduce((array: IDay[]) => {
-        array.push({
-          date: dayjsRef(current.toDate()),
-          selected: !!selected.find(selectedDay => current.isSame(selectedDay, 'day')),
-          currentMonth: current.isSame(parsedMonth, 'month'),
-          prevMonth: current.isSame(prevMonth, 'month'),
-          nextMonth: current.isSame(nextMonth, 'month'),
-          currentDay: current.isSame(today, 'day'),
-          disabled: this.isDateDisabled(current, config)
-        });
-        current = current.add(1, 'day');
+    const daysOfCalendar: IDay[] = this.utilsService.createArray(42).reduce((array: IDay[]) => {
+      array.push({
+        date: dayjsRef(current.toDate()),
+        selected: !!selected.find((selectedDay) => current.isSame(selectedDay, 'day')),
+        currentMonth: current.isSame(parsedMonth, 'month'),
+        prevMonth: current.isSame(prevMonth, 'month'),
+        nextMonth: current.isSame(nextMonth, 'month'),
+        currentDay: current.isSame(today, 'day'),
+        disabled: this.isDateDisabled(current, config),
+      });
+      current = current.add(1, 'day');
 
-        return array;
-      }, []);
+      return array;
+    }, []);
 
     daysOfCalendar.forEach((day, index) => {
       const weekIndex = Math.floor(index / 7);
@@ -99,14 +100,14 @@ export class DayCalendarService {
   }
 
   generateWeekdays(firstDayOfWeek: WeekDays): Dayjs[] {
-    const weekdayNames: {[key: string]: Dayjs} = {
+    const weekdayNames: { [key: string]: Dayjs } = {
       su: dayjsRef().day(0),
       mo: dayjsRef().day(1),
       tu: dayjsRef().day(2),
       we: dayjsRef().day(3),
       th: dayjsRef().day(4),
       fr: dayjsRef().day(5),
-      sa: dayjsRef().day(6)
+      sa: dayjsRef().day(6),
     };
     const weekdays: Dayjs[] = [];
     const daysMap = this.generateDaysMap(firstDayOfWeek);
@@ -154,11 +155,14 @@ export class DayCalendarService {
   generateDaysIndexMap(firstDayOfWeek: WeekDays) {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
     const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
-    return daysArr.reduce((map, day, index) => {
-      map[index] = day;
+    return daysArr.reduce(
+      (map, day, index) => {
+        map[index] = day;
 
-      return map;
-    }, <{[key: number]: string}>{});
+        return map;
+      },
+      <{ [key: number]: string }>{},
+    );
   }
 
   getMonthCalendarConfig(componentConfig: IDayCalendarConfigInternal): IMonthCalendarConfig {
@@ -177,7 +181,7 @@ export class DayCalendarService {
       multipleYearsNavigateBy: componentConfig.multipleYearsNavigateBy,
       showMultipleYearsNavigation: componentConfig.showMultipleYearsNavigation,
       showGoToCurrent: componentConfig.showGoToCurrent,
-      numOfMonthRows: componentConfig.numOfMonthRows
+      numOfMonthRows: componentConfig.numOfMonthRows,
     });
   }
 

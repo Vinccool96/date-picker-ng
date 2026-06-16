@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {CalendarNavComponent} from './calendar-nav.component';
+import { CalendarNavComponent } from './calendar-nav.component';
 
 describe('CalendarNavComponent', () => {
   let component: CalendarNavComponent;
@@ -8,9 +8,8 @@ describe('CalendarNavComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [CalendarNavComponent]
-    })
-      .compileComponents();
+      declarations: [CalendarNavComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,11 +1,11 @@
-import {DemoPage} from './app.po';
-import {expect, Page, test} from '@playwright/test';
+import { DemoPage } from './app.po';
+import { expect, Page, test } from '@playwright/test';
 
 test.describe('dpDayPicker dayPicker', () => {
   let po: DemoPage;
   let page: Page;
 
-  test.beforeAll(async ({browser}) => {
+  test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
   });
 
@@ -23,17 +23,17 @@ test.describe('dpDayPicker dayPicker', () => {
     await expect(await po.minDateValidationMsg().textContent()).toEqual('minDate invalid');
     await po.setText(po.minDateValidationPickerInput(), '08-04-2017 09:08:07');
     await po.clickOnBody();
-    await expect(po.minDateValidationMsg()).toBeHidden()
+    await expect(po.minDateValidationMsg()).toBeHidden();
   });
 
   test('should check if max date validation is working', async () => {
     await po.maxDateValidationPickerInput().clear();
-    await expect(await po.maxDateValidationMsg()).toBeHidden()
+    await expect(await po.maxDateValidationMsg()).toBeHidden();
     await po.setText(po.maxDateValidationPickerInput(), '12-04-2017 08:08:07');
     await po.setText(po.daytimePickerInput(), '12-04-2017 09:08:07');
     await expect(await po.maxDateValidationMsg().textContent()).toEqual('maxDate invalid');
     await po.setText(po.maxDateValidationPickerInput(), '12-04-2017 09:08:07');
-    await expect(await po.maxDateValidationMsg()).toBeHidden()
+    await expect(await po.maxDateValidationMsg()).toBeHidden();
   });
 
   test('should check that the min selectable option is working', async () => {

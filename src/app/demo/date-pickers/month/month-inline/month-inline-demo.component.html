@@ -2,7 +2,8 @@
   @if (ready) {
     <div class="dp-date-input-container dp-inline">
       <div class="dp-form-item">
-        <dp-month-calendar #dateComponent
+        <dp-month-calendar
+          #dateComponent
           (close)="closed()"
           (onLeftNav)="onLeftNav($event)"
           (onRightNav)="onRightNav($event)"
@@ -13,7 +14,8 @@
           [minDate]="validationMinDate"
           [required]="required"
           [theme]="material ? 'dp-material dp-main' : 'dp-main'"
-          id="picker">
+          id="picker"
+        >
         </dp-month-calendar>
         <div class="dp-validations">
           @if (control.errors?.required) {
@@ -33,7 +35,8 @@
     </div>
   }
 
-  <dp-config-form #component
+  <dp-config-form
+    #component
     (closeCalendar)="closeCalendar()"
     (moveCalendarTo)="moveCalendarTo($event)"
     (onConfigChange)="onConfigChange($event)"
@@ -50,6 +53,7 @@
     (onLocaleChange)="onLocaleChange($event)"
     [config]="config"
     [localeVal]="locale"
-    pickerMode="monthInline">
+    pickerMode="monthInline"
+  >
   </dp-config-form>
 </div>

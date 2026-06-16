@@ -1,6 +1,6 @@
-import {ECalendarValue} from '../common/types/calendar-value-enum';
-import {SingleCalendarValue} from '../common/types/single-calendar-value';
-import {ECalendarMode} from '../common/types/calendar-mode-enum';
+import { ECalendarValue } from '../common/types/calendar-value-enum';
+import { SingleCalendarValue } from '../common/types/single-calendar-value';
+import { ECalendarMode } from '../common/types/calendar-mode-enum';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,52 +14,51 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
-import {DayCalendarService} from './day-calendar.service';
+import { DayCalendarService } from './day-calendar.service';
 
-import {Dayjs, ManipulateType} from 'dayjs';
-import {IDayCalendarConfig, IDayCalendarConfigInternal} from './day-calendar-config.model';
-import {IDay} from './day.model';
+import { Dayjs, ManipulateType } from 'dayjs';
+import { IDayCalendarConfig, IDayCalendarConfigInternal } from './day-calendar-config.model';
+import { IDay } from './day.model';
 import {
   ControlValueAccessor,
   UntypedFormControl,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
-  Validator
+  Validator,
 } from '@angular/forms';
-import {CalendarValue} from '../common/types/calendar-value';
-import {UtilsService} from '../common/services/utils/utils.service';
-import {IMonthCalendarConfig} from '../month-calendar/month-calendar-config';
-import {IMonth} from '../month-calendar/month.model';
-import {DateValidator} from '../common/types/validator.type';
-import {INavEvent} from '../common/models/navigation-event.model';
-import {dayjsRef} from '../common/dayjs/dayjs.ref';
+import { CalendarValue } from '../common/types/calendar-value';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { IMonthCalendarConfig } from '../month-calendar/month-calendar-config';
+import { IMonth } from '../month-calendar/month.model';
+import { DateValidator } from '../common/types/validator.type';
+import { INavEvent } from '../common/models/navigation-event.model';
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 
 @Component({
-    selector: 'dp-day-calendar',
-    templateUrl: 'day-calendar.component.html',
-    styleUrls: ['day-calendar.component.less'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [
-        DayCalendarService,
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => DayCalendarComponent),
-            multi: true
-        },
-        {
-            provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => DayCalendarComponent),
-            multi: true
-        }
-    ],
-    standalone: false
+  selector: 'dp-day-calendar',
+  templateUrl: 'day-calendar.component.html',
+  styleUrls: ['day-calendar.component.less'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    DayCalendarService,
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DayCalendarComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DayCalendarComponent),
+      multi: true,
+    },
+  ],
+  standalone: false,
 })
 export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
-
   @Input() config: IDayCalendarConfig;
   @Input() displayDate: SingleCalendarValue;
   @Input() minDate: Dayjs;
@@ -88,13 +87,14 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
   api = {
     moveCalendarsBy: this.moveCalendarsBy.bind(this),
     moveCalendarTo: this.moveCalendarTo.bind(this),
-    toggleCalendarMode: this.toggleCalendarMode.bind(this)
+    toggleCalendarMode: this.toggleCalendarMode.bind(this),
   };
 
-  constructor(public readonly dayCalendarService: DayCalendarService,
-              public readonly utilsService: UtilsService,
-              public readonly cd: ChangeDetectorRef) {
-  }
+  constructor(
+    public readonly dayCalendarService: DayCalendarService,
+    public readonly utilsService: UtilsService,
+    public readonly cd: ChangeDetectorRef,
+  ) {}
 
   _selected: Dayjs[];
 
@@ -115,14 +115,11 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
 
   set currentDateView(current: Dayjs) {
     this._currentDateView = dayjsRef(current.toDate());
-    this.weeks = this.dayCalendarService
-      .generateMonthArray(this.componentConfig, this._currentDateView, this.selected);
+    this.weeks = this.dayCalendarService.generateMonthArray(this.componentConfig, this._currentDateView, this.selected);
     this.navLabel = this.dayCalendarService.getHeaderLabel(this.componentConfig, this._currentDateView);
     this.showLeftNav = this.dayCalendarService.shouldShowLeft(this.componentConfig.min, this.currentDateView);
     this.showRightNav = this.dayCalendarService.shouldShowRight(this.componentConfig.max, this.currentDateView);
   }
-  ;
-
   ngOnInit() {
     this.isInited = true;
     this.init();
@@ -134,15 +131,13 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     this.selected = this.selected || [];
     this.currentDateView = this.displayDate
       ? this.utilsService.convertToDayjs(this.displayDate, this.componentConfig.format)
-      : this.utilsService
-        .getDefaultDisplayDate(
+      : this.utilsService.getDefaultDisplayDate(
           this.currentDateView,
           this.selected,
           this.componentConfig.allowMultiSelect,
-          this.componentConfig.min
+          this.componentConfig.min,
         );
-    this.weekdays = this.dayCalendarService
-      .generateWeekdays(this.componentConfig.firstDayOfWeek);
+    this.weekdays = this.dayCalendarService.generateWeekdays(this.componentConfig.firstDayOfWeek);
     this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
     this.monthCalendarConfig = this.dayCalendarService.getMonthCalendarConfig(this.componentConfig);
     this._shouldShowCurrent = this.shouldShowCurrent();
@@ -150,7 +145,7 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isInited) {
-      const {minDate, maxDate, config} = changes;
+      const { minDate, maxDate, config } = changes;
 
       this.handleConfigChange(config);
       this.init();
@@ -165,16 +160,13 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     this.inputValue = value;
 
     if (value) {
-      this.selected = this.utilsService
-        .convertToDayjsArray(value, this.componentConfig);
-      this.inputValueType = this.utilsService
-        .getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
+      this.selected = this.utilsService.convertToDayjsArray(value, this.componentConfig);
+      this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
     } else {
       this.selected = [];
     }
 
-    this.weeks = this.dayCalendarService
-      .generateMonthArray(this.componentConfig, this.currentDateView, this.selected);
+    this.weeks = this.dayCalendarService.generateMonthArray(this.componentConfig, this.currentDateView, this.selected);
 
     this.cd.markForCheck();
   }
@@ -183,11 +175,9 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     this.onChangeCallback = fn;
   }
 
-  onChangeCallback(_: any) {
-  }
+  onChangeCallback(_: any) {}
 
-  registerOnTouched(fn: any): void {
-  }
+  registerOnTouched(fn: any): void {}
 
   validate(formControl: UntypedFormControl): ValidationErrors | any {
     if (this.minDate || this.maxDate) {
@@ -201,15 +191,15 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     return this.utilsService.convertFromDayjsArray(
       this.componentConfig.format,
       value,
-      this.componentConfig.returnedValueType || this.inputValueType
+      this.componentConfig.returnedValueType || this.inputValueType,
     );
   }
 
   initValidators() {
     this.validateFn = this.utilsService.createValidator(
-      {minDate: this.minDate, maxDate: this.maxDate},
+      { minDate: this.minDate, maxDate: this.maxDate },
       this.componentConfig.format,
-      'day'
+      'day',
     );
 
     this.onChangeCallback(this.processOnChangeCallback(this.selected));
@@ -220,10 +210,8 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
       return;
     }
 
-    this.selected = this.utilsService
-      .updateSelected(this.componentConfig.allowMultiSelect, this.selected, day);
-    this.weeks = this.dayCalendarService
-      .generateMonthArray(this.componentConfig, this.currentDateView, this.selected);
+    this.selected = this.utilsService.updateSelected(this.componentConfig.allowMultiSelect, this.selected, day);
+    this.weeks = this.dayCalendarService.generateMonthArray(this.componentConfig, this.currentDateView, this.selected);
     this.onSelect.emit(day);
   }
 
@@ -237,7 +225,7 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
       'dp-current-month': day.currentMonth,
       'dp-prev-month': day.prevMonth,
       'dp-next-month': day.nextMonth,
-      'dp-current-day': day.currentDay
+      'dp-current-day': day.currentDay,
     };
     const customCssClass: string = this.dayCalendarService.getDayBtnCssClass(this.componentConfig, day.date);
     if (customCssClass) {
@@ -251,14 +239,14 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     const from = dayjsRef(this.currentDateView.toDate());
     this.moveCalendarsBy(this.currentDateView, -1, 'month');
     const to = dayjsRef(this.currentDateView.toDate());
-    this.onLeftNav.emit({from, to});
+    this.onLeftNav.emit({ from, to });
   }
 
   onRightNavClick() {
     const from = dayjsRef(this.currentDateView.toDate());
     this.moveCalendarsBy(this.currentDateView, 1, 'month');
     const to = dayjsRef(this.currentDateView.toDate());
-    this.onRightNav.emit({from, to});
+    this.onRightNav.emit({ from, to });
   }
 
   onMonthCalendarLeftClick(change: INavEvent) {
@@ -318,7 +306,7 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
       this.componentConfig.showGoToCurrent,
       'day',
       this.componentConfig.min,
-      this.componentConfig.max
+      this.componentConfig.max,
     );
   }
 

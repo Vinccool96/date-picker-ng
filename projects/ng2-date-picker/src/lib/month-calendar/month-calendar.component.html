@@ -13,21 +13,23 @@
     [showLeftSecondaryNav]="showSecondaryLeftNav"
     [showRightNav]="showRightNav"
     [showRightSecondaryNav]="showSecondaryRightNav"
-    [theme]="theme">
+    [theme]="theme"
+  >
   </dp-calendar-nav>
 
   <div class="dp-calendar-wrapper">
     @for (monthRow of yearMonths; track monthRow) {
       <div class="dp-months-row">
         @for (month of monthRow; track month) {
-          <button (click)="monthClicked(month)"
+          <button
+            (click)="monthClicked(month)"
             [attr.data-date]="month.date.format(componentConfig.format)"
             [disabled]="month.disabled"
             [innerText]="month.text"
             [ngClass]="getMonthBtnCssClass(month)"
             class="dp-calendar-month"
-            type="button">
-          </button>
+            type="button"
+          ></button>
         }
       </div>
     }

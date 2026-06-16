@@ -1,9 +1,8 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-    selector: 'dp-demo-root',
-    template: '<router-outlet></router-outlet>',
-    standalone: false
+  selector: 'dp-demo-root',
+  template: '<router-outlet></router-outlet>',
+  standalone: false,
 })
-export class DemoRootComponent {
-}
+export class DemoRootComponent {}

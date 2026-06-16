@@ -1,4 +1,4 @@
-import {SingleCalendarValue} from '../common/types/single-calendar-value';
+import { SingleCalendarValue } from '../common/types/single-calendar-value';
 
 export interface IDpDayPickerApi {
   open: () => void;

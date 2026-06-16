@@ -1,4 +1,4 @@
-import {ECalendarValue} from '../common/types/calendar-value-enum';
+import { ECalendarValue } from '../common/types/calendar-value-enum';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,51 +12,50 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
-import {IMonth} from './month.model';
-import {MonthCalendarService} from './month-calendar.service';
+import { IMonth } from './month.model';
+import { MonthCalendarService } from './month-calendar.service';
 
-import {IMonthCalendarConfig, IMonthCalendarConfigInternal} from './month-calendar-config';
+import { IMonthCalendarConfig, IMonthCalendarConfigInternal } from './month-calendar-config';
 import {
   ControlValueAccessor,
   UntypedFormControl,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
-  Validator
+  Validator,
 } from '@angular/forms';
-import {CalendarValue} from '../common/types/calendar-value';
-import {UtilsService} from '../common/services/utils/utils.service';
-import {DateValidator} from '../common/types/validator.type';
-import {SingleCalendarValue} from '../common/types/single-calendar-value';
-import {INavEvent} from '../common/models/navigation-event.model';
-import {Dayjs} from 'dayjs';
-import {dayjsRef} from '../common/dayjs/dayjs.ref';
+import { CalendarValue } from '../common/types/calendar-value';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { DateValidator } from '../common/types/validator.type';
+import { SingleCalendarValue } from '../common/types/single-calendar-value';
+import { INavEvent } from '../common/models/navigation-event.model';
+import { Dayjs } from 'dayjs';
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 
 @Component({
-    selector: 'dp-month-calendar',
-    templateUrl: 'month-calendar.component.html',
-    styleUrls: ['month-calendar.component.less'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [
-        MonthCalendarService,
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => MonthCalendarComponent),
-            multi: true
-        },
-        {
-            provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => MonthCalendarComponent),
-            multi: true
-        }
-    ],
-    standalone: false
+  selector: 'dp-month-calendar',
+  templateUrl: 'month-calendar.component.html',
+  styleUrls: ['month-calendar.component.less'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    MonthCalendarService,
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MonthCalendarComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => MonthCalendarComponent),
+      multi: true,
+    },
+  ],
+  standalone: false,
 })
 export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
-
   @Input() config: IMonthCalendarConfig;
   @Input() displayDate: Dayjs | string;
   @Input() minDate: Dayjs;
@@ -83,13 +82,14 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
   showSecondaryRightNav: boolean;
   api = {
     toggleCalendar: this.toggleCalendarMode.bind(this),
-    moveCalendarTo: this.moveCalendarTo.bind(this)
+    moveCalendarTo: this.moveCalendarTo.bind(this),
   };
 
-  constructor(public readonly monthCalendarService: MonthCalendarService,
-              public readonly utilsService: UtilsService,
-              public readonly cd: ChangeDetectorRef) {
-  }
+  constructor(
+    public readonly monthCalendarService: MonthCalendarService,
+    public readonly utilsService: UtilsService,
+    public readonly cd: ChangeDetectorRef,
+  ) {}
 
   _selected: Dayjs[];
 
@@ -110,8 +110,11 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
 
   set currentDateView(current: Dayjs) {
     this._currentDateView = dayjsRef(current.toDate());
-    this.yearMonths = this.monthCalendarService
-      .generateYear(this.componentConfig, this._currentDateView, this.selected);
+    this.yearMonths = this.monthCalendarService.generateYear(
+      this.componentConfig,
+      this._currentDateView,
+      this.selected,
+    );
     this.navLabel = this.monthCalendarService.getHeaderLabel(this.componentConfig, this.currentDateView);
     this.showLeftNav = this.monthCalendarService.shouldShowLeft(this.componentConfig.min, this._currentDateView);
     this.showRightNav = this.monthCalendarService.shouldShowRight(this.componentConfig.max, this.currentDateView);
@@ -127,7 +130,7 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isInited) {
-      const {minDate, maxDate, config} = changes;
+      const { minDate, maxDate, config } = changes;
 
       this.handleConfigChange(config);
       this.init();
@@ -135,19 +138,20 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
       if (minDate || maxDate) {
         this.initValidators();
       }
-      this.cd.markForCheck()
+      this.cd.markForCheck();
     }
   }
 
   init(): void {
     this.componentConfig = this.monthCalendarService.getConfig(this.config);
     this.selected = this.selected || [];
-    this.currentDateView = (this.displayDate as Dayjs) ?? this.utilsService
-      .getDefaultDisplayDate(
+    this.currentDateView =
+      (this.displayDate as Dayjs) ??
+      this.utilsService.getDefaultDisplayDate(
         this.currentDateView,
         this.selected,
         this.componentConfig.allowMultiSelect,
-        this.componentConfig.min
+        this.componentConfig.min,
       );
     this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
     this._shouldShowCurrent = this.shouldShowCurrent();
@@ -157,15 +161,20 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     this.inputValue = value;
 
     if (value) {
-      this.selected = this.utilsService
-        .convertToDayjsArray(value, this.componentConfig);
-      this.yearMonths = this.monthCalendarService
-        .generateYear(this.componentConfig, this.currentDateView, this.selected);
+      this.selected = this.utilsService.convertToDayjsArray(value, this.componentConfig);
+      this.yearMonths = this.monthCalendarService.generateYear(
+        this.componentConfig,
+        this.currentDateView,
+        this.selected,
+      );
       this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
     } else {
       this.selected = [];
-      this.yearMonths = this.monthCalendarService
-        .generateYear(this.componentConfig, this.currentDateView, this.selected);
+      this.yearMonths = this.monthCalendarService.generateYear(
+        this.componentConfig,
+        this.currentDateView,
+        this.selected,
+      );
     }
 
     this.cd.markForCheck();
@@ -175,11 +184,9 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     this.onChangeCallback = fn;
   }
 
-  onChangeCallback(_: any): void {
-  }
+  onChangeCallback(_: any): void {}
 
-  registerOnTouched(fn: any): void {
-  }
+  registerOnTouched(fn: any): void {}
 
   validate(formControl: UntypedFormControl): ValidationErrors | any {
     if (this.minDate || this.maxDate) {
@@ -193,15 +200,15 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     return this.utilsService.convertFromDayjsArray(
       this.componentConfig.format,
       value,
-      this.componentConfig.returnedValueType || this.inputValueType
+      this.componentConfig.returnedValueType || this.inputValueType,
     );
   }
 
   initValidators(): void {
     this.validateFn = this.validateFn = this.utilsService.createValidator(
-      {minDate: this.minDate, maxDate: this.maxDate},
+      { minDate: this.minDate, maxDate: this.maxDate },
       this.componentConfig.format,
-      'month'
+      'month',
     );
 
     this.onChangeCallback(this.processOnChangeCallback(this.selected));
@@ -212,10 +219,13 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
       return;
     }
 
-    this.selected = this.utilsService
-      .updateSelected(this.componentConfig.allowMultiSelect, this.selected, month, 'month');
-    this.yearMonths = this.monthCalendarService
-      .generateYear(this.componentConfig, this.currentDateView, this.selected);
+    this.selected = this.utilsService.updateSelected(
+      this.componentConfig.allowMultiSelect,
+      this.selected,
+      month,
+      'month',
+    );
+    this.yearMonths = this.monthCalendarService.generateYear(this.componentConfig, this.currentDateView, this.selected);
     this.onSelect.emit(month);
   }
 
@@ -224,13 +234,13 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     this.currentDateView = this.currentDateView.subtract(1, 'year');
     const to = dayjsRef(this.currentDateView.toDate());
     this.yearMonths = this.monthCalendarService.generateYear(this.componentConfig, this.currentDateView, this.selected);
-    this.onLeftNav.emit({from, to});
+    this.onLeftNav.emit({ from, to });
   }
 
   onLeftSecondaryNavClick(): void {
     let navigateBy = this.componentConfig.multipleYearsNavigateBy;
-    const isOutsideRange = this.componentConfig.min &&
-      this.currentDateView.year() - this.componentConfig.min.year() < navigateBy;
+    const isOutsideRange =
+      this.componentConfig.min && this.currentDateView.year() - this.componentConfig.min.year() < navigateBy;
 
     if (isOutsideRange) {
       navigateBy = this.currentDateView.year() - this.componentConfig.min.year();
@@ -239,20 +249,20 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     const from = dayjsRef(this.currentDateView.toDate());
     this.currentDateView = this.currentDateView.subtract(navigateBy, 'year');
     const to = dayjsRef(this.currentDateView.toDate());
-    this.onLeftSecondaryNav.emit({from, to});
+    this.onLeftSecondaryNav.emit({ from, to });
   }
 
   onRightNavClick(): void {
     const from = dayjsRef(this.currentDateView.toDate());
     this.currentDateView = this.currentDateView.add(1, 'year');
     const to = dayjsRef(this.currentDateView.toDate());
-    this.onRightNav.emit({from, to});
+    this.onRightNav.emit({ from, to });
   }
 
   onRightSecondaryNavClick(): void {
     let navigateBy = this.componentConfig.multipleYearsNavigateBy;
-    const isOutsideRange = this.componentConfig.max &&
-      this.componentConfig.max.year() - this.currentDateView.year() < navigateBy;
+    const isOutsideRange =
+      this.componentConfig.max && this.componentConfig.max.year() - this.currentDateView.year() < navigateBy;
 
     if (isOutsideRange) {
       navigateBy = this.componentConfig.max.year() - this.currentDateView.year();
@@ -261,7 +271,7 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     const from = dayjsRef(this.currentDateView.toDate());
     this.currentDateView = this.currentDateView.add(navigateBy, 'year');
     const to = dayjsRef(this.currentDateView.toDate());
-    this.onRightSecondaryNav.emit({from, to});
+    this.onRightSecondaryNav.emit({ from, to });
   }
 
   toggleCalendarMode(): void {
@@ -271,7 +281,7 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
   getMonthBtnCssClass(month: IMonth): { [klass: string]: boolean } {
     const cssClass: { [klass: string]: boolean } = {
       'dp-selected': month.selected,
-      'dp-current-month': month.currentMonth
+      'dp-current-month': month.currentMonth,
     };
     const customCssClass: string = this.monthCalendarService.getMonthBtnCssClass(this.componentConfig, month.date);
 
@@ -287,7 +297,7 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
       this.componentConfig.showGoToCurrent,
       'month',
       this.componentConfig.min,
-      this.componentConfig.max
+      this.componentConfig.max,
     );
   }
 

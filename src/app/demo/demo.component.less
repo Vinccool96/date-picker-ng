@@ -1,7 +1,6 @@
 @import './common/styles/variables';
 
 & {
-
   @stickyHeight: 120px;
   @stickyHeightInlineDay: 340px;
   @stickyHeightInlineMonth: 280px;
@@ -45,7 +44,8 @@
           text-decoration: none;
           color: @c-white;
 
-          &:hover, &.dp-active-item {
+          &:hover,
+          &.dp-active-item {
             background: darken(@c-primary, 20%);
           }
         }

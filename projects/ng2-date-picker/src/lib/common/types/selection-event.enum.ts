@@ -1,4 +1,4 @@
 export enum SelectEvent {
   INPUT = 'input',
-  SELECTION = 'selection'
+  SELECTION = 'selection',
 }

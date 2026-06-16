@@ -1,7 +1,7 @@
-import {CalendarMode} from '../common/types/calendar-mode';
-import {IDatePickerDirectiveConfig} from './date-picker-directive-config.model';
-import {IDpDayPickerApi} from './date-picker.api';
-import {DatePickerComponent} from './date-picker.component';
+import { CalendarMode } from '../common/types/calendar-mode';
+import { IDatePickerDirectiveConfig } from './date-picker-directive-config.model';
+import { IDpDayPickerApi } from './date-picker.api';
+import { DatePickerComponent } from './date-picker.component';
 import {
   ComponentFactoryResolver,
   Directive,
@@ -12,23 +12,22 @@ import {
   OnInit,
   Optional,
   Output,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
-import {NgControl} from '@angular/forms';
-import {INavEvent} from '../common/models/navigation-event.model';
-import {UtilsService} from '../common/services/utils/utils.service'
-import {CalendarValue} from '../common/types/calendar-value';
-import {ISelectionEvent} from '../common/types/selection-event.model';
-import {SingleCalendarValue} from '../common/types/single-calendar-value';
-import {Dayjs} from 'dayjs';
+import { NgControl } from '@angular/forms';
+import { INavEvent } from '../common/models/navigation-event.model';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { CalendarValue } from '../common/types/calendar-value';
+import { ISelectionEvent } from '../common/types/selection-event.model';
+import { SingleCalendarValue } from '../common/types/single-calendar-value';
+import { Dayjs } from 'dayjs';
 
 @Directive({
-    exportAs: 'dpDayPicker',
-    selector: '[dpDayPicker]',
-    standalone: false
+  exportAs: 'dpDayPicker',
+  selector: '[dpDayPicker]',
+  standalone: false,
 })
 export class DatePickerDirective implements OnInit {
-
   @Output() open = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
   @Output() onChange = new EventEmitter<CalendarValue>();
@@ -39,12 +38,13 @@ export class DatePickerDirective implements OnInit {
   datePicker: DatePickerComponent;
   api: IDpDayPickerApi;
 
-  constructor(public readonly viewContainerRef: ViewContainerRef,
-              public readonly elemRef: ElementRef,
-              public readonly componentFactoryResolver: ComponentFactoryResolver,
-              @Optional() public readonly formControl: NgControl,
-              public readonly utilsService: UtilsService) {
-  }
+  constructor(
+    public readonly viewContainerRef: ViewContainerRef,
+    public readonly elemRef: ElementRef,
+    public readonly componentFactoryResolver: ComponentFactoryResolver,
+    @Optional() public readonly formControl: NgControl,
+    public readonly utilsService: UtilsService,
+  ) {}
 
   private _config: IDatePickerDirectiveConfig;
 
@@ -211,7 +211,7 @@ export class DatePickerDirective implements OnInit {
 
       if (!setup) {
         this.formControl.control.markAsDirty({
-          onlySelf: true
+          onlySelf: true,
         });
       } else {
         setup = false;
@@ -219,7 +219,7 @@ export class DatePickerDirective implements OnInit {
 
       if (errors) {
         if (errors.hasOwnProperty('format')) {
-          const {given} = errors['format'];
+          const { given } = errors['format'];
           this.datePicker.inputElementValue = given;
           if (!changedByInput) {
             this.formControl.control.setValue(given);

@@ -1,18 +1,18 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {IDatePickerConfig, IDatePickerConfigInternal} from './date-picker-config.model';
+import { EventEmitter, Injectable } from '@angular/core';
+import { IDatePickerConfig, IDatePickerConfigInternal } from './date-picker-config.model';
 
-import {UtilsService} from '../common/services/utils/utils.service';
-import {IDayCalendarConfig} from '../day-calendar/day-calendar-config.model';
-import {TimeSelectService} from '../time-select/time-select.service';
-import {DayTimeCalendarService} from '../day-time-calendar/day-time-calendar.service';
-import {ITimeSelectConfig} from '../time-select/time-select-config.model';
-import {CalendarMode} from '../common/types/calendar-mode';
-import {Dayjs} from 'dayjs';
-import {IDayTimeCalendarConfig} from '../day-time-calendar/day-time-calendar-config.model';
-import {ConnectionPositionPair} from '@angular/cdk/overlay';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { IDayCalendarConfig } from '../day-calendar/day-calendar-config.model';
+import { TimeSelectService } from '../time-select/time-select.service';
+import { DayTimeCalendarService } from '../day-time-calendar/day-time-calendar.service';
+import { ITimeSelectConfig } from '../time-select/time-select-config.model';
+import { CalendarMode } from '../common/types/calendar-mode';
+import { Dayjs } from 'dayjs';
+import { IDayTimeCalendarConfig } from '../day-time-calendar/day-time-calendar-config.model';
+import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DatePickerService {
   readonly onPickerClosed: EventEmitter<null> = new EventEmitter();
@@ -32,17 +32,18 @@ export class DatePickerService {
     hideOnOutsideClick: true,
   };
 
-  constructor(private readonly utilsService: UtilsService,
-              private readonly timeSelectService: TimeSelectService,
-              private readonly daytimeCalendarService: DayTimeCalendarService) {
-  }
+  constructor(
+    private readonly utilsService: UtilsService,
+    private readonly timeSelectService: TimeSelectService,
+    private readonly daytimeCalendarService: DayTimeCalendarService,
+  ) {}
 
   // todo:: add unit tests
   getConfig(config: IDatePickerConfig, mode: CalendarMode = 'daytime'): IDatePickerConfigInternal {
     const _config = <IDatePickerConfigInternal>{
       ...this.defaultConfig,
       format: DatePickerService.getDefaultFormatByMode(mode),
-      ...this.utilsService.clearUndefined(config)
+      ...this.utilsService.clearUndefined(config),
     };
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);
@@ -83,7 +84,7 @@ export class DatePickerService {
       returnedValueType: pickerConfig.returnedValueType,
       showGoToCurrent: pickerConfig.showGoToCurrent,
       unSelectOnClick: pickerConfig.unSelectOnClick,
-      numOfMonthRows: pickerConfig.numOfMonthRows
+      numOfMonthRows: pickerConfig.numOfMonthRows,
     };
   }
 
@@ -104,7 +105,7 @@ export class DatePickerService {
     value = value ? value : '';
     const datesStrArr: string[] = this.utilsService.datesStringToStringArray(value);
 
-    return datesStrArr.every(date => this.utilsService.isDateValid(date, config.format));
+    return datesStrArr.every((date) => this.utilsService.isDateValid(date, config.format));
   }
 
   // todo:: add unit tests
@@ -115,17 +116,19 @@ export class DatePickerService {
     return this.utilsService.convertToDayjsArray(datesStrArr, config);
   }
 
-  getOverlayPosition({drops, opens}: IDatePickerConfig):  ConnectionPositionPair[] | undefined {
+  getOverlayPosition({ drops, opens }: IDatePickerConfig): ConnectionPositionPair[] | undefined {
     if (!drops && !opens) {
       return undefined;
     }
 
-    return [{
-      originX: opens ? opens === 'left' ? 'start' : 'end' : 'start',
-      originY:  drops ? drops === 'up' ? 'top' : 'bottom' : 'bottom',
-      overlayX: opens ? opens === 'left' ? 'start' : 'end' : 'start',
-      overlayY: drops ? drops === 'up' ? 'bottom' : 'top' : 'top',
-    }];
+    return [
+      {
+        originX: opens ? (opens === 'left' ? 'start' : 'end') : 'start',
+        originY: drops ? (drops === 'up' ? 'top' : 'bottom') : 'bottom',
+        overlayX: opens ? (opens === 'left' ? 'start' : 'end') : 'start',
+        overlayY: drops ? (drops === 'up' ? 'bottom' : 'top') : 'top',
+      },
+    ];
   }
 
   private static getDefaultFormatByMode(mode: CalendarMode): string {

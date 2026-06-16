@@ -1,20 +1,19 @@
-import {UtilsService} from '../common/services/utils/utils.service';
-import {DatePickerDirective} from './date-picker.directive';
-import {Component} from '@angular/core';
-import {inject, TestBed} from '@angular/core/testing';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { DatePickerDirective } from './date-picker.directive';
+import { Component } from '@angular/core';
+import { inject, TestBed } from '@angular/core/testing';
 
 @Component({
-    template: '',
-    standalone: false
+  template: '',
+  standalone: false,
 })
-class TestComponent {
-}
+class TestComponent {}
 
 describe('Directive: DpDayPicker', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
-      providers: [UtilsService]
+      providers: [UtilsService],
     });
   });
 

@@ -3,15 +3,15 @@
     <h3 class="dp-options-section">Attribute options</h3>
     @if (isValidConfig('theme')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Theme (theme | for example the built in material theme - dp-material):
-        </span>
+        <span class="dp-option-header"> Theme (theme | for example the built in material theme - dp-material): </span>
         <div class="dp-option-playground">
-          <label>Material Theme
-            <input [formControl]="material" [value]="true" id="themeOn" name="style" type="radio">
+          <label
+            >Material Theme
+            <input [formControl]="material" [value]="true" id="themeOn" name="style" type="radio" />
           </label>
-          <label>No Theme
-            <input [formControl]="material" [value]="false" id="themeOff" name="style" type="radio">
+          <label
+            >No Theme
+            <input [formControl]="material" [value]="false" id="themeOff" name="style" type="radio" />
           </label>
         </div>
       </div>
@@ -19,23 +19,15 @@
 
     @if (isValidConfig('disabled')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Disabled (disabled):
-        </span>
+        <span class="dp-option-header"> Disabled (disabled): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="disabled"
-              [value]="false"
-              id="inputEnabledRadio"
-              name="disabled"
-              type="radio">
+          <label
+            >Enabled
+            <input [formControl]="disabled" [value]="false" id="inputEnabledRadio" name="disabled" type="radio" />
           </label>
-          <label>Disabled
-            <input [formControl]="disabled"
-              [value]="true"
-              id="inputDisabledRadio"
-              name="disabled"
-              type="radio">
+          <label
+            >Disabled
+            <input [formControl]="disabled" [value]="true" id="inputDisabledRadio" name="disabled" type="radio" />
           </label>
         </div>
       </div>
@@ -43,23 +35,27 @@
 
     @if (isValidConfig('required')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Required Validation (required):
-        </span>
+        <span class="dp-option-header"> Required Validation (required): </span>
         <div class="dp-option-playground">
-          <label>Required
-            <input [formControl]="requireValidation"
+          <label
+            >Required
+            <input
+              [formControl]="requireValidation"
               [value]="true"
               id="enableRequiredRadio"
               name="required"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Not Required
-            <input [formControl]="requireValidation"
+          <label
+            >Not Required
+            <input
+              [formControl]="requireValidation"
               [value]="false"
               id="disableRequiredRadio"
               name="required"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -67,17 +63,17 @@
 
     @if (isValidConfig('minValidation')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Min-Date Validation (minDate):
-        </span>
+        <span class="dp-option-header"> Min-Date Validation (minDate): </span>
         <div class="dp-option-playground">
-          {{pickerMode}}
-          <dp-date-picker [config]="{format: localFormat}"
+          {{ pickerMode }}
+          <dp-date-picker
+            [config]="{ format: localFormat }"
             [formControl]="minValidation"
             [mode]="pickerMode.startsWith('daytime') ? 'daytime' : 'day'"
             id="minDatePicker"
             placeholder="Select a min date"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -85,16 +81,16 @@
 
     @if (isValidConfig('maxValidation')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Max-Date Validation (maxDate):
-        </span>
+        <span class="dp-option-header"> Max-Date Validation (maxDate): </span>
         <div class="dp-option-playground">
-          <dp-date-picker [config]="{format: localFormat}"
+          <dp-date-picker
+            [config]="{ format: localFormat }"
             [formControl]="maxValidation"
             [mode]="pickerMode.startsWith('daytime') ? 'daytime' : 'day'"
             id="maxDatePicker"
             placeholder="Select a max date"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -102,15 +98,15 @@
 
     @if (isValidConfig('displayDate')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Display Date (displayDate):
-        </span>
+        <span class="dp-option-header"> Display Date (displayDate): </span>
         <div class="dp-option-playground">
-          <dp-date-picker [formControl]="displayDate"
+          <dp-date-picker
+            [formControl]="displayDate"
             id="displayDate"
             mode="day"
             placeholder="Select a display date"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -118,16 +114,16 @@
 
     @if (isValidConfig('minTimeValidation')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Min-Time Validation (minTime):
-        </span>
+        <span class="dp-option-header"> Min-Time Validation (minTime): </span>
         <div class="dp-option-playground">
-          <dp-date-picker [config]="{format: 'HH:mm:ss'}"
+          <dp-date-picker
+            [config]="{ format: 'HH:mm:ss' }"
             [formControl]="minTimeValidation"
             id="minTimeValidation"
             mode="time"
             placeholder="Select a min time"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -135,16 +131,16 @@
 
     @if (isValidConfig('maxTimeValidation')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Max-Time Validation (maxTime):
-        </span>
+        <span class="dp-option-header"> Max-Time Validation (maxTime): </span>
         <div class="dp-option-playground">
-          <dp-date-picker [config]="{format: 'HH:mm:ss'}"
+          <dp-date-picker
+            [config]="{ format: 'HH:mm:ss' }"
             [formControl]="maxTimeValidation"
             id="maxTimeValidation"
             mode="time"
             placeholder="Select a max time"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -152,15 +148,12 @@
 
     @if (isValidConfig('placeholder')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Placeholder (placeholder):
-        </span>
+        <span class="dp-option-header"> Placeholder (placeholder): </span>
         <div class="dp-option-playground">
-          <input [formControl]="placeholder" id="placeholderInput" placeholder="Put a placeholder" type="text"/>
+          <input [formControl]="placeholder" id="placeholderInput" placeholder="Put a placeholder" type="text" />
         </div>
       </div>
     }
-
   </div>
 
   <div class="dp-configs">
@@ -168,14 +161,11 @@
 
     @if (isValidConfig('locale')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Locale (locale):
-        </span>
+        <span class="dp-option-header"> Locale (locale): </span>
         <div class="dp-option-playground">
-          <select [formControl]="locale"
-            id="locale">
+          <select [formControl]="locale" id="locale">
             @for (lang of LANGS; track lang) {
-              <option [value]="lang">{{lang}}</option>
+              <option [value]="lang">{{ lang }}</option>
             }
           </select>
         </div>
@@ -184,14 +174,11 @@
 
     @if (isValidConfig('firstDayOfWeek')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          First Day of The week (firstDayOfWeek):
-        </span>
+        <span class="dp-option-header"> First Day of The week (firstDayOfWeek): </span>
         <div class="dp-option-playground">
-          <select [formControl]="firstDayOfWeek"
-            id="firstDayOfWeekSelect">
+          <select [formControl]="firstDayOfWeek" id="firstDayOfWeekSelect">
             @for (day of DAYS; track day) {
-              <option [value]="day"> {{day}}</option>
+              <option [value]="day">{{ day }}</option>
             }
           </select>
         </div>
@@ -200,40 +187,34 @@
 
     @if (isValidConfig('format')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Date Format (format):
-        </span>
+        <span class="dp-option-header"> Date Format (format): </span>
         <div class="dp-option-playground">
-          <input [formControl]="format"
-            id="dateFormat">
+          <input [formControl]="format" id="dateFormat" />
         </div>
       </div>
     }
 
     @if (isValidConfig('monthFormat')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Month Format (monthFormat):
-        </span>
+        <span class="dp-option-header"> Month Format (monthFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="monthFormat"
-            id="monthFormatInput">
+          <input [formControl]="monthFormat" id="monthFormatInput" />
         </div>
       </div>
     }
 
     @if (isValidConfig('min')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Min Selectable Date (min):
-        </span>
+        <span class="dp-option-header"> Min Selectable Date (min): </span>
         <div class="dp-option-playground">
-          <dp-date-picker [config]="{format: localFormat}"
+          <dp-date-picker
+            [config]="{ format: localFormat }"
             [formControl]="min"
             [mode]="pickerMode.startsWith('daytime') ? 'daytime' : 'day'"
             id="minSelectable"
             placeholder="Select a min date"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -241,16 +222,16 @@
 
     @if (isValidConfig('max')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Max Selectable Date (max):
-        </span>
+        <span class="dp-option-header"> Max Selectable Date (max): </span>
         <div class="dp-option-playground">
-          <dp-date-picker [config]="{format: localFormat}"
+          <dp-date-picker
+            [config]="{ format: localFormat }"
             [formControl]="max"
             [mode]="pickerMode.startsWith('daytime') ? 'daytime' : 'day'"
             id="maxSelectable"
             placeholder="Select a max date"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -258,16 +239,16 @@
 
     @if (isValidConfig('minTime')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Min Selectable Time (minTime):
-        </span>
+        <span class="dp-option-header"> Min Selectable Time (minTime): </span>
         <div class="dp-option-playground">
-          <dp-date-picker [config]="{format: 'HH:mm:ss'}"
+          <dp-date-picker
+            [config]="{ format: 'HH:mm:ss' }"
             [formControl]="minTime"
             id="minTimeSelectable"
             mode="time"
             placeholder="Select a min time"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -275,16 +256,16 @@
 
     @if (isValidConfig('maxTime')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Max Selectable Time (maxTime):
-        </span>
+        <span class="dp-option-header"> Max Selectable Time (maxTime): </span>
         <div class="dp-option-playground">
-          <dp-date-picker [config]="{format: 'HH:mm:ss'}"
+          <dp-date-picker
+            [config]="{ format: 'HH:mm:ss' }"
             [formControl]="maxTime"
             id="maxTimeSelectable"
             mode="time"
             placeholder="Select a max time"
-            theme="dp-material">
+            theme="dp-material"
+          >
           </dp-date-picker>
         </div>
       </div>
@@ -292,23 +273,27 @@
 
     @if (isValidConfig('allowMultiSelect')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Allow Multiple Selection (allowMultiSelect):
-        </span>
+        <span class="dp-option-header"> Allow Multiple Selection (allowMultiSelect): </span>
         <div class="dp-option-playground">
-          <label>Single
-            <input [formControl]="allowMultiSelect"
+          <label
+            >Single
+            <input
+              [formControl]="allowMultiSelect"
               [value]="false"
               id="disableMultiselect"
               name="allowMultiSelect"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Multiple
-            <input [formControl]="allowMultiSelect"
+          <label
+            >Multiple
+            <input
+              [formControl]="allowMultiSelect"
               [value]="true"
               id="enableMultiselect"
               name="allowMultiSelect"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -316,22 +301,21 @@
 
     @if (isValidConfig('closeOnSelect')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Close after selection (closeOnSelect):
-        </span>
+        <span class="dp-option-header"> Close after selection (closeOnSelect): </span>
         <div class="dp-option-playground">
-          <label>Close
-            <input [formControl]="closeOnSelect"
-              [value]="true"
-              id="closeOnSelect"
-              name="closeOnSelect"
-              type="radio">
+          <label
+            >Close
+            <input [formControl]="closeOnSelect" [value]="true" id="closeOnSelect" name="closeOnSelect" type="radio" />
           </label>
-          <label>Don't Close
-            <input [formControl]="closeOnSelect"
-              [value]="false" id="noCloseOnSelect"
+          <label
+            >Don't Close
+            <input
+              [formControl]="closeOnSelect"
+              [value]="false"
+              id="noCloseOnSelect"
               name="closeOnSelect"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -339,36 +323,24 @@
 
     @if (isValidConfig('closeOnSelectDelay')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Closing Delay in ms (closeOnSelectDelay):
-        </span>
+        <span class="dp-option-header"> Closing Delay in ms (closeOnSelectDelay): </span>
         <div class="dp-option-playground">
-          <input [formControl]="closeOnSelectDelay"
-            id="closeDelay"
-            type="number">
+          <input [formControl]="closeOnSelectDelay" id="closeDelay" type="number" />
         </div>
       </div>
     }
 
     @if (isValidConfig('openOnFocus')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Show picker when input receives focus (openOnFocus):
-        </span>
+        <span class="dp-option-header"> Show picker when input receives focus (openOnFocus): </span>
         <div class="dp-option-playground">
-          <label>No
-            <input [formControl]="openOnFocus"
-              [value]="false"
-              id="noOpenOnFocus"
-              name="openOnFocus"
-              type="radio">
+          <label
+            >No
+            <input [formControl]="openOnFocus" [value]="false" id="noOpenOnFocus" name="openOnFocus" type="radio" />
           </label>
-          <label>Yes
-            <input [formControl]="openOnFocus"
-              [value]="true"
-              id="yesOpenOnFocus"
-              name="openOnFocus"
-              type="radio">
+          <label
+            >Yes
+            <input [formControl]="openOnFocus" [value]="true" id="yesOpenOnFocus" name="openOnFocus" type="radio" />
           </label>
         </div>
       </div>
@@ -376,23 +348,15 @@
 
     @if (isValidConfig('openOnClick')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Show picker when input is clicked (openOnClick):
-        </span>
+        <span class="dp-option-header"> Show picker when input is clicked (openOnClick): </span>
         <div class="dp-option-playground">
-          <label>No
-            <input [formControl]="openOnClick"
-              [value]="false"
-              id="noOpenOnClick"
-              name="openOnClick"
-              type="radio">
+          <label
+            >No
+            <input [formControl]="openOnClick" [value]="false" id="noOpenOnClick" name="openOnClick" type="radio" />
           </label>
-          <label>Yes
-            <input [formControl]="openOnClick"
-              [value]="true"
-              id="yesOpenOnClick"
-              name="openOnClick"
-              type="radio">
+          <label
+            >Yes
+            <input [formControl]="openOnClick" [value]="true" id="yesOpenOnClick" name="openOnClick" type="radio" />
           </label>
         </div>
       </div>
@@ -400,47 +364,33 @@
 
     @if (isValidConfig('onOpenDelay')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Open Delay in ms (onOpenDelay):
-        </span>
+        <span class="dp-option-header"> Open Delay in ms (onOpenDelay): </span>
         <div class="dp-option-playground">
-          <input [formControl]="onOpenDelay"
-            id="onOpenDelay"
-            type="number">
+          <input [formControl]="onOpenDelay" id="onOpenDelay" type="number" />
         </div>
       </div>
     }
 
     @if (isValidConfig('weekdayFormat')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Weekday Format (weekDayFormat):
-        </span>
+        <span class="dp-option-header"> Weekday Format (weekDayFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="weekDayFormat"
-            id="weekDaysFormat"
-            type="text">
+          <input [formControl]="weekDayFormat" id="weekDaysFormat" type="text" />
         </div>
       </div>
     }
 
     @if (isValidConfig('disableKeypress')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Disable keyboard on input (disableKeypress):
-        </span>
+        <span class="dp-option-header"> Disable keyboard on input (disableKeypress): </span>
         <div class="dp-option-playground">
-          <label>Disabled
-            <input [formControl]="disableKeypress"
-              [value]="true"
-              name="disableKeypress"
-              type="radio">
+          <label
+            >Disabled
+            <input [formControl]="disableKeypress" [value]="true" name="disableKeypress" type="radio" />
           </label>
-          <label>Enabled
-            <input [formControl]="disableKeypress"
-              [value]="false"
-              name="disableKeypress"
-              type="radio">
+          <label
+            >Enabled
+            <input [formControl]="disableKeypress" [value]="false" name="disableKeypress" type="radio" />
           </label>
         </div>
       </div>
@@ -448,27 +398,19 @@
 
     @if (isValidConfig('drops')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Drops (drops):
-        </span>
+        <span class="dp-option-header"> Drops (drops): </span>
         <div class="dp-option-playground">
-          <label>Down
-            <input [formControl]="drops"
-              name="drops"
-              type="radio"
-              value="down">
+          <label
+            >Down
+            <input [formControl]="drops" name="drops" type="radio" value="down" />
           </label>
-          <label>Up
-            <input [formControl]="drops"
-              name="drops"
-              type="radio"
-              value="up">
+          <label
+            >Up
+            <input [formControl]="drops" name="drops" type="radio" value="up" />
           </label>
-          <label>Auto
-            <input [formControl]="drops"
-              name="drops"
-              type="radio"
-              value="null">
+          <label
+            >Auto
+            <input [formControl]="drops" name="drops" type="radio" value="null" />
           </label>
         </div>
       </div>
@@ -476,27 +418,19 @@
 
     @if (isValidConfig('opens')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Opens (opens):
-        </span>
+        <span class="dp-option-header"> Opens (opens): </span>
         <div class="dp-option-playground">
-          <label>Right
-            <input [formControl]="opens"
-              name="opens"
-              type="radio"
-              value="right">
+          <label
+            >Right
+            <input [formControl]="opens" name="opens" type="radio" value="right" />
           </label>
-          <label>Left
-            <input [formControl]="opens"
-              name="opens"
-              type="radio"
-              value="left">
+          <label
+            >Left
+            <input [formControl]="opens" name="opens" type="radio" value="left" />
           </label>
-          <label>Auto
-            <input [formControl]="opens"
-              name="opens"
-              type="radio"
-              value="null">
+          <label
+            >Auto
+            <input [formControl]="opens" name="opens" type="radio" value="null" />
           </label>
         </div>
       </div>
@@ -504,23 +438,27 @@
 
     @if (isValidConfig('hideInputContainer')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Hide Input Container (hideInputContainer):
-        </span>
+        <span class="dp-option-header"> Hide Input Container (hideInputContainer): </span>
         <div class="dp-option-playground">
-          <label>Hidden
-            <input [formControl]="hideInputContainer"
+          <label
+            >Hidden
+            <input
+              [formControl]="hideInputContainer"
               [value]="true"
               id="hideInputRadio"
               name="hideInputContainer"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Shown
-            <input [formControl]="hideInputContainer"
+          <label
+            >Shown
+            <input
+              [formControl]="hideInputContainer"
               [value]="false"
               id="showInputRadio"
               name="hideInputContainer"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -528,22 +466,27 @@
 
     @if (isValidConfig('showNearMonthDays')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Show near month days (showNearMonthDays):
-        </span>
+        <span class="dp-option-header"> Show near month days (showNearMonthDays): </span>
         <div class="dp-option-playground">
-          <label>Show
-            <input [formControl]="showNearMonthDays"
+          <label
+            >Show
+            <input
+              [formControl]="showNearMonthDays"
               [value]="true"
               id="showNearMonthDaysRadio"
               name="showNearMonthDays"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Hide
-            <input [formControl]="showNearMonthDays"
+          <label
+            >Hide
+            <input
+              [formControl]="showNearMonthDays"
               [value]="false"
-              id="hideNearMonthDaysRadio" name="showNearMonthDays"
-              type="radio">
+              id="hideNearMonthDaysRadio"
+              name="showNearMonthDays"
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -551,23 +494,27 @@
 
     @if (isValidConfig('showWeekNumbers')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Show week numbers (showWeekNumbers):
-        </span>
+        <span class="dp-option-header"> Show week numbers (showWeekNumbers): </span>
         <div class="dp-option-playground">
-          <label>Show
-            <input [formControl]="showWeekNumbers"
+          <label
+            >Show
+            <input
+              [formControl]="showWeekNumbers"
               [value]="true"
               id="showWeekNumbersRadio"
               name="showWeekNumbers"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Hide
-            <input [formControl]="showWeekNumbers"
+          <label
+            >Hide
+            <input
+              [formControl]="showWeekNumbers"
               [value]="false"
               id="hideWeekNumbersRadio"
               name="showWeekNumbers"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -575,23 +522,27 @@
 
     @if (isValidConfig('enableMonthSelector')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Enable month selector (enableMonthSelector):
-        </span>
+        <span class="dp-option-header"> Enable month selector (enableMonthSelector): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="enableMonthSelector"
+          <label
+            >Enabled
+            <input
+              [formControl]="enableMonthSelector"
               [value]="true"
               id="enableMonthSelector"
               name="enableMonthSelector"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Disabled
-            <input [formControl]="enableMonthSelector"
+          <label
+            >Disabled
+            <input
+              [formControl]="enableMonthSelector"
               [value]="false"
               id="disableMonthSelector"
               name="enableMonthSelector"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -599,36 +550,36 @@
 
     @if (isValidConfig('yearFormat')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Year Format (yearFormat):
-        </span>
+        <span class="dp-option-header"> Year Format (yearFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="yearFormat"
-            id="yearFormat"
-            type="text">
+          <input [formControl]="yearFormat" id="yearFormat" type="text" />
         </div>
       </div>
     }
 
     @if (isValidConfig('showGoToCurrent')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Show go to current button (showGoToCurrent):
-        </span>
+        <span class="dp-option-header"> Show go to current button (showGoToCurrent): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="showGoToCurrent"
+          <label
+            >Enabled
+            <input
+              [formControl]="showGoToCurrent"
               [value]="true"
               id="showGoToCurrent"
               name="showGoToCurrent"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Disabled
-            <input [formControl]="showGoToCurrent"
+          <label
+            >Disabled
+            <input
+              [formControl]="showGoToCurrent"
               [value]="false"
               id="hideGoToCurrent"
               name="showGoToCurrent"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -636,23 +587,27 @@
 
     @if (isValidConfig('hideOnOutsideClick')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Hide on outside click (hideOnOutsideClick):
-        </span>
+        <span class="dp-option-header"> Hide on outside click (hideOnOutsideClick): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="hideOnOutsideClick"
+          <label
+            >Enabled
+            <input
+              [formControl]="hideOnOutsideClick"
               [value]="true"
               id="hideOnOutsideClick"
               name="hideOnOutsideClick"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Disabled
-            <input [formControl]="hideOnOutsideClick"
+          <label
+            >Disabled
+            <input
+              [formControl]="hideOnOutsideClick"
               [value]="false"
               id="showOnOutsideClick"
               name="hideOnOutsideClick"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -660,23 +615,27 @@
 
     @if (isValidConfig('unSelectOnClick')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Allow un select selected date (unSelectOnClick):
-        </span>
+        <span class="dp-option-header"> Allow un select selected date (unSelectOnClick): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="unSelectOnClick"
+          <label
+            >Enabled
+            <input
+              [formControl]="unSelectOnClick"
               [value]="true"
               id="enableUnSelect"
               name="unSelectOnClick"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Disabled
-            <input [formControl]="unSelectOnClick"
+          <label
+            >Disabled
+            <input
+              [formControl]="unSelectOnClick"
               [value]="false"
               id="disableUnSelect"
               name="unSelectOnClick"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -684,132 +643,96 @@
 
     @if (isValidConfig('dayBtnFormat')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Day Button Format (dayBtnFormat):
-        </span>
+        <span class="dp-option-header"> Day Button Format (dayBtnFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="dayBtnFormat" id="dayBtnFormat">
+          <input [formControl]="dayBtnFormat" id="dayBtnFormat" />
         </div>
       </div>
     }
 
     @if (isValidConfig('monthBtnFormat')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Month Button Format (monthBtnFormat):
-        </span>
+        <span class="dp-option-header"> Month Button Format (monthBtnFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="monthBtnFormat"
-            id="monthBtnFormat">
+          <input [formControl]="monthBtnFormat" id="monthBtnFormat" />
         </div>
       </div>
     }
 
     @if (isValidConfig('hours12Format')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          12 Hour Format (hours12Format):
-        </span>
+        <span class="dp-option-header"> 12 Hour Format (hours12Format): </span>
         <div class="dp-option-playground">
-          <input [formControl]="hours12Format"
-            id="hours12Format">
+          <input [formControl]="hours12Format" id="hours12Format" />
         </div>
       </div>
     }
 
     @if (isValidConfig('hours24Format')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          24 Hour Format (hours24Format):
-        </span>
+        <span class="dp-option-header"> 24 Hour Format (hours24Format): </span>
         <div class="dp-option-playground">
-          <input [formControl]="hours24Format"
-            id="hours24Format">
+          <input [formControl]="hours24Format" id="hours24Format" />
         </div>
       </div>
     }
 
     @if (isValidConfig('meridiemFormat')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Meridiem Format (meridiemFormat):
-        </span>
+        <span class="dp-option-header"> Meridiem Format (meridiemFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="meridiemFormat"
-            id="meridiemFormat">
+          <input [formControl]="meridiemFormat" id="meridiemFormat" />
         </div>
       </div>
     }
 
     @if (isValidConfig('minutesFormat')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Minutes Format (minutesFormat):
-        </span>
+        <span class="dp-option-header"> Minutes Format (minutesFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="minutesFormat"
-            id="minutesFormat">
+          <input [formControl]="minutesFormat" id="minutesFormat" />
         </div>
       </div>
     }
 
     @if (isValidConfig('minutesInterval')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Minutes Interval (minutesInterval):
-        </span>
+        <span class="dp-option-header"> Minutes Interval (minutesInterval): </span>
         <div class="dp-option-playground">
-          <input [formControl]="minutesInterval"
-            id="minutesInterval"
-            type="number">
+          <input [formControl]="minutesInterval" id="minutesInterval" type="number" />
         </div>
       </div>
     }
 
     @if (isValidConfig('secondsFormat')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Seconds Format (secondsFormat):
-        </span>
+        <span class="dp-option-header"> Seconds Format (secondsFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="secondsFormat"
-            id="secondsFormat">
+          <input [formControl]="secondsFormat" id="secondsFormat" />
         </div>
       </div>
     }
 
     @if (isValidConfig('secondsInterval')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Seconds Interval (secondsInterval):
-        </span>
+        <span class="dp-option-header"> Seconds Interval (secondsInterval): </span>
         <div class="dp-option-playground">
-          <input [formControl]="secondsInterval"
-            id="secondsInterval"
-            type="number">
+          <input [formControl]="secondsInterval" id="secondsInterval" type="number" />
         </div>
       </div>
     }
 
     @if (isValidConfig('showSeconds')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Show seconds (showSeconds):
-        </span>
+        <span class="dp-option-header"> Show seconds (showSeconds): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="showSeconds"
-              [value]="true"
-              id="showSeconds"
-              name="showSeconds"
-              type="radio">
+          <label
+            >Enabled
+            <input [formControl]="showSeconds" [value]="true" id="showSeconds" name="showSeconds" type="radio" />
           </label>
-          <label>Disabled
-            <input [formControl]="showSeconds"
-              [value]="false"
-              id="hideSeconds"
-              name="showSeconds"
-              type="radio">
+          <label
+            >Disabled
+            <input [formControl]="showSeconds" [value]="false" id="hideSeconds" name="showSeconds" type="radio" />
           </label>
         </div>
       </div>
@@ -817,23 +740,27 @@
 
     @if (isValidConfig('showTwentyFourHours')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Show twenty four hours (showTwentyFourHours):
-        </span>
+        <span class="dp-option-header"> Show twenty four hours (showTwentyFourHours): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="showTwentyFourHours"
+          <label
+            >Enabled
+            <input
+              [formControl]="showTwentyFourHours"
               [value]="true"
               id="showTwentyFourHours"
               name="showTwentyFourHours"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Disabled
-            <input [formControl]="showTwentyFourHours"
+          <label
+            >Disabled
+            <input
+              [formControl]="showTwentyFourHours"
               [value]="false"
               id="hideTwentyFourHours"
               name="showTwentyFourHours"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -841,35 +768,36 @@
 
     @if (isValidConfig('timeSeparator')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Time Separator (timeSeparator):
-        </span>
+        <span class="dp-option-header"> Time Separator (timeSeparator): </span>
         <div class="dp-option-playground">
-          <input [formControl]="timeSeparator"
-            id="timeSeparator">
+          <input [formControl]="timeSeparator" id="timeSeparator" />
         </div>
       </div>
     }
 
     @if (isValidConfig('showMultipleYearsNavigation')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Show multiple years navigation buttons (showMultipleYearsNavigation):
-        </span>
+        <span class="dp-option-header"> Show multiple years navigation buttons (showMultipleYearsNavigation): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="showMultipleYearsNavigation"
+          <label
+            >Enabled
+            <input
+              [formControl]="showMultipleYearsNavigation"
               [value]="true"
               id="showMultipleYearsNavigation"
               name="showMultipleYearsNavigation"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Disabled
-            <input [formControl]="showMultipleYearsNavigation"
+          <label
+            >Disabled
+            <input
+              [formControl]="showMultipleYearsNavigation"
               [value]="false"
               id="hideMultipleYearsNavigation"
               name="showMultipleYearsNavigation"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -877,27 +805,20 @@
 
     @if (isValidConfig('showMultipleYearsNavigation')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Multiple years navigate by (multipleYearsNavigateBy):
-        </span>
+        <span class="dp-option-header"> Multiple years navigate by (multipleYearsNavigateBy): </span>
         <div class="dp-option-playground">
-          <input [formControl]="multipleYearsNavigateBy"
-            id="multipleYearsNavigateBy">
+          <input [formControl]="multipleYearsNavigateBy" id="multipleYearsNavigateBy" />
         </div>
       </div>
     }
 
-
     @if (isValidConfig('returnedValueType')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Returned Value Type (returnedValueType):
-        </span>
+        <span class="dp-option-header"> Returned Value Type (returnedValueType): </span>
         <div class="dp-option-playground">
-          <select [formControl]="returnedValueType"
-            id="returnedValueType">
+          <select [formControl]="returnedValueType" id="returnedValueType">
             @for (type of dateTypes; track type) {
-              <option [value]="type.value">{{type.name}}</option>
+              <option [value]="type.value">{{ type.name }}</option>
             }
           </select>
         </div>
@@ -906,23 +827,27 @@
 
     @if (isValidConfig('closeOnEnter')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Close On Enter (closeOnEnter):
-        </span>
+        <span class="dp-option-header"> Close On Enter (closeOnEnter): </span>
         <div class="dp-option-playground">
-          <label>Enabled
-            <input [formControl]="closeOnEnter"
+          <label
+            >Enabled
+            <input
+              [formControl]="closeOnEnter"
               [value]="true"
               id="enableCloseOnEnter"
               name="closeOnEnter"
-              type="radio">
+              type="radio"
+            />
           </label>
-          <label>Disabled
-            <input [formControl]="closeOnEnter"
+          <label
+            >Disabled
+            <input
+              [formControl]="closeOnEnter"
               [value]="false"
               id="disableCloseOnEnter"
               name="closeOnEnter"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -930,51 +855,37 @@
 
     @if (isValidConfig('numOfMonthRows')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Number of Month rows (numOfMonthRows):
-        </span>
+        <span class="dp-option-header"> Number of Month rows (numOfMonthRows): </span>
         <div class="dp-option-playground">
-          <label>1
-            <input [formControl]="numOfMonthRows"
-              [value]="1"
-              id="numOfMonthRows1"
-              name="numOfMonthRows"
-              type="radio">
+          <label
+            >1
+            <input [formControl]="numOfMonthRows" [value]="1" id="numOfMonthRows1" name="numOfMonthRows" type="radio" />
           </label>
-          <label>2
-            <input [formControl]="numOfMonthRows"
-              [value]="2"
-              id="numOfMonthRows2"
-              name="numOfMonthRows"
-              type="radio">
+          <label
+            >2
+            <input [formControl]="numOfMonthRows" [value]="2" id="numOfMonthRows2" name="numOfMonthRows" type="radio" />
           </label>
-          <label>3
-            <input [formControl]="numOfMonthRows"
-              [value]="3"
-              id="numOfMonthRows3"
-              name="numOfMonthRows"
-              type="radio">
+          <label
+            >3
+            <input [formControl]="numOfMonthRows" [value]="3" id="numOfMonthRows3" name="numOfMonthRows" type="radio" />
           </label>
-          <label>4
-            <input [formControl]="numOfMonthRows"
-              [value]="4"
-              id="numOfMonthRows4"
-              name="numOfMonthRows"
-              type="radio">
+          <label
+            >4
+            <input [formControl]="numOfMonthRows" [value]="4" id="numOfMonthRows4" name="numOfMonthRows" type="radio" />
           </label>
-          <label>6
-            <input [formControl]="numOfMonthRows"
-              [value]="6"
-              id="numOfMonthRows6"
-              name="numOfMonthRows"
-              type="radio">
+          <label
+            >6
+            <input [formControl]="numOfMonthRows" [value]="6" id="numOfMonthRows6" name="numOfMonthRows" type="radio" />
           </label>
-          <label>12
-            <input [formControl]="numOfMonthRows"
+          <label
+            >12
+            <input
+              [formControl]="numOfMonthRows"
               [value]="12"
               id="numOfMonthRows12"
               name="numOfMonthRows"
-              type="radio">
+              type="radio"
+            />
           </label>
         </div>
       </div>
@@ -986,9 +897,7 @@
 
     @if (isValidConfig('apiopen')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Open (api.open()):
-        </span>
+        <span class="dp-option-header"> Open (api.open()): </span>
         <div class="dp-option-playground">
           <button (click)="openCalendar.emit()" id="openBtn">Open</button>
         </div>
@@ -997,9 +906,7 @@
 
     @if (isValidConfig('apiclose')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Close (api.close()):
-        </span>
+        <span class="dp-option-header"> Close (api.close()): </span>
         <div class="dp-option-playground">
           <button (click)="closeCalendar.emit()">Close</button>
         </div>
@@ -1008,9 +915,7 @@
 
     @if (isValidConfig('moveCalendarTo')) {
       <div class="dp-option">
-        <span class="dp-option-header">
-          Move (api.moveCalendarTo('14-01-1987')):
-        </span>
+        <span class="dp-option-header"> Move (api.moveCalendarTo('14-01-1987')): </span>
         <div class="dp-option-playground">
           <button (click)="moveCalendar()" id="moveCalendarTo">Move</button>
         </div>

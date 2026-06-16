@@ -1,69 +1,68 @@
 <ul class="dp-time-select-controls" dir="ltr">
   <li class="dp-time-select-control dp-time-select-control-hours">
-    <button (click)="increase('hour')"
+    <button
+      (click)="increase('hour')"
       [disabled]="!showIncHour"
       class="dp-time-select-control-up"
-      type="button">
-    </button>
-    <span [innerText]="hours"
-      class="dp-time-select-display-hours">
-    </span>
-    <button (click)="decrease('hour')"
+      type="button"
+    ></button>
+    <span [innerText]="hours" class="dp-time-select-display-hours"> </span>
+    <button
+      (click)="decrease('hour')"
       [disabled]="!showDecHour"
       class="dp-time-select-control-down"
-      type="button">
-    </button>
+      type="button"
+    ></button>
   </li>
-  <li [innerText]="componentConfig.timeSeparator"
-    class="dp-time-select-control dp-time-select-separator">
-  </li>
+  <li [innerText]="componentConfig.timeSeparator" class="dp-time-select-control dp-time-select-separator"></li>
   <li class="dp-time-select-control dp-time-select-control-minutes">
-    <button (click)="increase('minute')"
+    <button
+      (click)="increase('minute')"
       [disabled]="!showIncMinute"
       class="dp-time-select-control-up"
-    type="button"></button>
-    <span [innerText]="minutes"
-      class="dp-time-select-display-minutes">
-    </span>
-    <button (click)="decrease('minute')"
-      [disabled]="!showDecMinute" class="dp-time-select-control-down"
-      type="button">
-    </button>
+      type="button"
+    ></button>
+    <span [innerText]="minutes" class="dp-time-select-display-minutes"> </span>
+    <button
+      (click)="decrease('minute')"
+      [disabled]="!showDecMinute"
+      class="dp-time-select-control-down"
+      type="button"
+    ></button>
   </li>
   @if (componentConfig.showSeconds) {
-    <li [innerText]="componentConfig.timeSeparator"
-      class="dp-time-select-control dp-time-select-separator">
-    </li>
+    <li [innerText]="componentConfig.timeSeparator" class="dp-time-select-control dp-time-select-separator"></li>
     <li class="dp-time-select-control dp-time-select-control-seconds">
-      <button (click)="increase('second')"
+      <button
+        (click)="increase('second')"
         [disabled]="!showIncSecond"
         class="dp-time-select-control-up"
-      type="button"></button>
-      <span [innerText]="seconds"
-        class="dp-time-select-display-seconds">
-      </span>
-      <button (click)="decrease('second')"
+        type="button"
+      ></button>
+      <span [innerText]="seconds" class="dp-time-select-display-seconds"> </span>
+      <button
+        (click)="decrease('second')"
         [disabled]="!showDecSecond"
         class="dp-time-select-control-down"
-        type="button">
-      </button>
+        type="button"
+      ></button>
     </li>
   }
   @if (!componentConfig.showTwentyFourHours) {
     <li class="dp-time-select-control dp-time-select-control-meridiem">
-      <button (click)="toggleMeridiem()"
+      <button
+        (click)="toggleMeridiem()"
         [disabled]="!showToggleMeridiem"
         class="dp-time-select-control-up"
-        type="button">
-      </button>
-      <span [innerText]="meridiem"
-        class="dp-time-select-display-meridiem">
-      </span>
-      <button (click)="toggleMeridiem()"
+        type="button"
+      ></button>
+      <span [innerText]="meridiem" class="dp-time-select-display-meridiem"> </span>
+      <button
+        (click)="toggleMeridiem()"
         [disabled]="!showToggleMeridiem"
         class="dp-time-select-control-down"
-        type="button">
-      </button>
+        type="button"
+      ></button>
     </li>
   }
 </ul>

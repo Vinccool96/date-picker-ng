@@ -2,7 +2,8 @@
   @if (ready) {
     <div class="dp-date-input-container">
       <div class="dp-form-item">
-        <dp-date-picker #dateComponent
+        <dp-date-picker
+          #dateComponent
           (close)="closed()"
           (onChange)="log($event)"
           (onLeftNav)="onLeftNav($event)"
@@ -18,7 +19,8 @@
           [placeholder]="placeholder"
           [required]="required"
           [theme]="material ? 'dp-material dp-main' : 'dp-main'"
-          id="picker">
+          id="picker"
+        >
         </dp-date-picker>
         <div class="dp-validations">
           @if (control.errors?.required) {
@@ -38,7 +40,8 @@
     </div>
   }
 
-  <dp-config-form #component
+  <dp-config-form
+    #component
     (closeCalendar)="closeCalendar()"
     (moveCalendarTo)="moveCalendarTo($event)"
     (onConfigChange)="onConfigChange($event)"
@@ -55,6 +58,7 @@
     (onLocaleChange)="onLocaleChange($event)"
     [config]="config"
     [localeVal]="locale"
-    pickerMode="dayPicker">
+    pickerMode="dayPicker"
+  >
   </dp-config-form>
 </div>

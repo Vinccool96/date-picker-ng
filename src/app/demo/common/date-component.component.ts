@@ -1,11 +1,8 @@
-import {INavEvent} from '../../../../projects/ng2-date-picker/src/lib/common/models/navigation-event.model';
-import {
-  DatePickerComponent,
-  DatePickerDirective,
-} from '../../../../projects/ng2-date-picker/src/public-api';
-import {Directive, ViewChild} from '@angular/core';
-import {UntypedFormControl, ValidatorFn, Validators} from '@angular/forms';
-import dayjs, {Dayjs} from 'dayjs';
+import { INavEvent } from '../../../../projects/ng2-date-picker/src/lib/common/models/navigation-event.model';
+import { DatePickerComponent, DatePickerDirective } from '../../../../projects/ng2-date-picker/src/public-api';
+import { Directive, ViewChild } from '@angular/core';
+import { UntypedFormControl, ValidatorFn, Validators } from '@angular/forms';
+import dayjs, { Dayjs } from 'dayjs';
 
 @Directive()
 export abstract class DateComponent {
@@ -82,8 +79,8 @@ export abstract class DateComponent {
   onConfigChange($event): void {
     this.config = {
       ...this.config,
-      ...$event
-    }
+      ...$event,
+    };
   }
 
   openCalendar(): void {
@@ -130,36 +127,40 @@ export abstract class DateComponent {
   }
 
   protected buildForm(): UntypedFormControl {
-    return new UntypedFormControl({value: this.date, disabled: this.disabled}, this.getValidations());
+    return new UntypedFormControl({ value: this.date, disabled: this.disabled }, this.getValidations());
   }
 
   private getValidations(): ValidatorFn[] {
     return [
       this.required ? Validators.required : () => undefined,
       (control) => {
-        return this.validationMinDate && this.config &&
-        dayjs(control.value, this.config.format)
-          .isBefore(this.validationMinDate)
-          ? {minDate: 'minDate Invalid'} : undefined
+        return this.validationMinDate &&
+          this.config &&
+          dayjs(control.value, this.config.format).isBefore(this.validationMinDate)
+          ? { minDate: 'minDate Invalid' }
+          : undefined;
       },
       (control) => {
-        return this.validationMaxDate && this.config &&
-        dayjs(control.value, this.config.format)
-          .isAfter(this.validationMaxDate)
-          ? {maxDate: 'maxDate Invalid'} : undefined
+        return this.validationMaxDate &&
+          this.config &&
+          dayjs(control.value, this.config.format).isAfter(this.validationMaxDate)
+          ? { maxDate: 'maxDate Invalid' }
+          : undefined;
       },
       (control) => {
-        return this.validationMinTime && this.config &&
-        dayjs(control.value, this.config.format)
-          .isBefore(this.validationMinTime)
-          ? {minDate: 'minDate Invalid'} : undefined
+        return this.validationMinTime &&
+          this.config &&
+          dayjs(control.value, this.config.format).isBefore(this.validationMinTime)
+          ? { minDate: 'minDate Invalid' }
+          : undefined;
       },
       (control) => {
-        return this.validationMaxTime && this.config &&
-        dayjs(control.value, this.config.format)
-          .isAfter(this.validationMaxTime)
-          ? {maxDate: 'maxDate Invalid'} : undefined
-      }
+        return this.validationMaxTime &&
+          this.config &&
+          dayjs(control.value, this.config.format).isAfter(this.validationMaxTime)
+          ? { maxDate: 'maxDate Invalid' }
+          : undefined;
+      },
     ].filter(Boolean);
   }
 }

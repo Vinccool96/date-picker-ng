@@ -1,6 +1,6 @@
-import {Dayjs} from 'dayjs';
-import {ICalendar, ICalendarInternal} from '../common/models/calendar.model';
-import {ECalendarValue} from '../common/types/calendar-value-enum';
+import { Dayjs } from 'dayjs';
+import { ICalendar, ICalendarInternal } from '../common/models/calendar.model';
+import { ECalendarValue } from '../common/types/calendar-value-enum';
 
 interface IConfig {
   hours12Format?: string;
@@ -18,9 +18,6 @@ interface IConfig {
   returnedValueType?: ECalendarValue;
 }
 
-export interface ITimeSelectConfig extends IConfig, ICalendar {
-}
+export interface ITimeSelectConfig extends IConfig, ICalendar {}
 
-export interface ITimeSelectConfigInternal extends IConfig,
-                                                   ICalendarInternal {
-}
+export interface ITimeSelectConfigInternal extends IConfig, ICalendarInternal {}

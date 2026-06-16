@@ -1,6 +1,6 @@
-import {Dayjs} from 'dayjs';
-import {ICalendar, ICalendarInternal} from '../common/models/calendar.model';
-import {ECalendarValue} from '../common/types/calendar-value-enum';
+import { Dayjs } from 'dayjs';
+import { ICalendar, ICalendarInternal } from '../common/models/calendar.model';
+import { ECalendarValue } from '../common/types/calendar-value-enum';
 
 export interface IConfig {
   isMonthDisabledCallback?: (date: Dayjs) => boolean;
@@ -20,10 +20,6 @@ export interface IConfig {
   unSelectOnClick?: boolean;
 }
 
-export interface IMonthCalendarConfig extends IConfig,
-                                              ICalendar {
-}
+export interface IMonthCalendarConfig extends IConfig, ICalendar {}
 
-export interface IMonthCalendarConfigInternal extends IConfig,
-                                                      ICalendarInternal {
-}
+export interface IMonthCalendarConfigInternal extends IConfig, ICalendarInternal {}

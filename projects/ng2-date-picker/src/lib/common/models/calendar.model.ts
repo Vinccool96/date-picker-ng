@@ -1,5 +1,5 @@
-import {Dayjs} from 'dayjs';
-import {SingleCalendarValue} from '../types/single-calendar-value';
+import { Dayjs } from 'dayjs';
+import { SingleCalendarValue } from '../types/single-calendar-value';
 
 export interface ICalendar {
   min?: SingleCalendarValue;

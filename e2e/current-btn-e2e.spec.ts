@@ -1,12 +1,12 @@
-import {DemoPage} from './app.po';
-import dayjs from 'dayjs'
-import {expect, Locator, Page, test} from '@playwright/test';
+import { DemoPage } from './app.po';
+import dayjs from 'dayjs';
+import { expect, Locator, Page, test } from '@playwright/test';
 
 test.describe('dpDayPicker dayPicker', () => {
   let po: DemoPage;
   let page: Page;
 
-  test.beforeAll(async ({browser}) => {
+  test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
   });
 

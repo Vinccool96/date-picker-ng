@@ -1,20 +1,20 @@
 import debounce from '../../../projects/ng2-date-picker/src/lib/common/decorators/decorators';
-import {IDatePickerConfig} from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker-config.model';
-import {DatePickerComponent} from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker.component';
-import {DatePickerDirective} from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker.directive';
-import {Component, HostListener, inject, OnInit, ViewChild} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
-import dayjs, {Dayjs} from 'dayjs';
-import {GaService} from './common/services/ga/ga.service';
-import {ECalendarValue} from '../../../projects/ng2-date-picker/src/lib/common/types/calendar-value-enum';
-import {INavEvent} from '../../../projects/ng2-date-picker/src/lib/common/models/navigation-event.model';
-import {ISelectionEvent} from '../../../projects/ng2-date-picker/src/lib/common/types/selection-event.model';
+import { IDatePickerConfig } from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker-config.model';
+import { DatePickerComponent } from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker.component';
+import { DatePickerDirective } from '../../../projects/ng2-date-picker/src/lib/date-picker/date-picker.directive';
+import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import dayjs, { Dayjs } from 'dayjs';
+import { GaService } from './common/services/ga/ga.service';
+import { ECalendarValue } from '../../../projects/ng2-date-picker/src/lib/common/types/calendar-value-enum';
+import { INavEvent } from '../../../projects/ng2-date-picker/src/lib/common/models/navigation-event.model';
+import { ISelectionEvent } from '../../../projects/ng2-date-picker/src/lib/common/types/selection-event.model';
 
 @Component({
-    selector: 'dp-demo',
-    templateUrl: './demo.component.html',
-    styleUrls: ['./demo.component.less'],
-    standalone: false
+  selector: 'dp-demo',
+  templateUrl: './demo.component.html',
+  styleUrls: ['./demo.component.less'],
+  standalone: false,
 })
 export class DemoComponent implements OnInit {
   @ViewChild('dateComponent') dateComponent: DatePickerComponent;
@@ -34,27 +34,27 @@ export class DemoComponent implements OnInit {
   validationMaxTime: Dayjs;
   placeholder: string = 'Choose a date...';
   displayDate: Dayjs | string;
-  dateTypes: { name: string, value: ECalendarValue }[] = [
+  dateTypes: { name: string; value: ECalendarValue }[] = [
     {
       name: 'Guess',
-      value: null
+      value: null,
     },
     {
       name: ECalendarValue[ECalendarValue.Dayjs],
-      value: ECalendarValue.Dayjs
+      value: ECalendarValue.Dayjs,
     },
     {
       name: ECalendarValue[ECalendarValue.DayjsArr],
-      value: ECalendarValue.DayjsArr
+      value: ECalendarValue.DayjsArr,
     },
     {
       name: ECalendarValue[ECalendarValue.String],
-      value: ECalendarValue.String
+      value: ECalendarValue.String,
     },
     {
       name: ECalendarValue[ECalendarValue.StringArr],
-      value: ECalendarValue.StringArr
-    }
+      value: ECalendarValue.StringArr,
+    },
   ];
   config: IDatePickerConfig = {
     firstDayOfWeek: 'su',
@@ -89,7 +89,7 @@ export class DemoComponent implements OnInit {
     hideInputContainer: false,
     returnedValueType: ECalendarValue.String,
     unSelectOnClick: true,
-    hideOnOutsideClick: true
+    hideOnOutsideClick: true,
   };
 
   formGroup: UntypedFormGroup;
@@ -166,19 +166,26 @@ export class DemoComponent implements OnInit {
 
   private buildForm(): UntypedFormGroup {
     return new UntypedFormGroup({
-      datePicker: new UntypedFormControl({value: this.date, disabled: this.disabled}, [
+      datePicker: new UntypedFormControl({ value: this.date, disabled: this.disabled }, [
         this.required ? Validators.required : () => undefined,
         (control) => {
-          return this.validationMinDate && this.config &&
-          dayjs(control.value, this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode))
-            .isBefore(this.validationMinDate)
-            ? {minDate: 'minDate Invalid'} : undefined
+          return this.validationMinDate &&
+            this.config &&
+            dayjs(control.value, this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode)).isBefore(
+              this.validationMinDate,
+            )
+            ? { minDate: 'minDate Invalid' }
+            : undefined;
         },
-        control => this.validationMaxDate && this.config &&
-        dayjs(control.value, this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode))
-          .isAfter(this.validationMaxDate)
-          ? {maxDate: 'maxDate Invalid'} : undefined
-      ])
+        (control) =>
+          this.validationMaxDate &&
+          this.config &&
+          dayjs(control.value, this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode)).isAfter(
+            this.validationMaxDate,
+          )
+            ? { maxDate: 'maxDate Invalid' }
+            : undefined,
+      ]),
     });
   }
 

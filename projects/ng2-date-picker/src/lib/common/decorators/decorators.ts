@@ -1,4 +1,4 @@
-import {UtilsService} from '../services/utils/utils.service';
+import { UtilsService } from '../services/utils/utils.service';
 
 export const DEFAULT_DEBOUNCE_MS = 500;
 
@@ -11,11 +11,11 @@ export default function debounce(ms: number = DEFAULT_DEBOUNCE_MS) {
         Object.defineProperty(this, propertyKey, {
           configurable: true,
           enumerable: descriptor.enumerable,
-          value: UtilsService.debounce(descriptor.value, ms)
+          value: UtilsService.debounce(descriptor.value, ms),
         });
 
         return this[propertyKey];
-      }
+      },
     };
   };
 }

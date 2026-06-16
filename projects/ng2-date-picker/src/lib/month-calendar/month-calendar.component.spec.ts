@@ -1,10 +1,10 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {MonthCalendarComponent} from './month-calendar.component';
-import {UtilsService} from '../common/services/utils/utils.service';
-import {CalendarNavComponent} from '../calendar-nav/calendar-nav.component';
-import {MonthCalendarService} from './month-calendar.service';
-import {Dayjs} from 'dayjs';
-import {IMonth} from './month.model';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MonthCalendarComponent } from './month-calendar.component';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
+import { MonthCalendarService } from './month-calendar.service';
+import { Dayjs } from 'dayjs';
+import { IMonth } from './month.model';
 
 describe('Component: MonthCalendarComponent', () => {
   let component: MonthCalendarComponent;
@@ -13,7 +13,7 @@ describe('Component: MonthCalendarComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [MonthCalendarComponent, CalendarNavComponent],
-      providers: [MonthCalendarService, UtilsService]
+      providers: [MonthCalendarService, UtilsService],
     }).compileComponents();
   }));
 
@@ -34,41 +34,47 @@ describe('Component: MonthCalendarComponent', () => {
       selected: false,
       currentMonth: false,
       disabled: false,
-      text: ''
+      text: '',
     };
-    const defaultCssClasses: {[klass: string]: boolean} = {
+    const defaultCssClasses: { [klass: string]: boolean } = {
       'dp-selected': false,
-      'dp-current-month': false
+      'dp-current-month': false,
     };
 
     it('the selected month', () => {
-      expect(component.getMonthBtnCssClass({
-        ...defaultMonth,
-        selected: true
-      } as IMonth)).toEqual({
+      expect(
+        component.getMonthBtnCssClass({
+          ...defaultMonth,
+          selected: true,
+        } as IMonth),
+      ).toEqual({
         ...defaultCssClasses,
-        'dp-selected': true
+        'dp-selected': true,
       });
     });
 
     it('the current month', () => {
-      expect(component.getMonthBtnCssClass({
-        ...defaultMonth,
-        currentMonth: true
-      } as IMonth)).toEqual({
+      expect(
+        component.getMonthBtnCssClass({
+          ...defaultMonth,
+          currentMonth: true,
+        } as IMonth),
+      ).toEqual({
         ...defaultCssClasses,
-        'dp-current-month': true
+        'dp-current-month': true,
       });
     });
 
     it('custom days', () => {
       component.componentConfig.monthBtnCssClassCallback = (day: Dayjs) => 'custom-class';
 
-      expect(component.getMonthBtnCssClass({
-        ...defaultMonth
-      } as IMonth)).toEqual({
+      expect(
+        component.getMonthBtnCssClass({
+          ...defaultMonth,
+        } as IMonth),
+      ).toEqual({
         ...defaultCssClasses,
-        'custom-class': true
+        'custom-class': true,
       });
     });
 

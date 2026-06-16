@@ -1,18 +1,18 @@
-import {FormsModule} from '@angular/forms';
-import {DatePickerComponent} from './date-picker.component';
-import {DayTimeCalendarComponent} from '../day-time-calendar/day-time-calendar.component';
-import {DayTimeCalendarService} from '../day-time-calendar/day-time-calendar.service';
-import {CalendarMode} from '../common/types/calendar-mode';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {DayCalendarComponent} from '../day-calendar/day-calendar.component';
-import {TimeSelectComponent} from '../time-select/time-select.component';
-import {CalendarNavComponent} from '../calendar-nav/calendar-nav.component';
-import {MonthCalendarComponent} from '../month-calendar/month-calendar.component';
-import {DayCalendarService} from '../day-calendar/day-calendar.service';
-import {TimeSelectService} from '../time-select/time-select.service';
-import {UtilsService} from '../common/services/utils/utils.service';
-import {By} from '@angular/platform-browser';
-import {OverlayModule} from '@angular/cdk/overlay';
+import { FormsModule } from '@angular/forms';
+import { DatePickerComponent } from './date-picker.component';
+import { DayTimeCalendarComponent } from '../day-time-calendar/day-time-calendar.component';
+import { DayTimeCalendarService } from '../day-time-calendar/day-time-calendar.service';
+import { CalendarMode } from '../common/types/calendar-mode';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DayCalendarComponent } from '../day-calendar/day-calendar.component';
+import { TimeSelectComponent } from '../time-select/time-select.component';
+import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
+import { MonthCalendarComponent } from '../month-calendar/month-calendar.component';
+import { DayCalendarService } from '../day-calendar/day-calendar.service';
+import { TimeSelectService } from '../time-select/time-select.service';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { By } from '@angular/platform-browser';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 describe('Component: DatePickerComponent', () => {
   let component: DatePickerComponent;
@@ -33,14 +33,9 @@ describe('Component: DatePickerComponent', () => {
         DayCalendarComponent,
         TimeSelectComponent,
         CalendarNavComponent,
-        MonthCalendarComponent
+        MonthCalendarComponent,
       ],
-      providers: [
-        DayTimeCalendarService,
-        DayCalendarService,
-        TimeSelectService,
-        UtilsService,
-      ]
+      providers: [DayTimeCalendarService, DayCalendarService, TimeSelectService, UtilsService],
     }).compileComponents();
   });
 

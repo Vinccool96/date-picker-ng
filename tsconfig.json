@@ -9,10 +9,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "paths": {
-      "ng2-date-picker": [
-        "dist/ng2-date-picker/ng2-date-picker",
-        "dist/ng2-date-picker"
-      ]
+      "ng2-date-picker": ["dist/ng2-date-picker/ng2-date-picker", "dist/ng2-date-picker"]
     },
     "skipLibCheck": true,
     "declaration": true,

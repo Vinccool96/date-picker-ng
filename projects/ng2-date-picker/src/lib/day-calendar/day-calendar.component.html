@@ -1,4 +1,4 @@
-@if (currentCalendarMode ===  CalendarMode.Day) {
+@if (currentCalendarMode === CalendarMode.Day) {
   <div class="dp-day-calendar-container" dir="ltr">
     <dp-calendar-nav
       (onGoToCurrent)="goToCurrent()"
@@ -10,35 +10,30 @@
       [showGoToCurrent]="_shouldShowCurrent"
       [showLeftNav]="showLeftNav"
       [showRightNav]="showRightNav"
-      [theme]="theme">
+      [theme]="theme"
+    >
     </dp-calendar-nav>
-    <div [ngClass]="{'dp-hide-near-month': !componentConfig.showNearMonthDays}"
-      class="dp-calendar-wrapper">
+    <div [ngClass]="{ 'dp-hide-near-month': !componentConfig.showNearMonthDays }" class="dp-calendar-wrapper">
       <div class="dp-weekdays">
         @for (weekday of weekdays; track weekday) {
-          <span
-            [innerText]="getWeekdayName(weekday)"
-            class="dp-calendar-weekday">
-          </span>
+          <span [innerText]="getWeekdayName(weekday)" class="dp-calendar-weekday"> </span>
         }
       </div>
       @for (week of weeks; track week) {
         <div class="dp-calendar-week">
           @if (componentConfig.showWeekNumbers) {
-            <span
-              [innerText]="week[0].date.isoWeek()"
-              class="dp-week-number">
-            </span>
+            <span [innerText]="week[0].date.isoWeek()" class="dp-week-number"> </span>
           }
           @for (day of week; track day) {
-            <button (click)="dayClicked(day)"
+            <button
+              (click)="dayClicked(day)"
               [attr.data-date]="day.date.format(componentConfig.format)"
               [disabled]="day.disabled"
               [innerText]="getDayBtnText(day)"
               [ngClass]="getDayBtnCssClass(day)"
               class="dp-calendar-day"
-              type="button">
-            </button>
+              type="button"
+            ></button>
           }
         </div>
       }
@@ -46,7 +41,7 @@
   </div>
 }
 
-@if (currentCalendarMode ===  CalendarMode.Month) {
+@if (currentCalendarMode === CalendarMode.Month) {
   <dp-month-calendar
     (onLeftNav)="onMonthCalendarLeftClick($event)"
     (onLeftSecondaryNav)="onMonthCalendarSecondaryLeftClick($event)"
@@ -57,6 +52,7 @@
     [config]="monthCalendarConfig"
     [displayDate]="_currentDateView"
     [ngModel]="_selected"
-    [theme]="theme">
+    [theme]="theme"
+  >
   </dp-month-calendar>
 }

@@ -1,14 +1,14 @@
-import {ECalendarValue} from '../../types/calendar-value-enum';
-import {SingleCalendarValue} from '../../types/single-calendar-value';
-import {ElementRef, Injectable} from '@angular/core';
+import { ECalendarValue } from '../../types/calendar-value-enum';
+import { SingleCalendarValue } from '../../types/single-calendar-value';
+import { ElementRef, Injectable } from '@angular/core';
 
-import {Dayjs, UnitType} from 'dayjs';
-import {CalendarValue} from '../../types/calendar-value';
-import {IDate} from '../../models/date.model';
-import {CalendarMode} from '../../types/calendar-mode';
-import {DateValidator} from '../../types/validator.type';
-import {ICalendarInternal} from '../../models/calendar.model';
-import {dayjsRef} from '../../dayjs/dayjs.ref';
+import { Dayjs, UnitType } from 'dayjs';
+import { CalendarValue } from '../../types/calendar-value';
+import { IDate } from '../../models/date.model';
+import { CalendarMode } from '../../types/calendar-mode';
+import { DateValidator } from '../../types/validator.type';
+import { ICalendarInternal } from '../../models/calendar.model';
+import { dayjsRef } from '../../dayjs/dayjs.ref';
 
 export interface DateLimits {
   minDate?: SingleCalendarValue;
@@ -18,19 +18,20 @@ export interface DateLimits {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UtilsService {
   static debounce(func: Function, wait: number) {
     let timeout;
     return function () {
-      const context = this, args = arguments;
+      const context = this,
+        args = arguments;
       timeout = clearTimeout(timeout);
       setTimeout(() => {
         func.apply(context, args);
       }, wait);
     };
-  };
+  }
 
   createArray(size: number): number[] {
     return new Array(size).fill(1);
@@ -55,10 +56,7 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  getDefaultDisplayDate(current: Dayjs,
-                        selected: Dayjs[],
-                        allowMultiSelect: boolean,
-                        minDate: Dayjs): Dayjs {
+  getDefaultDisplayDate(current: Dayjs, selected: Dayjs[], allowMultiSelect: boolean, minDate: Dayjs): Dayjs {
     if (current) {
       return dayjsRef(current.toDate());
     } else if (minDate && minDate.isAfter(dayjsRef())) {
@@ -96,21 +94,20 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  convertToDayjsArray(value: CalendarValue,
-                      config: { allowMultiSelect?: boolean, format?: string }): Dayjs[] {
+  convertToDayjsArray(value: CalendarValue, config: { allowMultiSelect?: boolean; format?: string }): Dayjs[] {
     let retVal: Dayjs[];
     switch (this.getInputType(value, config.allowMultiSelect)) {
-      case (ECalendarValue.String):
+      case ECalendarValue.String:
         retVal = value ? [dayjsRef(<string>value, config.format, true)] : [];
         break;
-      case (ECalendarValue.StringArr):
-        retVal = (<string[]>value).map(v => v ? dayjsRef(v, config.format, true) : null).filter(Boolean);
+      case ECalendarValue.StringArr:
+        retVal = (<string[]>value).map((v) => (v ? dayjsRef(v, config.format, true) : null)).filter(Boolean);
         break;
-      case (ECalendarValue.Dayjs):
+      case ECalendarValue.Dayjs:
         retVal = value ? [dayjsRef((<Dayjs>value).toDate())] : [];
         break;
-      case (ECalendarValue.DayjsArr):
-        retVal = (<Dayjs[]>value || []).map(v => dayjsRef(v.toDate()));
+      case ECalendarValue.DayjsArr:
+        retVal = (<Dayjs[]>value || []).map((v) => dayjsRef(v.toDate()));
         break;
       default:
         retVal = [];
@@ -120,18 +117,16 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  convertFromDayjsArray(format: string,
-                        value: Dayjs[],
-                        convertTo: ECalendarValue): CalendarValue {
+  convertFromDayjsArray(format: string, value: Dayjs[], convertTo: ECalendarValue): CalendarValue {
     switch (convertTo) {
-      case (ECalendarValue.String):
+      case ECalendarValue.String:
         return value[0] && value[0].format(format);
-      case (ECalendarValue.StringArr):
-        return value.filter(Boolean).map(v => v.format(format));
-      case (ECalendarValue.Dayjs):
+      case ECalendarValue.StringArr:
+        return value.filter(Boolean).map((v) => v.format(format));
+      case ECalendarValue.Dayjs:
         return value[0] ? dayjsRef(value[0].toDate()) : value[0];
-      case (ECalendarValue.DayjsArr):
-        return value ? value.map(v => dayjsRef(v.toDate())) : value;
+      case ECalendarValue.DayjsArr:
+        return value ? value.map((v) => dayjsRef(v.toDate())) : value;
       default:
         return value;
     }
@@ -165,18 +160,15 @@ export class UtilsService {
       return obj;
     }
 
-    Object.keys(obj).forEach((key) => (obj[key] === undefined) && delete obj[key]);
+    Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
     return obj;
   }
 
-  updateSelected(isMultiple: boolean,
-                 currentlySelected: Dayjs[],
-                 date: IDate,
-                 granularity: UnitType = 'day'): Dayjs[] {
+  updateSelected(isMultiple: boolean, currentlySelected: Dayjs[], date: IDate, granularity: UnitType = 'day'): Dayjs[] {
     if (isMultiple) {
       return !date.selected
         ? currentlySelected.concat([date.date])
-        : currentlySelected.filter(d => !d.isSame(date.date, granularity));
+        : currentlySelected.filter((d) => !d.isSame(date.date, granularity));
     } else {
       return !date.selected ? [date.date] : [];
     }
@@ -205,9 +197,11 @@ export class UtilsService {
     }
   }
 
-  createValidator({minDate, maxDate, minTime, maxTime}: DateLimits,
-                  format: string,
-                  calendarType: CalendarMode): DateValidator {
+  createValidator(
+    { minDate, maxDate, minTime, maxTime }: DateLimits,
+    format: string,
+    calendarType: CalendarMode,
+  ): DateValidator {
     let isValid: boolean;
     let value: Dayjs[];
     const validators = [];
@@ -218,10 +212,10 @@ export class UtilsService {
       validators.push({
         key: 'minDate',
         isValid: () => {
-          const _isValid = value.every(val => val.isSameOrAfter(md, granularity));
+          const _isValid = value.every((val) => val.isSameOrAfter(md, granularity));
           isValid = isValid ? _isValid : false;
           return _isValid;
-        }
+        },
       });
     }
 
@@ -230,10 +224,10 @@ export class UtilsService {
       validators.push({
         key: 'maxDate',
         isValid: () => {
-          const _isValid = value.every(val => val.isSameOrBefore(md, granularity));
+          const _isValid = value.every((val) => val.isSameOrBefore(md, granularity));
           isValid = isValid ? _isValid : false;
           return _isValid;
-        }
+        },
       });
     }
 
@@ -242,10 +236,10 @@ export class UtilsService {
       validators.push({
         key: 'minTime',
         isValid: () => {
-          const _isValid = value.every(val => this.onlyTime(val).isSameOrAfter(md));
+          const _isValid = value.every((val) => this.onlyTime(val).isSameOrAfter(md));
           isValid = isValid ? _isValid : false;
           return _isValid;
-        }
+        },
       });
     }
 
@@ -254,10 +248,10 @@ export class UtilsService {
       validators.push({
         key: 'maxTime',
         isValid: () => {
-          const _isValid = value.every(val => this.onlyTime(val).isSameOrBefore(md));
+          const _isValid = value.every((val) => this.onlyTime(val).isSameOrBefore(md));
           isValid = isValid ? _isValid : false;
           return _isValid;
-        }
+        },
       });
     }
 
@@ -266,21 +260,21 @@ export class UtilsService {
 
       value = this.convertToDayjsArray(inputVal, {
         format,
-        allowMultiSelect: true
+        allowMultiSelect: true,
       }).filter(Boolean);
 
-      if (!value.every(val => val.isValid())) {
+      if (!value.every((val) => val.isValid())) {
         return {
           format: {
-            given: inputVal
-          }
+            given: inputVal,
+          },
         };
       }
 
       const errors = validators.reduce((map, err) => {
         if (!err.isValid()) {
           map[err.key] = {
-            given: value
+            given: value,
           };
         }
 
@@ -292,22 +286,20 @@ export class UtilsService {
   }
 
   datesStringToStringArray(value: string): string[] {
-    return (value || '').split('|').map(m => m.trim()).filter(Boolean);
+    return (value || '')
+      .split('|')
+      .map((m) => m.trim())
+      .filter(Boolean);
   }
 
   getValidDayjsArray(value: string, format: string): Dayjs[] {
     return this.datesStringToStringArray(value)
-      .filter(d => this.isDateValid(d, format))
-      .map(d => dayjsRef(d, format));
+      .filter((d) => this.isDateValid(d, format))
+      .map((d) => dayjsRef(d, format));
   }
 
-  shouldShowCurrent(showGoToCurrent: boolean,
-                    mode: CalendarMode,
-                    min: Dayjs,
-                    max: Dayjs): boolean {
-    return showGoToCurrent &&
-      mode !== 'time' &&
-      this.isDateInRange(dayjsRef(), min, max);
+  shouldShowCurrent(showGoToCurrent: boolean, mode: CalendarMode, min: Dayjs, max: Dayjs): boolean {
+    return showGoToCurrent && mode !== 'time' && this.isDateInRange(dayjsRef(), min, max);
   }
 
   isDateInRange(date: Dayjs, from: Dayjs, to: Dayjs): boolean {

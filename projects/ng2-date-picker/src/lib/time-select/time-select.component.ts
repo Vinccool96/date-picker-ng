@@ -1,5 +1,5 @@
-import {ECalendarValue} from '../common/types/calendar-value-enum';
-import {SingleCalendarValue} from '../common/types/single-calendar-value';
+import { ECalendarValue } from '../common/types/calendar-value-enum';
+import { SingleCalendarValue } from '../common/types/single-calendar-value';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,50 +13,49 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
-import {TimeSelectService, TimeUnit} from './time-select.service';
+import { TimeSelectService, TimeUnit } from './time-select.service';
 
-import {ITimeSelectConfig, ITimeSelectConfigInternal} from './time-select-config.model';
+import { ITimeSelectConfig, ITimeSelectConfigInternal } from './time-select-config.model';
 import {
   ControlValueAccessor,
   UntypedFormControl,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
-  Validator
+  Validator,
 } from '@angular/forms';
-import {CalendarValue} from '../common/types/calendar-value';
-import {UtilsService} from '../common/services/utils/utils.service';
-import {IDate} from '../common/models/date.model';
-import {DateValidator} from '../common/types/validator.type';
-import {IDayCalendarConfigInternal} from '../day-calendar/day-calendar-config.model';
-import {Dayjs} from 'dayjs';
-import {dayjsRef} from '../common/dayjs/dayjs.ref';
+import { CalendarValue } from '../common/types/calendar-value';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { IDate } from '../common/models/date.model';
+import { DateValidator } from '../common/types/validator.type';
+import { IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
+import { Dayjs } from 'dayjs';
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 
 @Component({
-    selector: 'dp-time-select',
-    templateUrl: 'time-select.component.html',
-    styleUrls: ['time-select.component.less'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [
-        TimeSelectService,
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => TimeSelectComponent),
-            multi: true
-        },
-        {
-            provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => TimeSelectComponent),
-            multi: true
-        }
-    ],
-    standalone: false
+  selector: 'dp-time-select',
+  templateUrl: 'time-select.component.html',
+  styleUrls: ['time-select.component.less'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    TimeSelectService,
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TimeSelectComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => TimeSelectComponent),
+      multi: true,
+    },
+  ],
+  standalone: false,
 })
 export class TimeSelectComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
-
   @Input() config: ITimeSelectConfig;
   @Input() displayDate: SingleCalendarValue;
   @Input() minDate: SingleCalendarValue;
@@ -82,13 +81,14 @@ export class TimeSelectComponent implements OnInit, OnChanges, ControlValueAcces
   showIncSecond: boolean;
   showToggleMeridiem: boolean;
   api = {
-    triggerChange: this.emitChange.bind(this)
+    triggerChange: this.emitChange.bind(this),
   };
 
-  constructor(public readonly timeSelectService: TimeSelectService,
-              public readonly utilsService: UtilsService,
-              public readonly cd: ChangeDetectorRef) {
-  }
+  constructor(
+    public readonly timeSelectService: TimeSelectService,
+    public readonly utilsService: UtilsService,
+    public readonly cd: ChangeDetectorRef,
+  ) {}
 
   _selected: Dayjs;
 
@@ -127,7 +127,7 @@ export class TimeSelectComponent implements OnInit, OnChanges, ControlValueAcces
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isInited) {
-      const {minDate, maxDate, minTime, maxTime} = changes;
+      const { minDate, maxDate, minTime, maxTime } = changes;
 
       if (minDate || maxDate || minTime || maxTime) {
         this.initValidators();
@@ -141,15 +141,13 @@ export class TimeSelectComponent implements OnInit, OnChanges, ControlValueAcces
     this.inputValue = value;
 
     if (value) {
-      const dayjsValue = this.utilsService
-        .convertToDayjsArray(value, {
-          allowMultiSelect: false,
-          format: this.timeSelectService.getTimeFormat(this.componentConfig)
-        })[0];
+      const dayjsValue = this.utilsService.convertToDayjsArray(value, {
+        allowMultiSelect: false,
+        format: this.timeSelectService.getTimeFormat(this.componentConfig),
+      })[0];
       if (dayjsValue.isValid()) {
         this.selected = dayjsValue;
-        this.inputValueType = this.utilsService
-          .getInputType(this.inputValue, false);
+        this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
       }
     }
 
@@ -160,11 +158,9 @@ export class TimeSelectComponent implements OnInit, OnChanges, ControlValueAcces
     this.onChangeCallback = fn;
   }
 
-  onChangeCallback(_: any) {
-  }
+  onChangeCallback(_: any) {}
 
-  registerOnTouched(fn: any): void {
-  }
+  registerOnTouched(fn: any): void {}
 
   validate(formControl: UntypedFormControl): ValidationErrors | any {
     if (this.minDate || this.maxDate || this.minTime || this.maxTime) {
@@ -178,7 +174,7 @@ export class TimeSelectComponent implements OnInit, OnChanges, ControlValueAcces
     return this.utilsService.convertFromDayjsArray(
       this.timeSelectService.getTimeFormat(this.componentConfig),
       [value],
-      this.componentConfig.returnedValueType || this.inputValueType
+      this.componentConfig.returnedValueType || this.inputValueType,
     );
   }
 
@@ -188,8 +184,11 @@ export class TimeSelectComponent implements OnInit, OnChanges, ControlValueAcces
         minDate: this.minDate,
         maxDate: this.maxDate,
         minTime: this.minTime,
-        maxTime: this.maxTime
-      }, undefined, 'day');
+        maxTime: this.maxTime,
+      },
+      undefined,
+      'day',
+    );
 
     this.onChangeCallback(this.processOnChangeCallback(this.selected));
   }
@@ -210,7 +209,7 @@ export class TimeSelectComponent implements OnInit, OnChanges, ControlValueAcces
   }
 
   emitChange(): void {
-    this.onChange.emit({date: this.selected, selected: false});
+    this.onChange.emit({ date: this.selected, selected: false });
     this.cd.markForCheck();
   }
 

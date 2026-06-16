@@ -2,19 +2,12 @@
   "root": true,
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "tsconfig.json"
-        ],
+        "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "extends": [
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
-      ],
+      "extends": ["plugin:@angular-eslint/recommended", "plugin:@angular-eslint/template/process-inline-templates"],
       "rules": {
         "@angular-eslint/component-selector": [
           "error",
@@ -32,27 +25,16 @@
             "type": "attribute"
           }
         ],
-        "@angular-eslint/no-output-native": [
-          "off"
-        ],
-        "@angular-eslint/no-output-on-prefix": [
-          "off"
-        ],
-        "@angular-eslint/prefer-standalone": [
-          "warn"
-        ],
+        "@angular-eslint/no-output-native": ["off"],
+        "@angular-eslint/no-output-on-prefix": ["off"],
+        "@angular-eslint/prefer-standalone": ["warn"],
         "no-console": [
           "error",
           {
-            "allow": [
-              "info",
-              "error"
-            ]
+            "allow": ["info", "error"]
           }
         ],
-        "no-debugger": [
-          "error"
-        ],
+        "no-debugger": ["error"],
         "quotes": [
           "error",
           "single",
@@ -63,12 +45,8 @@
       }
     },
     {
-      "files": [
-        "*.html"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended"
-      ],
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     }
   ]

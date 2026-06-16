@@ -1,8 +1,11 @@
-<div [ngClass]="{'dp-open': areCalendarsShown}" dir="ltr" #trigger>
-  <div [attr.data-hidden]="componentConfig.hideInputContainer"
+<div [ngClass]="{ 'dp-open': areCalendarsShown }" dir="ltr" #trigger>
+  <div
+    [attr.data-hidden]="componentConfig.hideInputContainer"
     [hidden]="componentConfig.hideInputContainer"
-    class="dp-input-container">
-    <input #inputElement
+    class="dp-input-container"
+  >
+    <input
+      #inputElement
       (blur)="inputBlurred()"
       (focus)="inputFocused()"
       (keydown.enter)="componentConfig.closeOnEnter && hideCalendar()"
@@ -12,20 +15,23 @@
       [placeholder]="placeholder"
       [readonly]="componentConfig.disableKeypress"
       class="dp-picker-input"
-      type="text"/>
+      type="text"
+    />
   </div>
-  <ng-template cdkConnectedOverlay
+  <ng-template
+    cdkConnectedOverlay
     [cdkConnectedOverlayPositions]="overlayPosition"
     [cdkConnectedOverlayOrigin]="origin || trigger"
     [cdkConnectedOverlayOpen]="areCalendarsShown"
     [cdkConnectedOverlayHasBackdrop]="false"
-    (overlayOutsideClick)="onBodyClick($event)">
+    (overlayOutsideClick)="onBodyClick($event)"
+  >
     <div #container>
-      <div [attr.data-hidden]="!areCalendarsShown"
-        class="dp-popup {{theme}}">
+      <div [attr.data-hidden]="!areCalendarsShown" class="dp-popup {{ theme }}">
         @switch (mode) {
           @case ('day') {
-            <dp-day-calendar #dayCalendar
+            <dp-day-calendar
+              #dayCalendar
               (onGoToCurrent)="goToCurrent()"
               (onLeftNav)="onLeftNavClick($event)"
               (onRightNav)="onRightNavClick($event)"
@@ -33,11 +39,13 @@
               [config]="dayCalendarConfig"
               [displayDate]="displayDate"
               [ngModel]="_selected"
-              [theme]="theme">
+              [theme]="theme"
+            >
             </dp-day-calendar>
           }
           @case ('month') {
-            <dp-month-calendar #monthCalendar
+            <dp-month-calendar
+              #monthCalendar
               (onGoToCurrent)="goToCurrent()"
               (onLeftNav)="onLeftNavClick($event)"
               (onRightNav)="onRightNavClick($event)"
@@ -45,19 +53,23 @@
               [config]="dayCalendarConfig"
               [displayDate]="displayDate"
               [ngModel]="_selected"
-              [theme]="theme">
+              [theme]="theme"
+            >
             </dp-month-calendar>
           }
           @case ('time') {
-            <dp-time-select #timeSelect
+            <dp-time-select
+              #timeSelect
               (onChange)="dateSelected($event, 'second', selectEvent.SELECTION, true)"
               [config]="timeSelectConfig"
               [ngModel]="_selected && _selected[0]"
-              [theme]="theme">
+              [theme]="theme"
+            >
             </dp-time-select>
           }
           @case ('daytime') {
-            <dp-day-time-calendar #daytimeCalendar
+            <dp-day-time-calendar
+              #daytimeCalendar
               (onChange)="dateSelected($event, 'second', selectEvent.SELECTION, true)"
               (onGoToCurrent)="goToCurrent()"
               (onLeftNav)="onLeftNavClick($event)"
@@ -65,7 +77,8 @@
               [config]="dayTimeCalendarConfig"
               [displayDate]="displayDate"
               [ngModel]="_selected && _selected[0]"
-              [theme]="theme">
+              [theme]="theme"
+            >
             </dp-day-time-calendar>
           }
         }

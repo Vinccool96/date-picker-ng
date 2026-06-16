@@ -1,33 +1,34 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {UtilsService} from '../common/services/utils/utils.service';
-import {DayCalendarService} from '../day-calendar/day-calendar.service';
-import {TimeSelectService} from '../time-select/time-select.service';
-import {IDayTimeCalendarConfig, IDayTimeCalendarConfigInternal} from './day-time-calendar-config.model';
-import {dayjsRef} from '../common/dayjs/dayjs.ref';
-import {Dayjs} from 'dayjs';
-import {IDayCalendarConfigInternal} from '../day-calendar/day-calendar-config.model';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { DayCalendarService } from '../day-calendar/day-calendar.service';
+import { TimeSelectService } from '../time-select/time-select.service';
+import { IDayTimeCalendarConfig, IDayTimeCalendarConfigInternal } from './day-time-calendar-config.model';
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { Dayjs } from 'dayjs';
+import { IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
 
 const DAY_FORMAT = 'YYYYMMDD';
 const TIME_FORMAT = 'HH:mm:ss';
 const COMBINED_FORMAT = DAY_FORMAT + TIME_FORMAT;
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class DayTimeCalendarService {
   readonly DEFAULT_CONFIG: IDayTimeCalendarConfig = {};
 
-  constructor(private utilsService: UtilsService,
-              private dayCalendarService: DayCalendarService,
-              private timeSelectService: TimeSelectService) {
-  }
+  constructor(
+    private utilsService: UtilsService,
+    private dayCalendarService: DayCalendarService,
+    private timeSelectService: TimeSelectService,
+  ) {}
 
   getConfig(config: IDayTimeCalendarConfig): IDayTimeCalendarConfigInternal {
-    const _config =  {
+    const _config = {
       ...this.DEFAULT_CONFIG,
       ...this.timeSelectService.getConfig(config),
-      ...this.dayCalendarService.getConfig(config)
+      ...this.dayCalendarService.getConfig(config),
     };
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);

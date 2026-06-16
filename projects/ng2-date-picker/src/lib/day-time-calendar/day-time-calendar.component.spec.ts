@@ -1,14 +1,14 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {FormsModule} from '@angular/forms';
-import {DayTimeCalendarComponent} from './day-time-calendar.component';
-import {DayTimeCalendarService} from './day-time-calendar.service';
-import {DayCalendarComponent} from '../day-calendar/day-calendar.component';
-import {TimeSelectComponent} from '../time-select/time-select.component';
-import {TimeSelectService} from '../time-select/time-select.service';
-import {DayCalendarService} from '../day-calendar/day-calendar.service';
-import {UtilsService} from '../common/services/utils/utils.service';
-import {MonthCalendarComponent} from '../month-calendar/month-calendar.component';
-import {CalendarNavComponent} from '../calendar-nav/calendar-nav.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { DayTimeCalendarComponent } from './day-time-calendar.component';
+import { DayTimeCalendarService } from './day-time-calendar.service';
+import { DayCalendarComponent } from '../day-calendar/day-calendar.component';
+import { TimeSelectComponent } from '../time-select/time-select.component';
+import { TimeSelectService } from '../time-select/time-select.service';
+import { DayCalendarService } from '../day-calendar/day-calendar.service';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { MonthCalendarComponent } from '../month-calendar/month-calendar.component';
+import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
 
 describe('Component: DayTimeCalendarComponent', () => {
   let component: DayTimeCalendarComponent;
@@ -22,14 +22,9 @@ describe('Component: DayTimeCalendarComponent', () => {
         DayCalendarComponent,
         TimeSelectComponent,
         CalendarNavComponent,
-        MonthCalendarComponent
+        MonthCalendarComponent,
       ],
-      providers: [
-        DayTimeCalendarService,
-        DayCalendarService,
-        TimeSelectService,
-        UtilsService
-      ]
+      providers: [DayTimeCalendarService, DayCalendarService, TimeSelectService, UtilsService],
     }).compileComponents();
   }));
 

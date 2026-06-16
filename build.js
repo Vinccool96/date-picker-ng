@@ -2,7 +2,9 @@ const fs = require('fs').promises;
 
 async function setGa() {
   const html = await fs.readFile('./dist/browser/index.html', 'utf-8');
-  const newHtml = html.replace('<!--GA-->', `
+  const newHtml = html.replace(
+    '<!--GA-->',
+    `
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-86826463-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -10,7 +12,8 @@ async function setGa() {
       gtag('js', new Date());
       gtag('config', 'UA-86826463-1');
     </script>
-  `);
+  `,
+  );
 
   await fs.writeFile('./dist/index.html', newHtml);
 }

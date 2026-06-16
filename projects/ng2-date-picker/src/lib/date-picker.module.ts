@@ -1,20 +1,20 @@
-import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {OverlayModule} from '@angular/cdk/overlay';
-import {DatePickerComponent} from './date-picker/date-picker.component';
-import {DatePickerDirective} from './date-picker/date-picker.directive';
-import {DayCalendarComponent} from './day-calendar/day-calendar.component';
-import {MonthCalendarComponent} from './month-calendar/month-calendar.component';
-import {TimeSelectComponent} from './time-select/time-select.component';
-import {CalendarNavComponent} from './calendar-nav/calendar-nav.component';
-import {DayTimeCalendarComponent} from './day-time-calendar/day-time-calendar.component';
-export {DatePickerComponent} from './date-picker/date-picker.component';
-export {DatePickerDirective} from './date-picker/date-picker.directive';
-export {DayCalendarComponent} from './day-calendar/day-calendar.component';
-export {DayTimeCalendarComponent} from './day-time-calendar/day-time-calendar.component';
-export {TimeSelectComponent} from './time-select/time-select.component';
-export {MonthCalendarComponent} from './month-calendar/month-calendar.component';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { DatePickerComponent } from './date-picker/date-picker.component';
+import { DatePickerDirective } from './date-picker/date-picker.directive';
+import { DayCalendarComponent } from './day-calendar/day-calendar.component';
+import { MonthCalendarComponent } from './month-calendar/month-calendar.component';
+import { TimeSelectComponent } from './time-select/time-select.component';
+import { CalendarNavComponent } from './calendar-nav/calendar-nav.component';
+import { DayTimeCalendarComponent } from './day-time-calendar/day-time-calendar.component';
+export { DatePickerComponent } from './date-picker/date-picker.component';
+export { DatePickerDirective } from './date-picker/date-picker.directive';
+export { DayCalendarComponent } from './day-calendar/day-calendar.component';
+export { DayTimeCalendarComponent } from './day-time-calendar/day-time-calendar.component';
+export { TimeSelectComponent } from './time-select/time-select.component';
+export { MonthCalendarComponent } from './month-calendar/month-calendar.component';
 
 @NgModule({
   declarations: [
@@ -24,21 +24,16 @@ export {MonthCalendarComponent} from './month-calendar/month-calendar.component'
     MonthCalendarComponent,
     CalendarNavComponent,
     TimeSelectComponent,
-    DayTimeCalendarComponent
+    DayTimeCalendarComponent,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    OverlayModule
-  ],
+  imports: [CommonModule, FormsModule, OverlayModule],
   exports: [
     DatePickerComponent,
     DatePickerDirective,
     MonthCalendarComponent,
     DayCalendarComponent,
     TimeSelectComponent,
-    DayTimeCalendarComponent
-  ]
+    DayTimeCalendarComponent,
+  ],
 })
-export class DpDatePickerModule {
-}
+export class DpDatePickerModule {}

@@ -1,7 +1,7 @@
-import {ICalendar, ICalendarInternal} from '../common/models/calendar.model';
-import {WeekDays} from '../common/types/week-days.type';
-import {Dayjs} from 'dayjs';
-import {ECalendarValue} from '../common/types/calendar-value-enum';
+import { ICalendar, ICalendarInternal } from '../common/models/calendar.model';
+import { WeekDays } from '../common/types/week-days.type';
+import { Dayjs } from 'dayjs';
+import { ECalendarValue } from '../common/types/calendar-value-enum';
 
 interface IConfig {
   isDayDisabledCallback?: (date: Dayjs) => boolean;
@@ -32,10 +32,6 @@ interface IConfig {
   numOfMonthRows?: number;
 }
 
-export interface IDayCalendarConfig extends IConfig,
-                                            ICalendar {
-}
+export interface IDayCalendarConfig extends IConfig, ICalendar {}
 
-export interface IDayCalendarConfigInternal extends IConfig,
-                                                    ICalendarInternal {
-}
+export interface IDayCalendarConfigInternal extends IConfig, ICalendarInternal {}

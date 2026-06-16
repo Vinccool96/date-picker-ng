@@ -5,16 +5,16 @@ import {
   HostBinding,
   Input,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 
 @Component({
-    selector: 'dp-calendar-nav',
-    templateUrl: './calendar-nav.component.html',
-    styleUrls: ['./calendar-nav.component.less'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'dp-calendar-nav',
+  templateUrl: './calendar-nav.component.html',
+  styleUrls: ['./calendar-nav.component.less'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CalendarNavComponent {
   @Input() label: string;
