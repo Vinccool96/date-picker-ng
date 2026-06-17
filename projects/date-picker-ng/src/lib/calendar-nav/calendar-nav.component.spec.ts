@@ -11,7 +11,7 @@ describe('CalendarNavComponent', () => {
   });
 
   beforeEach(() => {
-    spectator = createComponent();
+    spectator = createComponent({ props: { label: 'foo' } });
     component = spectator.component;
   });
 

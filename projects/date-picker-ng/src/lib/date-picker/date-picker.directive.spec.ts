@@ -14,7 +14,7 @@ describe('DatePickerDirective', () => {
     spectator = createDirective(`
 <div id="top">
   <span class="wrapper">
-    <input type="text" />
+    <input [dpDayPicker]="{}" theme=""  type="text" />
   </span>
 </div>
     `);

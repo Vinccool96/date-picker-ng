@@ -18,9 +18,9 @@
   </dp-calendar-nav>
 
   <div class="dp-calendar-wrapper">
-    @for (monthRow of yearMonths; track monthRow) {
+    @for (monthRow of yearMonths; track $index) {
       <div class="dp-months-row">
-        @for (month of monthRow; track month) {
+        @for (month of monthRow; track month.text) {
           <button
             (click)="monthClicked(month)"
             [attr.data-date]="month.date?.format(componentConfig.format)"

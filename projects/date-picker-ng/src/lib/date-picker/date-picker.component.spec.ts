@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
-describe('Component: DatePickerComponent', () => {
+describe('DatePickerComponent', () => {
   let spectator: Spectator<DatePickerComponent>;
   let component: DatePickerComponent;
 
@@ -19,7 +19,7 @@ describe('Component: DatePickerComponent', () => {
   }
 
   beforeEach(() => {
-    spectator = createComponent();
+    spectator = createComponent({ props: { config: {} } });
     component = spectator.component;
   });
 

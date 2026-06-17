@@ -2,7 +2,6 @@ import { CalendarMode } from '../common/types/calendar-mode';
 import { IDatePickerDirectiveConfig } from './date-picker-directive-config.model';
 import { DatePickerComponent } from './date-picker.component';
 import {
-  ComponentFactoryResolver,
   Directive,
   effect,
   ElementRef,
@@ -23,6 +22,7 @@ import { ISelectionEvent } from '../common/types/selection-event.model';
 import { SingleCalendarValue } from '../common/types/single-calendar-value';
 import { Observable } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { IDpDayPickerApi } from './date-picker.api';
 
 @Directive({
   exportAs: 'dpDayPicker',
@@ -36,8 +36,8 @@ export class DatePickerDirective implements OnInit {
   @Output() onLeftNav: EventEmitter<INavEvent> = new EventEmitter();
   @Output() onRightNav: EventEmitter<INavEvent> = new EventEmitter();
   @Output() onSelect: EventEmitter<ISelectionEvent> = new EventEmitter();
-  private readonly datePicker = this.createDatePicker();
-  public readonly api = this.datePicker.api;
+  private datePicker!: DatePickerComponent;
+  public api!: IDpDayPickerApi;
   public readonly theme = input.required<string>();
   public readonly dpDayPicker = input.required<IDatePickerDirectiveConfig>();
   private readonly config = signal<IDatePickerDirectiveConfig>({});
@@ -49,7 +49,6 @@ export class DatePickerDirective implements OnInit {
   public readonly displayDate = input<SingleCalendarValue | null>(null);
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly elemRef = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly componentFactoryResolver = inject(ComponentFactoryResolver);
   public readonly formControl = inject(NgControl, { optional: true });
   public readonly utilsService = inject(UtilsService);
 
@@ -99,14 +98,15 @@ export class DatePickerDirective implements OnInit {
   }
 
   ngOnInit(): void {
+    this.datePicker = this.createDatePicker();
+    this.api = this.datePicker.api;
     this.updateDatepickerConfig();
     this.attachModelToDatePicker();
     this.datePicker.theme = this.theme();
   }
 
   private createDatePicker(): DatePickerComponent {
-    const factory = this.componentFactoryResolver.resolveComponentFactory(DatePickerComponent);
-    return this.viewContainerRef.createComponent(factory).instance;
+    return this.viewContainerRef.createComponent(DatePickerComponent).instance;
   }
 
   attachModelToDatePicker() {
