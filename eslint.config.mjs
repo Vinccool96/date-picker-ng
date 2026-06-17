@@ -183,26 +183,26 @@ export default tseslint.config(
     extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
     rules: {},
   },
-  // {
-  //   files: ['**/*.spec.ts', '**/test/*.ts'],
-  //   plugins: {
-  //     vitest,
-  //   },
-  //   rules: {
-  //     ...vitest.configs.recommended.rules,
-  //     '@typescript-eslint/unbound-method': 'off',
-  //   },
-  //   settings: {
-  //     vitest: {
-  //       typecheck: true,
-  //     },
-  //   },
-  //   languageOptions: {
-  //     globals: {
-  //       ...vitest.environments.env.globals,
-  //     },
-  //   },
-  // },
+  {
+    files: ['**/*.spec.ts', '**/test/*.ts'],
+    // plugins: {
+    //   vitest,
+    // },
+    rules: {
+      // ...vitest.configs.recommended.rules,
+      '@typescript-eslint/unbound-method': 'off',
+    },
+    // settings: {
+    //   vitest: {
+    //     typecheck: true,
+    //   },
+    // },
+    // languageOptions: {
+    //   globals: {
+    //     ...vitest.environments.env.globals,
+    //   },
+    // },
+  },
   {
     languageOptions: {
       globals: {
