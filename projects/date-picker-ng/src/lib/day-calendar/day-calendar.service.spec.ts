@@ -57,12 +57,12 @@ describe('Service: Calendar', () => {
       dayjsRef('11-10-2016', 'DD-MM-YYYY'),
       [dayjsRef('11-10-2016', 'DD-MM-YYYY')],
     );
-    expect(monthWeeks[0][0].date.format('DD-MM-YYYY')).toBe('25-09-2016');
+    expect(monthWeeks[0][0].date?.format('DD-MM-YYYY')).toBe('25-09-2016');
     expect(monthWeeks[0][0].prevMonth).toBe(true);
     expect(monthWeeks[0][0].currentMonth).toBe(false);
     expect(monthWeeks[0][0].nextMonth).toBe(false);
 
-    expect(monthWeeks[5][6].date.format('DD-MM-YYYY')).toBe('05-11-2016');
+    expect(monthWeeks[5][6].date?.format('DD-MM-YYYY')).toBe('05-11-2016');
     expect(monthWeeks[5][6].prevMonth).toBe(false);
     expect(monthWeeks[5][6].currentMonth).toBe(false);
     expect(monthWeeks[5][6].nextMonth).toBe(true);
@@ -74,8 +74,8 @@ describe('Service: Calendar', () => {
       dayjsRef('11-10-2016', 'DD-MM-YYYY'),
       [dayjsRef('11-10-2016', 'DD-MM-YYYY'), dayjsRef('13-10-2016', 'DD-MM-YYYY')],
     );
-    expect(monthWeeks[0][0].date.format('DD-MM-YYYY')).toBe('26-09-2016');
-    expect(monthWeeks[5][6].date.format('DD-MM-YYYY')).toBe('06-11-2016');
+    expect(monthWeeks[0][0].date?.format('DD-MM-YYYY')).toBe('26-09-2016');
+    expect(monthWeeks[5][6].date?.format('DD-MM-YYYY')).toBe('06-11-2016');
     expect(monthWeeks[2][1].selected).toBe(true);
     expect(monthWeeks[2][3].selected).toBe(true);
 
@@ -86,8 +86,8 @@ describe('Service: Calendar', () => {
       dayjsRef('11-10-2016', 'DD-MM-YYYY'),
       [dayjsRef('11-10-2016', 'DD-MM-YYYY')],
     );
-    expect(monthWeeks[0][0].date.format('DD-MM-YYYY')).toBe('26-09-2016');
-    expect(monthWeeks[5][6].date.format('DD-MM-YYYY')).toBe('06-11-2016');
+    expect(monthWeeks[0][0].date?.format('DD-MM-YYYY')).toBe('26-09-2016');
+    expect(monthWeeks[5][6].date?.format('DD-MM-YYYY')).toBe('06-11-2016');
     expect(monthWeeks[2][1].selected).toBe(true);
     expect(monthWeeks[2][3].selected).toBe(false);
 
@@ -98,8 +98,8 @@ describe('Service: Calendar', () => {
       dayjsRef('11-10-2016', 'DD-MM-YYYY'),
       [],
     );
-    expect(monthWeeks[0][0].date.format('DD-MM-YYYY')).toBe('26-09-2016');
-    expect(monthWeeks[5][6].date.format('DD-MM-YYYY')).toBe('06-11-2016');
+    expect(monthWeeks[0][0].date?.format('DD-MM-YYYY')).toBe('26-09-2016');
+    expect(monthWeeks[5][6].date?.format('DD-MM-YYYY')).toBe('06-11-2016');
     expect(monthWeeks[2][1].selected).toBe(false);
     expect(monthWeeks[2][3].selected).toBe(false);
 
@@ -110,8 +110,8 @@ describe('Service: Calendar', () => {
       dayjsRef('11-10-2016', 'DD-MM-YYYY'),
       [],
     );
-    expect(monthWeeks[0][0].date.format('DD-MM-YYYY')).toBe('26-09-2016');
-    expect(monthWeeks[5][6].date.format('DD-MM-YYYY')).toBe('06-11-2016');
+    expect(monthWeeks[0][0].date?.format('DD-MM-YYYY')).toBe('26-09-2016');
+    expect(monthWeeks[5][6].date?.format('DD-MM-YYYY')).toBe('06-11-2016');
     expect(monthWeeks[2][1].selected).toBe(false);
     expect(monthWeeks[2][3].selected).toBe(false);
 
@@ -124,8 +124,8 @@ describe('Service: Calendar', () => {
       dayjsRef('test', 'DD-MM-YYYY'),
       [],
     );
-    expect(monthWeeks[0][0].date.format('DD-MM-YYYY')).toBe('26-09-2016');
-    expect(monthWeeks[5][6].date.format('DD-MM-YYYY')).toBe('06-11-2016');
+    expect(monthWeeks[0][0].date?.format('DD-MM-YYYY')).toBe('26-09-2016');
+    expect(monthWeeks[5][6].date?.format('DD-MM-YYYY')).toBe('06-11-2016');
     expect(monthWeeks[2][1].selected).toBe(false);
     expect(monthWeeks[2][3].selected).toBe(false);
   }));

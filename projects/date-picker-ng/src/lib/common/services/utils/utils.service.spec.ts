@@ -2,6 +2,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { UtilsService } from './utils.service';
 import { IDate } from '../../models/date.model';
 import { dayjsRef } from '../../dayjs/dayjs.ref';
+import { Dayjs } from 'dayjs';
 
 describe('Service: ObUtilsService', () => {
   beforeEach(() => {
@@ -33,21 +34,21 @@ describe('Service: ObUtilsService', () => {
 
     let arr1 = service.updateSelected(false, [], date1, 'day');
     expect(arr1.length).toEqual(1);
-    expect(arr1[0]).toBe(date1.date);
+    expect(arr1[0]).toBe(date1.date as Dayjs);
 
     arr1 = service.updateSelected(false, [], date2, 'day');
     expect(arr1.length).toEqual(1);
-    expect(arr1[0]).toBe(date2.date);
+    expect(arr1[0]).toBe(date2.date as Dayjs);
 
     date1.selected = true;
     const arr2 = service.updateSelected(false, arr1, date1, 'day');
     expect(arr2.length).toEqual(0);
 
     date2.selected = false;
-    expect(service.updateSelected(true, [date1.date], date2, 'day').length).toEqual(2);
+    expect(service.updateSelected(true, [date1.date as Dayjs], date2, 'day').length).toEqual(2);
 
     date1.selected = true;
-    expect(service.updateSelected(true, [date1.date], date1, 'day').length).toEqual(0);
+    expect(service.updateSelected(true, [date1.date as Dayjs], date1, 'day').length).toEqual(0);
   }));
 
   it('should check updateSelected method for month', inject([UtilsService], (service: UtilsService) => {
@@ -68,21 +69,21 @@ describe('Service: ObUtilsService', () => {
 
     let arr1 = service.updateSelected(false, [], date1, 'month');
     expect(arr1.length).toEqual(1);
-    expect(arr1[0]).toBe(date1.date);
+    expect(arr1[0]).toBe(date1.date as Dayjs);
 
     arr1 = service.updateSelected(false, [], date2, 'month');
     expect(arr1.length).toEqual(1);
-    expect(arr1[0]).toBe(date2.date);
+    expect(arr1[0]).toBe(date2.date as Dayjs);
 
     date1.selected = true;
     const arr2 = service.updateSelected(false, arr1, date1, 'month');
     expect(arr2.length).toEqual(0);
 
     date3.selected = false;
-    expect(service.updateSelected(true, [date1.date], date3, 'month').length).toEqual(2);
+    expect(service.updateSelected(true, [date1.date as Dayjs], date3, 'month').length).toEqual(2);
 
     date1.selected = true;
-    expect(service.updateSelected(true, [date1.date], date1, 'month').length).toEqual(0);
+    expect(service.updateSelected(true, [date1.date as Dayjs], date1, 'month').length).toEqual(0);
   }));
 
   it('should check if date is in range', inject([UtilsService], (service: UtilsService) => {

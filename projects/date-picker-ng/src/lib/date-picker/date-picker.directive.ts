@@ -11,7 +11,6 @@ import {
   inject,
   input,
   OnInit,
-  Optional,
   Output,
   signal,
   ViewContainerRef,
@@ -22,7 +21,6 @@ import { UtilsService } from '../common/services/utils/utils.service';
 import { CalendarValue } from '../common/types/calendar-value';
 import { ISelectionEvent } from '../common/types/selection-event.model';
 import { SingleCalendarValue } from '../common/types/single-calendar-value';
-import { Dayjs } from 'dayjs';
 import { Observable } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
 
@@ -71,7 +69,7 @@ export class DatePickerDirective implements OnInit {
       this.markForCheck();
     });
     effect(() => {
-      this.datePicker.mode = this.mode();
+      this.datePicker.mode.set(this.mode());
       this.markForCheck();
     });
     effect(() => {
@@ -191,7 +189,7 @@ export class DatePickerDirective implements OnInit {
     this.datePicker.maxDate.set(this.maxDate());
     this.datePicker.minTime.set(this.minTime());
     this.datePicker.maxTime.set(this.maxTime());
-    this.datePicker.mode = this.mode();
+    this.datePicker.mode.set(this.mode());
     this.datePicker.displayDate.set(this.displayDate());
     this.datePicker.config.set(this.dpDayPicker());
     this.datePicker.open = this.open;

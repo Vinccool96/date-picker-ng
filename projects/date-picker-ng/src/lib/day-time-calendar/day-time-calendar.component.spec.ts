@@ -1,38 +1,18 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { DayTimeCalendarComponent } from './day-time-calendar.component';
-import { DayTimeCalendarService } from './day-time-calendar.service';
-import { DayCalendarComponent } from '../day-calendar/day-calendar.component';
-import { TimeSelectComponent } from '../time-select/time-select.component';
-import { TimeSelectService } from '../time-select/time-select.service';
-import { DayCalendarService } from '../day-calendar/day-calendar.service';
-import { UtilsService } from '../common/services/utils/utils.service';
-import { MonthCalendarComponent } from '../month-calendar/month-calendar.component';
-import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
 describe('Component: DayTimeCalendarComponent', () => {
+  let spectator: Spectator<DayTimeCalendarComponent>;
   let component: DayTimeCalendarComponent;
-  let fixture: ComponentFixture<DayTimeCalendarComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [
-        DayTimeCalendarComponent,
-        DayCalendarComponent,
-        TimeSelectComponent,
-        CalendarNavComponent,
-        MonthCalendarComponent,
-      ],
-      providers: [DayTimeCalendarService, DayCalendarService, TimeSelectService, UtilsService],
-    }).compileComponents();
-  }));
+  const createComponent = createComponentFactory({
+    component: DayTimeCalendarComponent,
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DayTimeCalendarComponent);
-    component = fixture.componentInstance;
-    component.config = component.dayTimeCalendarService.getConfig({});
-    fixture.detectChanges();
+    spectator = createComponent();
+    component = spectator.component;
+    spectator.setInput('config', component.dayTimeCalendarService.getConfig({}));
   });
 
   it('should create', () => {
@@ -41,7 +21,7 @@ describe('Component: DayTimeCalendarComponent', () => {
 
   it('should emit event goToCurrent when nav emit', () => {
     spyOn(component.onGoToCurrent, 'emit');
-    component.dayCalendarRef.onGoToCurrent.emit();
+    component.dayCalendarRef().onGoToCurrent.emit();
     expect(component.onGoToCurrent.emit).toHaveBeenCalledWith();
   });
 });

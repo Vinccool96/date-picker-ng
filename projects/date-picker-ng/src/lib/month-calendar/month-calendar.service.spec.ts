@@ -5,6 +5,7 @@ import { MonthCalendarService } from './month-calendar.service';
 import { IMonth } from './month.model';
 import { Dayjs } from 'dayjs';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { IMonthCalendarConfig } from './month-calendar-config';
 
 describe('Service: MonthCalendarService', () => {
   beforeEach(() => {
@@ -21,8 +22,8 @@ describe('Service: MonthCalendarService', () => {
     let current = year.startOf('year');
     genYear.forEach((row) => {
       row.forEach((month) => {
-        expect(month.date.isSame(current, 'month')).toBe(true);
-        if (month.date.format('MMM') === 'Jan') {
+        expect(month.date?.isSame(current, 'month')).toBe(true);
+        if (month.date?.format('MMM') === 'Jan') {
           expect(month.selected).toBe(true);
         } else {
           expect(month.selected).toBe(false);
@@ -55,13 +56,13 @@ describe('Service: MonthCalendarService', () => {
       disabled: false,
       text: dayjsRef('09-04-2017', 'DD-MM-YYYY').format('MMM'),
     };
-    const config1: any = {
-      min: month.date.subtract(1, 'month'),
-      max: month.date.add(1, 'month'),
+    const config1: IMonthCalendarConfig = {
+      min: month.date?.subtract(1, 'month'),
+      max: month.date?.add(1, 'month'),
     };
 
-    expect(service.isMonthDisabled(month.date, config1)).toBe(false);
-    month.date = month.date.subtract(1, 'month');
+    expect(service.isMonthDisabled(month.date as Dayjs, config1)).toBe(false);
+    month.date = (month.date as Dayjs).subtract(1, 'month');
     expect(service.isMonthDisabled(month.date, config1)).toBe(false);
     month.date = month.date.subtract(1, 'month');
     expect(service.isMonthDisabled(month.date, config1)).toBe(true);
@@ -81,7 +82,7 @@ describe('Service: MonthCalendarService', () => {
         disabled: false,
         text: dayjsRef('01-01-2017', 'DD-MM-YYYY').format('MMM'),
       };
-      const config1: any = {
+      const config1: IMonthCalendarConfig = {
         isMonthDisabledCallback: (m: Dayjs) => {
           return m.get('M') % 2 === 0;
         },
@@ -89,12 +90,12 @@ describe('Service: MonthCalendarService', () => {
 
       for (let i = 0; i < 12; i++) {
         if (i % 2 === 0) {
-          expect(service.isMonthDisabled(month.date, config1)).toBe(true);
+          expect(service.isMonthDisabled(month.date as Dayjs, config1)).toBe(true);
         } else {
-          expect(service.isMonthDisabled(month.date, config1)).toBe(false);
+          expect(service.isMonthDisabled(month.date as Dayjs, config1)).toBe(false);
         }
 
-        month.date = month.date.add(1, 'month');
+        month.date = month.date?.add(1, 'month');
       }
     },
   ));

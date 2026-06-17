@@ -24,12 +24,12 @@ import { IDayCalendarConfig, IDayCalendarConfigInternal } from './day-calendar-c
 import { IDay } from './day.model';
 import {
   ControlValueAccessor,
-  UntypedFormControl,
+  FormsModule,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  UntypedFormControl,
   ValidationErrors,
   Validator,
-  FormsModule,
 } from '@angular/forms';
 import { CalendarValue } from '../common/types/calendar-value';
 import { UtilsService } from '../common/services/utils/utils.service';
@@ -297,7 +297,7 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
   }
 
   monthSelected(month: IMonth) {
-    this.currentDateView = dayjsRef(month.date.toDate());
+    this.currentDateView = dayjsRef(month.date?.toDate());
     this.currentCalendarMode = ECalendarMode.Day;
     this.onMonthSelect.emit(month);
   }

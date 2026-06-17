@@ -149,7 +149,7 @@ export class UtilsService {
     }
   }
 
-  convertToString(value: CalendarValue, format: string | undefined): string {
+  convertToString(value: CalendarValue | null, format: string | undefined): string {
     let tmpVal: string[];
 
     if (typeof value === 'string') {
@@ -189,10 +189,10 @@ export class UtilsService {
   ): Dayjs[] {
     if (isMultiple) {
       return !date.selected
-        ? currentlySelected.concat([date.date])
+        ? currentlySelected.concat([date.date as Dayjs])
         : currentlySelected.filter((d) => !d.isSame(date.date, granularity));
     } else {
-      return !date.selected ? [date.date] : [];
+      return !date.selected ? [date.date as Dayjs] : [];
     }
   }
 
@@ -333,7 +333,11 @@ export class UtilsService {
     return showGoToCurrent === true && mode !== 'time' && this.isDateInRange(dayjsRef(), min, max);
   }
 
-  public isDateInRange(date: Dayjs | undefined, from: Dayjs | undefined, to: Dayjs | undefined): boolean {
+  public isDateInRange(
+    date: Dayjs | null | undefined,
+    from: Dayjs | null | undefined,
+    to: Dayjs | null | undefined,
+  ): boolean {
     if (!date) {
       return false;
     }

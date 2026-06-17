@@ -1,21 +1,18 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
 import { CalendarNavComponent } from './calendar-nav.component';
 
 describe('CalendarNavComponent', () => {
+  let spectator: Spectator<CalendarNavComponent>;
   let component: CalendarNavComponent;
-  let fixture: ComponentFixture<CalendarNavComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [CalendarNavComponent],
-    }).compileComponents();
-  }));
+  const createComponent = createComponentFactory({
+    component: CalendarNavComponent,
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CalendarNavComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    spectator = createComponent();
+    component = spectator.component;
   });
 
   it('should create', () => {
@@ -23,8 +20,7 @@ describe('CalendarNavComponent', () => {
   });
 
   it('should emit event when go to current click', () => {
-    const nativeElement = fixture.nativeElement;
-    const goToCurrent = nativeElement.querySelector('.dp-current-location-btn');
+    const goToCurrent = spectator.query('.dp-current-location-btn') as HTMLElement;
 
     spyOn(component.onGoToCurrent, 'emit');
     goToCurrent.dispatchEvent(new Event('click'));

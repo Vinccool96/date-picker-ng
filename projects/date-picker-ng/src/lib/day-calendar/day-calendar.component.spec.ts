@@ -1,32 +1,20 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { UtilsService } from '../common/services/utils/utils.service';
-import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
-
 import { DayCalendarComponent } from './day-calendar.component';
-import { DayCalendarService } from './day-calendar.service';
-import { MonthCalendarComponent } from '../month-calendar/month-calendar.component';
 import { IDay } from './day.model';
-import { FormsModule } from '@angular/forms';
-import { Dayjs } from 'dayjs';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
 describe('Component: DayCalendarComponent', () => {
+  let spectator: Spectator<DayCalendarComponent>;
   let component: DayCalendarComponent;
-  let fixture: ComponentFixture<DayCalendarComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [DayCalendarComponent, CalendarNavComponent, MonthCalendarComponent],
-      providers: [DayCalendarService, UtilsService],
-    }).compileComponents();
-  }));
+  const createComponent = createComponentFactory({
+    component: DayCalendarComponent,
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DayCalendarComponent);
-    component = fixture.componentInstance;
-    component.config = component.dayCalendarService.getConfig({});
-    fixture.detectChanges();
+    spectator = createComponent();
+    component = spectator.component;
+    spectator.setInput('config', component.dayCalendarService.getConfig({}));
   });
 
   it('should create', () => {
@@ -119,7 +107,7 @@ describe('Component: DayCalendarComponent', () => {
     });
 
     it('custom days', () => {
-      component.componentConfig.dayBtnCssClassCallback = (day: Dayjs) => 'custom-class';
+      component.componentConfig.dayBtnCssClassCallback = () => 'custom-class';
 
       expect(
         component.getDayBtnCssClass({

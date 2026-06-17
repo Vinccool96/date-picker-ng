@@ -35,7 +35,6 @@ import {
   Renderer2,
   SimpleChanges,
   viewChild,
-  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -92,9 +91,9 @@ import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
 export class DatePickerComponent implements OnChanges, OnInit, ControlValueAccessor, Validator, OnDestroy {
   isInitialized = false;
   public readonly config = model.required<IDatePickerConfig>();
-  @Input() mode: CalendarMode = 'day';
-  @Input() placeholder = '';
-  @Input() disabled = false;
+  public readonly mode = model<CalendarMode>('day');
+  public readonly placeholder = input('');
+  public readonly disabled = model(false);
   public readonly displayDate = model<SingleCalendarValue | null>(null);
   @HostBinding('class') @Input() theme!: string;
   public readonly minDate = model<SingleCalendarValue>();
@@ -109,9 +108,9 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
   @Output() onRightNav = new EventEmitter<INavEvent>();
   @Output() onSelect = new EventEmitter<ISelectionEvent>();
   public readonly calendarContainer = viewChild<ElementRef>('container');
-  private readonly dayCalendarRef = viewChild<DayCalendarComponent>('dayCalendar');
-  private readonly monthCalendarRef = viewChild<MonthCalendarComponent>('monthCalendar');
-  private readonly dayTimeCalendarRef = viewChild<DayTimeCalendarComponent>('daytimeCalendar');
+  public readonly dayCalendarRef = viewChild<DayCalendarComponent>('dayCalendar');
+  public readonly monthCalendarRef = viewChild<MonthCalendarComponent>('monthCalendar');
+  public readonly dayTimeCalendarRef = viewChild<DayTimeCalendarComponent>('daytimeCalendar');
   private readonly timeSelectRef = viewChild<TimeSelectComponent>('timeSelect');
   private readonly inputElement = viewChild.required<ElementRef<HTMLInputElement>>('inputElement');
   componentConfig: IDatePickerConfigInternal = {};
@@ -263,7 +262,7 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
         maxTime: this.maxTime(),
       },
       this.componentConfig.format,
-      this.mode,
+      this.mode(),
     );
 
     this.onChangeCallback(this.processOnChangeCallback(this.selected), false);
@@ -285,12 +284,12 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this.disabled.set(isDisabled);
     this.cd.markForCheck();
   }
 
   init(): void {
-    this.componentConfig = this.dayPickerService.getConfig(this.config(), this.mode);
+    this.componentConfig = this.dayPickerService.getConfig(this.config(), this.mode());
     this.currentDateView = this.displayDate()
       ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
       : this.utilsService.getDefaultDisplayDate(
@@ -385,7 +384,7 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
     }
 
     this.onSelect.emit({
-      date: date.date,
+      date: date.date as Dayjs,
       granularity,
       type,
     });

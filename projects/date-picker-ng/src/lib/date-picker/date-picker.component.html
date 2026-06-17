@@ -10,7 +10,7 @@
       (focus)="inputFocused()"
       (keydown.enter)="componentConfig.closeOnEnter && hideCalendar()"
       (ngModelChange)="onViewDateChange($event)"
-      [disabled]="disabled"
+      [disabled]="disabled()"
       [ngModel]="inputElementValue"
       [placeholder]="placeholder"
       [readonly]="componentConfig.disableKeypress"
@@ -28,7 +28,7 @@
   >
     <div #container>
       <div [attr.data-hidden]="!areCalendarsShown" class="dp-popup {{ theme }}">
-        @switch (mode) {
+        @switch (mode()) {
           @case ('day') {
             <dp-day-calendar
               #dayCalendar

@@ -23,7 +23,7 @@
         @for (month of monthRow; track month) {
           <button
             (click)="monthClicked(month)"
-            [attr.data-date]="month.date.format(componentConfig.format)"
+            [attr.data-date]="month.date?.format(componentConfig.format)"
             [disabled]="month.disabled"
             [innerText]="month.text"
             [ngClass]="getMonthBtnCssClass(month)"

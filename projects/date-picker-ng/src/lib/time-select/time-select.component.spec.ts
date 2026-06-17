@@ -1,27 +1,18 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { UtilsService } from '../common/services/utils/utils.service';
-import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
 import { TimeSelectComponent } from './time-select.component';
-import { TimeSelectService } from './time-select.service';
-import { MonthCalendarComponent } from '../month-calendar/month-calendar.component';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
-describe('Component: TimeSelectComponent', () => {
+describe('TimeSelectComponent', () => {
+  let spectator: Spectator<TimeSelectComponent>;
   let component: TimeSelectComponent;
-  let fixture: ComponentFixture<TimeSelectComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [TimeSelectComponent, CalendarNavComponent, MonthCalendarComponent],
-      providers: [TimeSelectService, UtilsService],
-    }).compileComponents();
-  }));
+  const createComponent = createComponentFactory({
+    component: TimeSelectComponent,
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimeSelectComponent);
-    component = fixture.componentInstance;
-    component.config = component.timeSelectService.getConfig({});
-    fixture.detectChanges();
+    spectator = createComponent();
+    component = spectator.component;
   });
 
   it('should create', () => {

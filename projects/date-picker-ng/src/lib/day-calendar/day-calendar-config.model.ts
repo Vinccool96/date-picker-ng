@@ -20,7 +20,7 @@ interface IConfig {
   yearFormatter?: (year: Dayjs) => string;
   dayBtnFormat?: string;
   dayBtnFormatter?: (day: Dayjs) => string;
-  dayBtnCssClassCallback?: (day: Dayjs) => string;
+  dayBtnCssClassCallback?: (day: Dayjs | undefined) => string;
   monthBtnFormat?: string;
   monthBtnFormatter?: (day: Dayjs) => string;
   monthBtnCssClassCallback?: (day: Dayjs) => string;

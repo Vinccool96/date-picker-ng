@@ -1,27 +1,20 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MonthCalendarComponent } from './month-calendar.component';
-import { UtilsService } from '../common/services/utils/utils.service';
-import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
-import { MonthCalendarService } from './month-calendar.service';
 import { Dayjs } from 'dayjs';
 import { IMonth } from './month.model';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
 describe('Component: MonthCalendarComponent', () => {
+  let spectator: Spectator<MonthCalendarComponent>;
   let component: MonthCalendarComponent;
-  let fixture: ComponentFixture<MonthCalendarComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [MonthCalendarComponent, CalendarNavComponent],
-      providers: [MonthCalendarService, UtilsService],
-    }).compileComponents();
-  }));
+  const createComponent = createComponentFactory({
+    component: MonthCalendarComponent,
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MonthCalendarComponent);
-    component = fixture.componentInstance;
-    component.config = component.monthCalendarService.getConfig({});
-    fixture.detectChanges();
+    spectator = createComponent();
+    component = spectator.component;
+    spectator.setInput('config', component.monthCalendarService.getConfig({}));
   });
 
   it('should create', () => {

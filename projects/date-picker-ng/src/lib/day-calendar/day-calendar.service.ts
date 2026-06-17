@@ -179,15 +179,17 @@ export class DayCalendarService {
     });
   }
 
-  getDayBtnText(config: IDayCalendarConfigInternal, day: Dayjs): string {
+  getDayBtnText(config: IDayCalendarConfigInternal, day: Dayjs | undefined): string {
+    const date = day ?? dayjsRef();
+
     if (config.dayBtnFormatter) {
-      return config.dayBtnFormatter(day);
+      return config.dayBtnFormatter(date);
     }
 
-    return day.format(config.dayBtnFormat);
+    return date.format(config.dayBtnFormat);
   }
 
-  getDayBtnCssClass(config: IDayCalendarConfigInternal, day: Dayjs): string {
+  public getDayBtnCssClass(config: IDayCalendarConfigInternal, day: Dayjs | undefined): string {
     if (config.dayBtnCssClassCallback) {
       return config.dayBtnCssClassCallback(day);
     }
@@ -196,7 +198,7 @@ export class DayCalendarService {
   }
 
   private removeNearMonthWeeks(currentMonth: Dayjs, monthArray: IDay[][]): IDay[][] {
-    if (monthArray[monthArray.length - 1].find((day) => day.date.isSame(currentMonth, 'month'))) {
+    if (monthArray[monthArray.length - 1].find((day) => day.date?.isSame(currentMonth, 'month') ?? false)) {
       return monthArray;
     } else {
       return monthArray.slice(0, -1);

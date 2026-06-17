@@ -22,12 +22,12 @@
       @for (week of weeks; track week) {
         <div class="dp-calendar-week">
           @if (componentConfig.showWeekNumbers) {
-            <span [innerText]="week[0].date.isoWeek()" class="dp-week-number"> </span>
+            <span [innerText]="week[0].date?.isoWeek()" class="dp-week-number"> </span>
           }
           @for (day of week; track day) {
             <button
               (click)="dayClicked(day)"
-              [attr.data-date]="day.date.format(componentConfig.format)"
+              [attr.data-date]="day.date?.format(componentConfig.format)"
               [disabled]="day.disabled"
               [innerText]="getDayBtnText(day)"
               [ngClass]="getDayBtnCssClass(day)"
