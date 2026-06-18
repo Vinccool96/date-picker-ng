@@ -1,14 +1,16 @@
-import debounce from '../../../projects/date-picker-ng/src/lib/common/decorators/decorators';
-import { IDatePickerConfig } from '../../../projects/date-picker-ng/src/lib/date-picker/date-picker-config.model';
-import { DatePickerComponent } from '../../../projects/date-picker-ng/src/lib/date-picker/date-picker.component';
-import { DatePickerDirective } from '../../../projects/date-picker-ng/src/lib/date-picker/date-picker.directive';
 import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs';
 import { GaService } from './common/services/ga/ga.service';
-import { ECalendarValue } from '../../../projects/date-picker-ng/src/lib/common/types/calendar-value-enum';
-import { INavEvent } from '../../../projects/date-picker-ng/src/lib/common/models/navigation-event.model';
-import { ISelectionEvent } from '../../../projects/date-picker-ng/src/lib/common/types/selection-event.model';
+import {
+  DatePickerComponent,
+  DatePickerDirective,
+  debounce,
+  ECalendarValue,
+  IDatePickerConfig,
+  INavEvent,
+  ISelectionEvent,
+} from 'date-picker-ng';
 
 @Component({
   selector: 'dp-demo',
@@ -34,7 +36,7 @@ export class DemoComponent implements OnInit {
   validationMaxTime: Dayjs;
   placeholder: string = 'Choose a date...';
   displayDate: Dayjs | string;
-  dateTypes: { name: string; value: ECalendarValue }[] = [
+  dateTypes: { name: string; value: ECalendarValue | null }[] = [
     {
       name: 'Guess',
       value: null,
@@ -92,7 +94,7 @@ export class DemoComponent implements OnInit {
     hideOnOutsideClick: true,
   };
 
-  formGroup: UntypedFormGroup;
+  formGroup!: UntypedFormGroup;
   isAtTop: boolean = true;
 
   private readonly gaService = inject(GaService);
@@ -108,7 +110,7 @@ export class DemoComponent implements OnInit {
   }
 
   validatorsChanged() {
-    this.formGroup.get('datePicker').updateValueAndValidity();
+    this.formGroup.get('datePicker')?.updateValueAndValidity();
   }
 
   openCalendar() {
@@ -167,7 +169,7 @@ export class DemoComponent implements OnInit {
   private buildForm(): UntypedFormGroup {
     return new UntypedFormGroup({
       datePicker: new UntypedFormControl({ value: this.date, disabled: this.disabled }, [
-        this.required ? Validators.required : () => undefined,
+        this.required ? Validators.required : () => null,
         (control) => {
           return this.validationMinDate &&
             this.config &&
@@ -175,7 +177,7 @@ export class DemoComponent implements OnInit {
               this.validationMinDate,
             )
             ? { minDate: 'minDate Invalid' }
-            : undefined;
+            : null;
         },
         (control) =>
           this.validationMaxDate &&
@@ -184,7 +186,7 @@ export class DemoComponent implements OnInit {
             this.validationMaxDate,
           )
             ? { maxDate: 'maxDate Invalid' }
-            : undefined,
+            : null,
       ]),
     });
   }
@@ -209,5 +211,6 @@ export class DemoComponent implements OnInit {
       case 'timeDirective':
         return 'HH:mm:ss';
     }
+    throw new Error(`Invalid mode: ${mode}`);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { ECalendarValue, IDatePickerConfig } from '../../../../projects/date-picker-ng/src/public-api';
+import { ECalendarValue, IDatePickerConfig } from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
 
 const GLOBAL_OPTION_KEYS = ['theme', 'locale', 'returnedValueType', 'displayDate'];

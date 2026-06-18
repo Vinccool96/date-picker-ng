@@ -12,6 +12,7 @@
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "test:ci:lib": "ng test date-picker-ng --watch=false --browsers=ChromeHeadless",
+    "test:ci:demo": "ng test date-picker-ng-demo --watch=false --browsers=ChromeHeadless",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
     "lint": "ng lint",
@@ -19,7 +20,7 @@
     "lint:lib": "ng lint date-picker-ng",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
-    "build:demo": "rm -rf dist/ && ng build ng2-date-picker-demo --configuration production && npm run build:index",
+    "build:demo": "rm -rf dist/ && ng build date-picker-ng-demo --configuration production && npm run build:index",
     "release": "npm run build:lib && cd dist/date-picker-ng && npm publish"
   },
   "repository": {
@@ -47,6 +48,7 @@
     "@angular-devkit/build-angular": "^21.1.3",
     "@angular-devkit/core": "^21.1.3",
     "@angular/animations": "^21.1.3",
+    "@angular/build": "^21.1.3",
     "@angular/cli": "^21.1.3",
     "@angular/common": "^21.1.3",
     "@angular/compiler": "^21.1.3",

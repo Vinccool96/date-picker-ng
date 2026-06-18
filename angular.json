@@ -52,36 +52,41 @@
         }
       }
     },
-    "ng2-date-picker-demo": {
-      "root": "",
-      "sourceRoot": "src",
+    "date-picker-ng-demo": {
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
+      "root": "projects/date-picker-ng-demo",
+      "sourceRoot": "projects/date-picker-ng-demo/src",
+      "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": {
-              "base": "dist"
-            },
-            "index": "src/index.html",
-            "tsConfig": "tsconfig.app.json",
+            "browser": "projects/date-picker-ng-demo/src/main.ts",
+            "tsConfig": "projects/date-picker-ng-demo/tsconfig.app.json",
+            "inlineStyleLanguage": "less",
             "polyfills": [
-              "src/polyfills.ts"
+              "projects/date-picker-ng-demo/src/polyfills.ts"
             ],
             "assets": [
-              "src/assets",
-              "src/favicon.ico"
+              {
+                "glob": "**/*",
+                "input": "projects/date-picker-ng-demo/public"
+              }
             ],
             "styles": [
-              "src/styles.less",
+              "projects/date-picker-ng-demo/src/styles.less",
               "node_modules/@angular/cdk/overlay-prebuilt.css"
             ],
             "scripts": [],
             "extractLicenses": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true,
-            "browser": "src/main.ts"
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -98,45 +103,40 @@
               "extractLicenses": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/date-picker-ng-demo/src/environments/environment.ts",
+                  "with": "projects/date-picker-ng-demo/src/environments/environment.prod.ts"
                 }
               ]
-            }
+            },
+            "development": {}
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "buildTarget": "ng2-date-picker-demo:build"
-          },
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ng2-date-picker-demo:build:production"
+              "buildTarget": "date-picker-ng-demo:build:production"
+            },
+            "development": {
+              "buildTarget": "date-picker-ng-demo:build:development"
             }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "ng2-date-picker-demo:build"
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
+            "main": "projects/date-picker-ng-demo/src/test.ts",
+            "karmaConfig": "projects/date-picker-ng-demo/karma.conf.js",
+            "polyfills": "projects/date-picker-ng-demo/src/polyfills.ts",
+            "tsConfig": "projects/date-picker-ng-demo/tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "src/styles.less"
+              "projects/date-picker-ng-demo/src/styles.less"
             ],
             "assets": [
-              "src/assets",
-              "src/favicon.ico"
+              "projects/date-picker-ng-demo/public"
             ]
           }
         },
@@ -144,14 +144,15 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+              "projects/date-picker-ng-demo/**/*.ts",
+              "projects/date-picker-ng-demo/**/*.html"
+            ],
+            "eslintConfig": "projects/date-picker-ng-demo/eslint.config.mjs"
           }
         }
       }
     },
-    "ng2-date-picker-demo-e2e": {
+    "date-picker-ng-demo-e2e": {
       "root": "",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -160,7 +161,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "ng2-date-picker-demo:serve"
+            "devServerTarget": "date-picker-ng-demo:serve"
           }
         },
         "lint": {

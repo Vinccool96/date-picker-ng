@@ -5,7 +5,7 @@ import { DemoComponent } from './demo/demo.component';
 import { DemoRootComponent } from './demo-root.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DpDatePickerModule } from '../../projects/date-picker-ng/src/lib/date-picker.module';
+import { DpDatePickerModule } from 'date-picker-ng';
 import { GaService } from './demo/common/services/ga/ga.service';
 import { ConfigFormComponent } from './demo/config-form/config-form.component';
 import { DayTimeDemoComponent } from './demo/date-pickers/day-time/day-time-demo/day-time-demo.component';

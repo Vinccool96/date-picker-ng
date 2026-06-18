@@ -29,5 +29,22 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "references": [
+    {
+      "path": "./projects/date-picker-ng/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/date-picker-ng/tsconfig.lib.prod.json"
+    },
+    {
+      "path": "./projects/date-picker-ng/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/date-picker-ng-demo/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/date-picker-ng-demo/tsconfig.spec.json"
+    }
+  ]
 }

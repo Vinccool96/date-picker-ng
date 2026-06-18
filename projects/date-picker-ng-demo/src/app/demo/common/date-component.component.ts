@@ -1,5 +1,4 @@
-import { INavEvent } from '../../../../projects/date-picker-ng/src/lib/common/models/navigation-event.model';
-import { DatePickerComponent, DatePickerDirective } from '../../../../projects/date-picker-ng/src/public-api';
+import { INavEvent, DatePickerComponent, DatePickerDirective } from 'date-picker-ng';
 import { Directive, ViewChild } from '@angular/core';
 import { UntypedFormControl, ValidatorFn, Validators } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs';
