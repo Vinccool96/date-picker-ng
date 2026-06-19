@@ -38,7 +38,7 @@ describe('DayCalendarComponent', () => {
       nextMonth: false,
       currentDay: false,
     };
-    const defaultCssClasses: { [klass: string]: boolean } = {
+    const defaultCssClasses: Record<string, boolean> = {
       'dp-selected': false,
       'dp-current-month': false,
       'dp-prev-month': false,
@@ -51,7 +51,7 @@ describe('DayCalendarComponent', () => {
         component.getDayBtnCssClass({
           ...defaultDay,
           selected: true,
-        } as IDay),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'dp-selected': true,
@@ -63,7 +63,7 @@ describe('DayCalendarComponent', () => {
         component.getDayBtnCssClass({
           ...defaultDay,
           currentMonth: true,
-        } as IDay),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'dp-current-month': true,
@@ -75,7 +75,7 @@ describe('DayCalendarComponent', () => {
         component.getDayBtnCssClass({
           ...defaultDay,
           prevMonth: true,
-        } as IDay),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'dp-prev-month': true,
@@ -87,7 +87,7 @@ describe('DayCalendarComponent', () => {
         component.getDayBtnCssClass({
           ...defaultDay,
           nextMonth: true,
-        } as IDay),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'dp-next-month': true,
@@ -99,7 +99,7 @@ describe('DayCalendarComponent', () => {
         component.getDayBtnCssClass({
           ...defaultDay,
           currentDay: true,
-        } as IDay),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'dp-current-day': true,
@@ -112,7 +112,7 @@ describe('DayCalendarComponent', () => {
       expect(
         component.getDayBtnCssClass({
           ...defaultDay,
-        } as IDay),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'custom-class': true,

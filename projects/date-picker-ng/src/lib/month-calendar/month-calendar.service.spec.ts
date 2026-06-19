@@ -43,7 +43,9 @@ describe('Service: MonthCalendarService', () => {
         const genYear = service.generateYear({ numOfMonthRows }, year, []);
         expect(genYear.length).toBe(numOfMonthRows);
 
-        genYear.forEach((row) => expect(row.length).toBe(12 / numOfMonthRows));
+        genYear.forEach((row) => {
+          expect(row.length).toBe(12 / numOfMonthRows);
+        });
       });
     },
   ));

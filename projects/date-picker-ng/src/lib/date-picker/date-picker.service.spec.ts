@@ -16,22 +16,22 @@ describe('DatePickerService', () => {
   });
 
   it('should check getConfig method for dates format', inject([DatePickerService], (service: DatePickerService) => {
-    const config1 = service.getConfig(<any>{
+    const config1 = service.getConfig({
       min: '2016-10-25',
       max: '2017-10-25',
       format: 'YYYY-MM-DD',
     });
 
-    expect((<Dayjs>config1.min).isSame(dayjsRef('2016-10-25', 'YYYY-MM-DD'), 'day')).toBe(true);
-    expect((<Dayjs>config1.max).isSame(dayjsRef('2017-10-25', 'YYYY-MM-DD'), 'day')).toBe(true);
+    expect((config1.min as Dayjs).isSame(dayjsRef('2016-10-25', 'YYYY-MM-DD'), 'day')).toBe(true);
+    expect((config1.max as Dayjs).isSame(dayjsRef('2017-10-25', 'YYYY-MM-DD'), 'day')).toBe(true);
 
     const config2 = service.getConfig({
       min: dayjsRef('2016-10-25', 'YYYY-MM-DD'),
       max: dayjsRef('2017-10-25', 'YYYY-MM-DD'),
     });
 
-    expect((<Dayjs>config2.min).isSame(dayjsRef('2016-10-25', 'YYYY-MM-DD'), 'day')).toBe(true);
-    expect((<Dayjs>config2.max).isSame(dayjsRef('2017-10-25', 'YYYY-MM-DD'), 'day')).toBe(true);
+    expect((config2.min as Dayjs).isSame(dayjsRef('2016-10-25', 'YYYY-MM-DD'), 'day')).toBe(true);
+    expect((config2.max as Dayjs).isSame(dayjsRef('2017-10-25', 'YYYY-MM-DD'), 'day')).toBe(true);
 
     expect(service.getConfig({}, 'time').format).toEqual('HH:mm:ss');
     expect(service.getConfig({}, 'daytime').format).toEqual('DD-MM-YYYY HH:mm:ss');

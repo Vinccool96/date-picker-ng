@@ -8,19 +8,19 @@ export abstract class DateComponent {
   private readonly dateComponent = viewChild<DatePickerComponent>('dateComponent');
   private readonly dateDirective = viewChild(DatePickerDirective);
 
-  ready: boolean = true;
+  ready = true;
   control: UntypedFormControl = this.buildForm();
 
   abstract config;
   date = dayjs();
-  material: boolean = true;
-  required: boolean = false;
-  disabled: boolean = false;
+  material = true;
+  required = false;
+  disabled = false;
   validationMinDate?: Dayjs;
   validationMaxDate?: Dayjs;
   validationMinTime?: Dayjs;
   validationMaxTime?: Dayjs;
-  placeholder: string = 'Choose a date...';
+  placeholder = 'Choose a date...';
   displayDate: Dayjs | string = '';
   locale: string = dayjs.locale();
 

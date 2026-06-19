@@ -7,7 +7,7 @@ export function debounce(ms: number = DEFAULT_DEBOUNCE_MS) {
     return {
       configurable: true,
       enumerable: descriptor.enumerable,
-      get: function () {
+      get() {
         Object.defineProperty(this, propertyKey, {
           configurable: true,
           enumerable: descriptor.enumerable,

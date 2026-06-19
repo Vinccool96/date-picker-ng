@@ -25,10 +25,10 @@ export class MonthCalendarService {
   constructor(private utilsService: UtilsService) {}
 
   public getConfig(config: IMonthCalendarConfig | undefined): IMonthCalendarConfigInternal {
-    const _config = <IMonthCalendarConfigInternal>{
+    const _config = {
       ...this.DEFAULT_CONFIG,
       ...this.utilsService.clearUndefined(config),
-    };
+    } as IMonthCalendarConfigInternal;
 
     MonthCalendarService.validateConfig(_config);
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);

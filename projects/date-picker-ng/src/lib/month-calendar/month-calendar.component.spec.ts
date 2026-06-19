@@ -29,7 +29,7 @@ describe('Component: MonthCalendarComponent', () => {
       disabled: false,
       text: '',
     };
-    const defaultCssClasses: { [klass: string]: boolean } = {
+    const defaultCssClasses: Record<string, boolean> = {
       'dp-selected': false,
       'dp-current-month': false,
     };
@@ -39,7 +39,7 @@ describe('Component: MonthCalendarComponent', () => {
         component.getMonthBtnCssClass({
           ...defaultMonth,
           selected: true,
-        } as IMonth),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'dp-selected': true,
@@ -51,7 +51,7 @@ describe('Component: MonthCalendarComponent', () => {
         component.getMonthBtnCssClass({
           ...defaultMonth,
           currentMonth: true,
-        } as IMonth),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'dp-current-month': true,
@@ -64,7 +64,7 @@ describe('Component: MonthCalendarComponent', () => {
       expect(
         component.getMonthBtnCssClass({
           ...defaultMonth,
-        } as IMonth),
+        }),
       ).toEqual({
         ...defaultCssClasses,
         'custom-class': true,

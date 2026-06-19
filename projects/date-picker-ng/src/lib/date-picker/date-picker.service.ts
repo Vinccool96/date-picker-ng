@@ -9,13 +9,13 @@ import { ITimeSelectConfig } from '../time-select/time-select-config.model';
 import { CalendarMode } from '../common/types/calendar-mode';
 import { Dayjs } from 'dayjs';
 import { IDayTimeCalendarConfig } from '../day-time-calendar/day-time-calendar-config.model';
-import { ConnectedPosition, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DatePickerService {
-  public readonly onPickerClosed: EventEmitter<null> = new EventEmitter();
+  public readonly onPickerClosed = new EventEmitter<null>();
   private defaultConfig: IDatePickerConfigInternal = {
     closeOnSelect: true,
     closeOnSelectDelay: 100,
@@ -40,11 +40,11 @@ export class DatePickerService {
 
   // todo:: add unit tests
   getConfig(config: IDatePickerConfig, mode: CalendarMode = 'daytime'): IDatePickerConfigInternal {
-    const _config = <IDatePickerConfigInternal>{
+    const _config = {
       ...this.defaultConfig,
       format: DatePickerService.getDefaultFormatByMode(mode),
       ...this.utilsService.clearUndefined(config),
-    };
+    } as IDatePickerConfigInternal;
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);
 

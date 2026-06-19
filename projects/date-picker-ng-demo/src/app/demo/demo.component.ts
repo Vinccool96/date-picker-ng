@@ -28,12 +28,12 @@ export class DemoComponent implements OnInit {
 
   date: Dayjs | null = null;
   dates: Dayjs[] = [];
-  material: boolean = true;
-  required: boolean = false;
-  disabled: boolean = false;
+  material = true;
+  required = false;
+  disabled = false;
   validationMinDate: Dayjs | null = null;
   validationMaxDate: Dayjs | null = null;
-  placeholder: string = 'Choose a date...';
+  placeholder = 'Choose a date...';
   displayDate!: Dayjs | string;
   dateTypes: { name: string; value: ECalendarValue | null }[] = [
     {
@@ -94,7 +94,7 @@ export class DemoComponent implements OnInit {
   };
 
   formGroup!: UntypedFormGroup;
-  isAtTop: boolean = true;
+  isAtTop = true;
 
   private readonly gaService = inject(GaService);
 

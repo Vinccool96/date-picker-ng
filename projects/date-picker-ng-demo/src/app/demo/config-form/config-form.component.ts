@@ -242,7 +242,7 @@ export class ConfigFormComponent implements OnInit {
     },
   ];
 
-  localFormat: string = '';
+  localFormat = '';
 
   public readonly pickerMode = input<string>();
   public readonly config = input<IDatePickerConfig>({});

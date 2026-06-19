@@ -32,10 +32,10 @@ export class DatePickerDirective implements OnInit {
   @Output() open = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
   @Output() onChange = new EventEmitter<CalendarValue>();
-  @Output() onGoToCurrent: EventEmitter<void> = new EventEmitter();
-  @Output() onLeftNav: EventEmitter<INavEvent> = new EventEmitter();
-  @Output() onRightNav: EventEmitter<INavEvent> = new EventEmitter();
-  @Output() onSelect: EventEmitter<ISelectionEvent> = new EventEmitter();
+  @Output() onGoToCurrent = new EventEmitter<void>();
+  @Output() onLeftNav = new EventEmitter<INavEvent>();
+  @Output() onRightNav = new EventEmitter<INavEvent>();
+  @Output() onSelect = new EventEmitter<ISelectionEvent>();
   private datePicker!: DatePickerComponent;
   public api!: IDpDayPickerApi;
   public readonly theme = input.required<string>();
