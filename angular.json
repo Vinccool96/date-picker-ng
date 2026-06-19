@@ -136,7 +136,10 @@
               "projects/date-picker-ng-demo/src/styles.less"
             ],
             "assets": [
-              "projects/date-picker-ng-demo/public"
+              {
+                "glob": "**/*",
+                "input": "projects/date-picker-ng-demo/public"
+              }
             ]
           }
         },

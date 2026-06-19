@@ -10,5 +10,5 @@
       "date-picker-ng": ["../date-picker-ng/index"]
     }
   },
-  "include": ["src/**/*.d.ts", "src/**/*.spec.ts"]
+  "include": ["src/**/*.d.ts", "src/**/*.spec.ts", "src/polyfills.ts", "src/test.ts"]
 }

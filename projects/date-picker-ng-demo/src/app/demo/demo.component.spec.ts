@@ -2,15 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DemoComponent } from './demo.component';
 import { GaService } from './common/services/ga/ga.service';
+import { ActivatedRoute } from '@angular/router';
 
-describe('Component: Demo', () => {
+describe('Demo', () => {
   let component: DemoComponent;
   let fixture: ComponentFixture<DemoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DemoComponent],
-      providers: [GaService],
+      imports: [DemoComponent],
+      providers: [GaService, { provide: ActivatedRoute, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
@@ -18,7 +19,7 @@ describe('Component: Demo', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
