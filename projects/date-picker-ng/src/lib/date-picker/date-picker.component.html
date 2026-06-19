@@ -21,13 +21,13 @@
   <ng-template
     cdkConnectedOverlay
     [cdkConnectedOverlayPositions]="overlayPosition"
-    [cdkConnectedOverlayOrigin]="origin || trigger"
+    [cdkConnectedOverlayOrigin]="origin ?? trigger"
     [cdkConnectedOverlayOpen]="areCalendarsShown"
     [cdkConnectedOverlayHasBackdrop]="false"
     (overlayOutsideClick)="onBodyClick($event)"
   >
     <div #container>
-      <div [attr.data-hidden]="!areCalendarsShown" class="dp-popup {{ theme }}">
+      <div [attr.data-hidden]="!areCalendarsShown" class="dp-popup {{ theme() }}">
         @switch (mode()) {
           @case ('day') {
             <dp-day-calendar
@@ -39,7 +39,7 @@
               [config]="dayCalendarConfig"
               [displayDate]="displayDate()"
               [ngModel]="_selected"
-              [theme]="theme"
+              [theme]="theme()"
             >
             </dp-day-calendar>
           }
@@ -53,7 +53,7 @@
               [config]="dayCalendarConfig"
               [displayDate]="displayDate()"
               [ngModel]="_selected"
-              [theme]="theme"
+              [theme]="theme()"
             >
             </dp-month-calendar>
           }
@@ -63,7 +63,7 @@
               (onChange)="dateSelected($event, 'second', selectEvent.SELECTION, true)"
               [config]="timeSelectConfig"
               [ngModel]="_selected && _selected[0]"
-              [theme]="theme"
+              [theme]="theme()"
             >
             </dp-time-select>
           }
@@ -77,7 +77,7 @@
               [config]="dayTimeCalendarConfig"
               [displayDate]="displayDate()"
               [ngModel]="_selected && _selected[0]"
-              [theme]="theme"
+              [theme]="theme()"
             >
             </dp-day-time-calendar>
           }

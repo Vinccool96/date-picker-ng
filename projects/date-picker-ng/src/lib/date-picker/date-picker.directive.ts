@@ -54,7 +54,7 @@ export class DatePickerDirective implements OnInit {
 
   public constructor() {
     effect(() => {
-      this.datePicker.theme = this.theme();
+      this.datePicker.theme.set(this.theme());
       this.markForCheck();
     });
     effect(() => {
@@ -102,7 +102,7 @@ export class DatePickerDirective implements OnInit {
     this.api = this.datePicker.api;
     this.updateDatepickerConfig();
     this.attachModelToDatePicker();
-    this.datePicker.theme = this.theme();
+    this.datePicker.theme.set(this.theme());
   }
 
   private createDatePicker(): DatePickerComponent {

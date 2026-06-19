@@ -23,10 +23,8 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  HostBinding,
   HostListener,
   input,
-  Input,
   model,
   OnChanges,
   OnDestroy,
@@ -79,6 +77,9 @@ import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
       multi: true,
     },
   ],
+  host: {
+    '[class]': 'theme()',
+  },
   imports: [
     DayTimeCalendarComponent,
     DayCalendarComponent,
@@ -95,7 +96,7 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
   public readonly placeholder = input('');
   public readonly disabled = model(false);
   public readonly displayDate = model<SingleCalendarValue | null>(null);
-  @HostBinding('class') @Input() theme!: string;
+  public readonly theme = model<string>('');
   public readonly minDate = model<SingleCalendarValue>();
   public readonly maxDate = model<SingleCalendarValue>();
   public readonly minTime = model<SingleCalendarValue>();

@@ -15,7 +15,7 @@ import { ConnectedPosition, ConnectionPositionPair } from '@angular/cdk/overlay'
   providedIn: 'root',
 })
 export class DatePickerService {
-  readonly onPickerClosed: EventEmitter<null> = new EventEmitter();
+  public readonly onPickerClosed: EventEmitter<null> = new EventEmitter();
   private defaultConfig: IDatePickerConfigInternal = {
     closeOnSelect: true,
     closeOnSelectDelay: 100,
@@ -118,7 +118,14 @@ export class DatePickerService {
 
   public getOverlayPosition({ drops, opens }: IDatePickerConfig): ConnectedPosition[] | undefined {
     if (!drops && !opens) {
-      return undefined;
+      return [
+        {
+          originX: 'start',
+          originY: 'bottom',
+          overlayX: 'start',
+          overlayY: 'top',
+        },
+      ];
     }
 
     return [
