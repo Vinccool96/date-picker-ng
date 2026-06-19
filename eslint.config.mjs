@@ -208,7 +208,7 @@ export default tseslint.config(
       globals: {
         ...globals.node,
         ...globals.builtin,
-        ...globals.jasmine,
+        ...globals.vitest,
       },
       parserOptions: {
         projectService: true,

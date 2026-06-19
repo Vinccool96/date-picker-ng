@@ -6,14 +6,14 @@ import { IDayCalendarConfigInternal } from './day-calendar-config.model';
 import { Dayjs } from 'dayjs';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
 
-describe('Service: Calendar', () => {
+describe('DayCalendarService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DayCalendarService, UtilsService],
     });
   });
 
-  it('should check the generateDaysMap method', inject([DayCalendarService], (service: DayCalendarService) => {
+  it('should check the generateDaysIndexMap method', inject([DayCalendarService], (service: DayCalendarService) => {
     expect(service.generateDaysIndexMap('su')).toEqual({
       0: 'su',
       1: 'mo',
@@ -116,7 +116,8 @@ describe('Service: Calendar', () => {
     expect(monthWeeks[2][3].selected).toBe(false);
 
     const today = dayjsRef('11-10-2016', 'DD-MM-YYYY').toDate();
-    jasmine.clock().mockDate(today);
+    vi.useFakeTimers();
+    vi.setSystemTime(today);
     monthWeeks = service.generateMonthArray(
       {
         firstDayOfWeek: 'mo',
@@ -128,6 +129,7 @@ describe('Service: Calendar', () => {
     expect(monthWeeks[5][6].date?.format('DD-MM-YYYY')).toBe('06-11-2016');
     expect(monthWeeks[2][1].selected).toBe(false);
     expect(monthWeeks[2][3].selected).toBe(false);
+    vi.useRealTimers();
   }));
 
   it('should check the generateWeekdays method', inject([DayCalendarService], (service: DayCalendarService) => {

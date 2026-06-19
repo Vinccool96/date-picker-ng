@@ -1,7 +1,7 @@
 import { DayTimeCalendarComponent } from './day-time-calendar.component';
 import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
-describe('Component: DayTimeCalendarComponent', () => {
+describe('DayTimeCalendarComponent', () => {
   let spectator: Spectator<DayTimeCalendarComponent>;
   let component: DayTimeCalendarComponent;
 
@@ -20,7 +20,7 @@ describe('Component: DayTimeCalendarComponent', () => {
   });
 
   it('should emit event goToCurrent when nav emit', () => {
-    spyOn(component.onGoToCurrent, 'emit');
+    vi.spyOn(component.onGoToCurrent, 'emit');
     component.dayCalendarRef().onGoToCurrent.emit();
     expect(component.onGoToCurrent.emit).toHaveBeenCalledWith();
   });

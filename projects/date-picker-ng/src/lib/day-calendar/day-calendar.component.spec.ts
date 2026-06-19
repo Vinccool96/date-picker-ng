@@ -3,7 +3,7 @@ import { IDay } from './day.model';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
-describe('Component: DayCalendarComponent', () => {
+describe('DayCalendarComponent', () => {
   let spectator: Spectator<DayCalendarComponent>;
   let component: DayCalendarComponent;
 
@@ -135,7 +135,7 @@ describe('Component: DayCalendarComponent', () => {
   });
 
   it('should emit event goToCurrent function called', () => {
-    spyOn(component.onGoToCurrent, 'emit');
+    vi.spyOn(component.onGoToCurrent, 'emit');
     component.goToCurrent();
     expect(component.onGoToCurrent.emit).toHaveBeenCalled();
   });

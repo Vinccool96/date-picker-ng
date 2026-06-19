@@ -32,7 +32,7 @@ describe('DatePickerComponent', () => {
     component.showCalendars();
     spectator.detectChanges();
 
-    spyOn(component.onGoToCurrent, 'emit');
+    vi.spyOn(component.onGoToCurrent, 'emit');
     component.dayCalendarRef()?.onGoToCurrent.emit();
     expect(component.onGoToCurrent.emit).toHaveBeenCalledWith();
   });
@@ -42,7 +42,7 @@ describe('DatePickerComponent', () => {
     component.showCalendars();
     spectator.detectChanges();
 
-    spyOn(component.onGoToCurrent, 'emit');
+    vi.spyOn(component.onGoToCurrent, 'emit');
     component.monthCalendarRef()?.onGoToCurrent.emit();
     expect(component.onGoToCurrent.emit).toHaveBeenCalledWith();
   });
@@ -52,14 +52,14 @@ describe('DatePickerComponent', () => {
     component.showCalendars();
     spectator.detectChanges();
 
-    spyOn(component.onGoToCurrent, 'emit');
+    vi.spyOn(component.onGoToCurrent, 'emit');
     component.dayTimeCalendarRef()?.onGoToCurrent.emit();
     expect(component.onGoToCurrent.emit).toHaveBeenCalledWith();
   });
 
   it('should call onTouched when input is blurred', () => {
     setComponentMode('day');
-    spyOn(component, 'onTouchedCallback');
+    vi.spyOn(component, 'onTouchedCallback');
     component.registerOnTouched(component.onTouchedCallback);
 
     const inputElement = spectator.debugElement.query(By.css('.dp-picker-input'));

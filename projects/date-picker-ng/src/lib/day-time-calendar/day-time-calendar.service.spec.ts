@@ -10,7 +10,7 @@ const DAY_FORMAT = 'YYYYMMDD';
 const TIME_FORMAT = 'HH:mm:ss';
 const COMBINED_FORMAT = DAY_FORMAT + TIME_FORMAT;
 
-describe('Service: DayTimeCalendarService', () => {
+describe('DayTimeCalendarService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DayTimeCalendarService, DayCalendarService, TimeSelectService, UtilsService],

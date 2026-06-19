@@ -8,7 +8,7 @@ import { TimeSelectService } from '../time-select/time-select.service';
 import { Dayjs } from 'dayjs';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
 
-describe('Service: DatePicker', () => {
+describe('DatePickerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DatePickerService, DayTimeCalendarService, DayCalendarService, TimeSelectService, UtilsService],

@@ -72,7 +72,7 @@ describe('Component: MonthCalendarComponent', () => {
     });
 
     it('should emit event goToCurrent function called', () => {
-      spyOn(component.onGoToCurrent, 'emit');
+      vi.spyOn(component.onGoToCurrent, 'emit');
       component.goToCurrent();
       expect(component.onGoToCurrent.emit).toHaveBeenCalledWith();
     });

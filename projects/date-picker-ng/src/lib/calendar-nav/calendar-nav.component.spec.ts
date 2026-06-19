@@ -22,7 +22,7 @@ describe('CalendarNavComponent', () => {
   it('should emit event when go to current click', () => {
     const goToCurrent = spectator.query('.dp-current-location-btn') as HTMLElement;
 
-    spyOn(component.onGoToCurrent, 'emit');
+    vi.spyOn(component.onGoToCurrent, 'emit');
     goToCurrent.dispatchEvent(new Event('click'));
     expect(component.onGoToCurrent.emit).toHaveBeenCalledWith();
   });

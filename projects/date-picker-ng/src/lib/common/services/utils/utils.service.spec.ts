@@ -4,7 +4,7 @@ import { IDate } from '../../models/date.model';
 import { dayjsRef } from '../../dayjs/dayjs.ref';
 import { Dayjs } from 'dayjs';
 
-describe('ObUtilsService', () => {
+describe('UtilsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UtilsService],
