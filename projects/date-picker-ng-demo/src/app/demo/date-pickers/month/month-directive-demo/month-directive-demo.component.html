@@ -22,16 +22,16 @@
           id="picker"
         />
         <div class="dp-validations">
-          @if (control.errors?.required) {
+          @if (control.errors?.['required']) {
             <div id="requiredValidation">required</div>
           }
-          @if (control.errors?.format) {
+          @if (control.errors?.['format']) {
             <div id="formatValidation">invalid format</div>
           }
-          @if (control.errors?.minDate) {
+          @if (control.errors?.['minDate']) {
             <div id="minDateValidation">minDate invalid</div>
           }
-          @if (control.errors?.maxDate) {
+          @if (control.errors?.['maxDate']) {
             <div id="maxDateValidation">maxDate invalid</div>
           }
         </div>

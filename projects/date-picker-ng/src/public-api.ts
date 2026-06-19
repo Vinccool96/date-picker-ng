@@ -19,6 +19,7 @@ export { DatePickerComponent } from './lib/date-picker/date-picker.component';
 export { DatePickerDirective } from './lib/date-picker/date-picker.directive';
 export { DayCalendarComponent } from './lib/day-calendar/day-calendar.component';
 export { DayTimeCalendarComponent } from './lib/day-time-calendar/day-time-calendar.component';
+export { TimeSelectComponent } from './lib/time-select/time-select.component';
 export { debounce } from './lib/common/decorators/decorators';
 
 export * from './lib/date-picker.module';

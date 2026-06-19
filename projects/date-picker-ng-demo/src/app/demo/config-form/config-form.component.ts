@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { ECalendarValue, IDatePickerConfig } from 'date-picker-ng';
+import { Component, EventEmitter, input, Input, OnInit, Output } from '@angular/core';
+import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import { ECalendarValue, IDatePickerConfig, DatePickerComponent } from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
 
 const GLOBAL_OPTION_KEYS = ['theme', 'locale', 'returnedValueType', 'displayDate'];
@@ -97,7 +97,7 @@ const DAY_TIME_CALENDAR_OPTION_KEYS = [
   selector: 'dp-config-form',
   templateUrl: './config-form.component.html',
   styleUrls: ['./config-form.component.less'],
-  standalone: false,
+  imports: [ReactiveFormsModule, DatePickerComponent],
 })
 export class ConfigFormComponent implements OnInit {
   readonly DAYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
@@ -219,7 +219,7 @@ export class ConfigFormComponent implements OnInit {
     'zh-hk',
     'zh-tw',
   ];
-  readonly dateTypes: { name: string; value: ECalendarValue }[] = [
+  readonly dateTypes: { name: string; value: ECalendarValue | null }[] = [
     {
       name: 'Guess',
       value: null,
@@ -242,11 +242,11 @@ export class ConfigFormComponent implements OnInit {
     },
   ];
 
-  localFormat: string;
+  localFormat: string = '';
 
-  @Input() pickerMode: string;
-  @Input() config: IDatePickerConfig;
-  @Input() localeVal: string = 'en';
+  public readonly pickerMode = input<string>();
+  public readonly config = input<IDatePickerConfig>({});
+  public readonly localeVal = input('en');
 
   @Output() onDisplayDateChange = new EventEmitter<Dayjs | string>();
   @Output() onMaterialThemeChange = new EventEmitter<boolean>();
@@ -274,101 +274,101 @@ export class ConfigFormComponent implements OnInit {
   maxTimeValidation = new UntypedFormControl();
   placeholder = new UntypedFormControl('Select...');
 
-  format: UntypedFormControl;
-  locale: UntypedFormControl;
-  firstDayOfWeek: UntypedFormControl;
-  monthFormat: UntypedFormControl;
-  min: UntypedFormControl;
-  max: UntypedFormControl;
-  minTime: UntypedFormControl;
-  maxTime: UntypedFormControl;
-  allowMultiSelect: UntypedFormControl;
-  closeOnSelect: UntypedFormControl;
-  closeOnSelectDelay: UntypedFormControl;
-  openOnFocus: UntypedFormControl;
-  openOnClick: UntypedFormControl;
-  onOpenDelay: UntypedFormControl;
-  weekDayFormat: UntypedFormControl;
-  disableKeypress: UntypedFormControl;
-  drops: UntypedFormControl;
-  opens: UntypedFormControl;
-  hideInputContainer: UntypedFormControl;
-  showNearMonthDays: UntypedFormControl;
-  showWeekNumbers: UntypedFormControl;
-  enableMonthSelector: UntypedFormControl;
-  yearFormat: UntypedFormControl;
-  showGoToCurrent: UntypedFormControl;
-  hideOnOutsideClick: UntypedFormControl;
-  unSelectOnClick: UntypedFormControl;
-  dayBtnFormat: UntypedFormControl;
-  monthBtnFormat: UntypedFormControl;
-  hours12Format: UntypedFormControl;
-  hours24Format: UntypedFormControl;
-  meridiemFormat: UntypedFormControl;
-  minutesFormat: UntypedFormControl;
-  minutesInterval: UntypedFormControl;
-  secondsFormat: UntypedFormControl;
-  secondsInterval: UntypedFormControl;
-  showSeconds: UntypedFormControl;
-  showTwentyFourHours: UntypedFormControl;
-  timeSeparator: UntypedFormControl;
-  showMultipleYearsNavigation: UntypedFormControl;
-  multipleYearsNavigateBy: UntypedFormControl;
-  returnedValueType: UntypedFormControl;
-  closeOnEnter: UntypedFormControl;
-  numOfMonthRows: UntypedFormControl;
+  format!: UntypedFormControl;
+  locale!: UntypedFormControl;
+  firstDayOfWeek!: UntypedFormControl;
+  monthFormat!: UntypedFormControl;
+  min!: UntypedFormControl;
+  max!: UntypedFormControl;
+  minTime!: UntypedFormControl;
+  maxTime!: UntypedFormControl;
+  allowMultiSelect!: UntypedFormControl;
+  closeOnSelect!: UntypedFormControl;
+  closeOnSelectDelay!: UntypedFormControl;
+  openOnFocus!: UntypedFormControl;
+  openOnClick!: UntypedFormControl;
+  onOpenDelay!: UntypedFormControl;
+  weekDayFormat!: UntypedFormControl;
+  disableKeypress!: UntypedFormControl;
+  drops!: UntypedFormControl;
+  opens!: UntypedFormControl;
+  hideInputContainer!: UntypedFormControl;
+  showNearMonthDays!: UntypedFormControl;
+  showWeekNumbers!: UntypedFormControl;
+  enableMonthSelector!: UntypedFormControl;
+  yearFormat!: UntypedFormControl;
+  showGoToCurrent!: UntypedFormControl;
+  hideOnOutsideClick!: UntypedFormControl;
+  unSelectOnClick!: UntypedFormControl;
+  dayBtnFormat!: UntypedFormControl;
+  monthBtnFormat!: UntypedFormControl;
+  hours12Format!: UntypedFormControl;
+  hours24Format!: UntypedFormControl;
+  meridiemFormat!: UntypedFormControl;
+  minutesFormat!: UntypedFormControl;
+  minutesInterval!: UntypedFormControl;
+  secondsFormat!: UntypedFormControl;
+  secondsInterval!: UntypedFormControl;
+  showSeconds!: UntypedFormControl;
+  showTwentyFourHours!: UntypedFormControl;
+  timeSeparator!: UntypedFormControl;
+  showMultipleYearsNavigation!: UntypedFormControl;
+  multipleYearsNavigateBy!: UntypedFormControl;
+  returnedValueType!: UntypedFormControl;
+  closeOnEnter!: UntypedFormControl;
+  numOfMonthRows!: UntypedFormControl;
 
   ngOnInit() {
-    this.localFormat = ConfigFormComponent.getDefaultFormatByMode(this.pickerMode);
+    this.localFormat = ConfigFormComponent.getDefaultFormatByMode(this.pickerMode());
 
-    this.format = new UntypedFormControl(ConfigFormComponent.getDefaultFormatByMode(this.pickerMode));
-    this.locale = new UntypedFormControl(this.localeVal);
-    this.firstDayOfWeek = new UntypedFormControl(this.config.firstDayOfWeek);
-    this.monthFormat = new UntypedFormControl(this.config.monthFormat);
-    this.min = new UntypedFormControl(this.config.min);
-    this.max = new UntypedFormControl(this.config.max);
-    this.minTime = new UntypedFormControl(this.config.minTime);
-    this.maxTime = new UntypedFormControl(this.config.maxTime);
-    this.allowMultiSelect = new UntypedFormControl(this.config.allowMultiSelect);
-    this.closeOnSelect = new UntypedFormControl(this.config.closeOnSelect);
-    this.closeOnSelectDelay = new UntypedFormControl(this.config.closeOnSelectDelay);
-    this.openOnFocus = new UntypedFormControl(this.config.openOnFocus);
-    this.openOnClick = new UntypedFormControl(this.config.openOnClick);
-    this.onOpenDelay = new UntypedFormControl(this.config.onOpenDelay);
-    this.weekDayFormat = new UntypedFormControl(this.config.weekDayFormat);
-    this.disableKeypress = new UntypedFormControl(this.config.disableKeypress);
-    this.drops = new UntypedFormControl(this.config.drops);
-    this.opens = new UntypedFormControl(this.config.opens);
-    this.hideInputContainer = new UntypedFormControl(this.config.hideInputContainer);
-    this.showNearMonthDays = new UntypedFormControl(this.config.showNearMonthDays);
-    this.showWeekNumbers = new UntypedFormControl(this.config.showWeekNumbers);
-    this.enableMonthSelector = new UntypedFormControl(this.config.enableMonthSelector);
-    this.yearFormat = new UntypedFormControl(this.config.yearFormat);
-    this.showGoToCurrent = new UntypedFormControl(this.config.showGoToCurrent);
-    this.hideOnOutsideClick = new UntypedFormControl(this.config.hideOnOutsideClick);
-    this.unSelectOnClick = new UntypedFormControl(this.config.unSelectOnClick);
-    this.dayBtnFormat = new UntypedFormControl(this.config.dayBtnFormat);
-    this.monthBtnFormat = new UntypedFormControl(this.config.monthBtnFormat);
-    this.hours12Format = new UntypedFormControl(this.config.hours12Format);
-    this.hours24Format = new UntypedFormControl(this.config.hours24Format);
-    this.meridiemFormat = new UntypedFormControl(this.config.meridiemFormat);
-    this.minutesFormat = new UntypedFormControl(this.config.minutesFormat);
-    this.minutesInterval = new UntypedFormControl(this.config.minutesInterval);
-    this.secondsFormat = new UntypedFormControl(this.config.secondsFormat);
-    this.secondsInterval = new UntypedFormControl(this.config.secondsInterval);
-    this.showSeconds = new UntypedFormControl(this.config.showSeconds);
-    this.showTwentyFourHours = new UntypedFormControl(this.config.showTwentyFourHours);
-    this.timeSeparator = new UntypedFormControl(this.config.timeSeparator);
-    this.showMultipleYearsNavigation = new UntypedFormControl(this.config.showMultipleYearsNavigation);
-    this.multipleYearsNavigateBy = new UntypedFormControl(this.config.multipleYearsNavigateBy);
-    this.returnedValueType = new UntypedFormControl(this.config.returnedValueType);
-    this.closeOnEnter = new UntypedFormControl(this.config.closeOnEnter);
-    this.numOfMonthRows = new UntypedFormControl(this.config.numOfMonthRows);
+    this.format = new UntypedFormControl(ConfigFormComponent.getDefaultFormatByMode(this.pickerMode()));
+    this.locale = new UntypedFormControl(this.localeVal());
+    this.firstDayOfWeek = new UntypedFormControl(this.config().firstDayOfWeek);
+    this.monthFormat = new UntypedFormControl(this.config().monthFormat);
+    this.min = new UntypedFormControl(this.config().min);
+    this.max = new UntypedFormControl(this.config().max);
+    this.minTime = new UntypedFormControl(this.config().minTime);
+    this.maxTime = new UntypedFormControl(this.config().maxTime);
+    this.allowMultiSelect = new UntypedFormControl(this.config().allowMultiSelect);
+    this.closeOnSelect = new UntypedFormControl(this.config().closeOnSelect);
+    this.closeOnSelectDelay = new UntypedFormControl(this.config().closeOnSelectDelay);
+    this.openOnFocus = new UntypedFormControl(this.config().openOnFocus);
+    this.openOnClick = new UntypedFormControl(this.config().openOnClick);
+    this.onOpenDelay = new UntypedFormControl(this.config().onOpenDelay);
+    this.weekDayFormat = new UntypedFormControl(this.config().weekDayFormat);
+    this.disableKeypress = new UntypedFormControl(this.config().disableKeypress);
+    this.drops = new UntypedFormControl(this.config().drops);
+    this.opens = new UntypedFormControl(this.config().opens);
+    this.hideInputContainer = new UntypedFormControl(this.config().hideInputContainer);
+    this.showNearMonthDays = new UntypedFormControl(this.config().showNearMonthDays);
+    this.showWeekNumbers = new UntypedFormControl(this.config().showWeekNumbers);
+    this.enableMonthSelector = new UntypedFormControl(this.config().enableMonthSelector);
+    this.yearFormat = new UntypedFormControl(this.config().yearFormat);
+    this.showGoToCurrent = new UntypedFormControl(this.config().showGoToCurrent);
+    this.hideOnOutsideClick = new UntypedFormControl(this.config().hideOnOutsideClick);
+    this.unSelectOnClick = new UntypedFormControl(this.config().unSelectOnClick);
+    this.dayBtnFormat = new UntypedFormControl(this.config().dayBtnFormat);
+    this.monthBtnFormat = new UntypedFormControl(this.config().monthBtnFormat);
+    this.hours12Format = new UntypedFormControl(this.config().hours12Format);
+    this.hours24Format = new UntypedFormControl(this.config().hours24Format);
+    this.meridiemFormat = new UntypedFormControl(this.config().meridiemFormat);
+    this.minutesFormat = new UntypedFormControl(this.config().minutesFormat);
+    this.minutesInterval = new UntypedFormControl(this.config().minutesInterval);
+    this.secondsFormat = new UntypedFormControl(this.config().secondsFormat);
+    this.secondsInterval = new UntypedFormControl(this.config().secondsInterval);
+    this.showSeconds = new UntypedFormControl(this.config().showSeconds);
+    this.showTwentyFourHours = new UntypedFormControl(this.config().showTwentyFourHours);
+    this.timeSeparator = new UntypedFormControl(this.config().timeSeparator);
+    this.showMultipleYearsNavigation = new UntypedFormControl(this.config().showMultipleYearsNavigation);
+    this.multipleYearsNavigateBy = new UntypedFormControl(this.config().multipleYearsNavigateBy);
+    this.returnedValueType = new UntypedFormControl(this.config().returnedValueType);
+    this.closeOnEnter = new UntypedFormControl(this.config().closeOnEnter);
+    this.numOfMonthRows = new UntypedFormControl(this.config().numOfMonthRows);
     this.initListeners();
   }
 
   isValidConfig(key: string): boolean {
-    switch (this.pickerMode) {
+    switch (this.pickerMode()) {
       case 'dayInline':
         return [...DAY_CALENDAR_OPTION_KEYS].includes(key);
       case 'monthInline':
@@ -696,7 +696,7 @@ export class ConfigFormComponent implements OnInit {
     });
   }
 
-  private static getDefaultFormatByMode(mode: string): string {
+  private static getDefaultFormatByMode(mode: string | undefined): string {
     switch (mode) {
       case 'daytimePicker':
       case 'daytimeInline':
@@ -714,5 +714,7 @@ export class ConfigFormComponent implements OnInit {
       case 'timeDirective':
         return 'HH:mm:ss';
     }
+
+    throw new Error();
   }
 }

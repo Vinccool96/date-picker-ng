@@ -90,7 +90,7 @@ import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
 })
 export class DatePickerComponent implements OnChanges, OnInit, ControlValueAccessor, Validator, OnDestroy {
   isInitialized = false;
-  public readonly config = model.required<IDatePickerConfig>();
+  public readonly config = model<IDatePickerConfig>({});
   public readonly mode = model<CalendarMode>('day');
   public readonly placeholder = input('');
   public readonly disabled = model(false);

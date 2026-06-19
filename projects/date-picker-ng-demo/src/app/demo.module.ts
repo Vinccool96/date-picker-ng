@@ -2,12 +2,9 @@ import './locale.import';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { DemoComponent } from './demo/demo.component';
-import { DemoRootComponent } from './demo-root.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DpDatePickerModule } from 'date-picker-ng';
 import { GaService } from './demo/common/services/ga/ga.service';
-import { ConfigFormComponent } from './demo/config-form/config-form.component';
 import { DayTimeDemoComponent } from './demo/date-pickers/day-time/day-time-demo/day-time-demo.component';
 import { DayTimeInlineDemoComponent } from './demo/date-pickers/day-time/day-time-inline-demo/day-time-inline-demo.component';
 import { DayTimeDirectiveDemoComponent } from './demo/date-pickers/day-time/day-time-directive-demo/day-time-directive-demo.component';
@@ -26,7 +23,6 @@ import { TimeDirectiveDemoComponent } from './demo/date-pickers/time/time-direct
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    DpDatePickerModule,
     RouterModule.forRoot(
       [
         {
@@ -96,24 +92,6 @@ import { TimeDirectiveDemoComponent } from './demo/date-pickers/time/time-direct
       {},
     ),
   ],
-  declarations: [
-    DemoRootComponent,
-    DemoComponent,
-    ConfigFormComponent,
-    DayTimeDemoComponent,
-    DayTimeInlineDemoComponent,
-    DayTimeDirectiveDemoComponent,
-    DayDemoComponent,
-    DayInlineDemoComponent,
-    DayDirectiveDemoComponent,
-    MonthDemoComponent,
-    MonthInlineDemoComponent,
-    MonthDirectiveDemoComponent,
-    TimeDemoComponent,
-    TimeInlineDemoComponent,
-    TimeDirectiveDemoComponent,
-  ],
   providers: [GaService],
-  bootstrap: [DemoRootComponent],
 })
 export class DemoModule {}

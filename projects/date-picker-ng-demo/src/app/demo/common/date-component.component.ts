@@ -1,27 +1,27 @@
-import { INavEvent, DatePickerComponent, DatePickerDirective } from 'date-picker-ng';
-import { Directive, ViewChild } from '@angular/core';
+import { DatePickerComponent, DatePickerDirective, INavEvent } from 'date-picker-ng';
+import { Directive, viewChild } from '@angular/core';
 import { UntypedFormControl, ValidatorFn, Validators } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs';
 
 @Directive()
 export abstract class DateComponent {
-  @ViewChild('dateComponent') dateComponent: DatePickerComponent;
-  @ViewChild(DatePickerDirective) dateDirective: DatePickerDirective;
+  private readonly dateComponent = viewChild<DatePickerComponent>('dateComponent');
+  private readonly dateDirective = viewChild(DatePickerDirective);
 
   ready: boolean = true;
-  control: UntypedFormControl;
+  control: UntypedFormControl = this.buildForm();
 
   abstract config;
   date = dayjs();
   material: boolean = true;
   required: boolean = false;
   disabled: boolean = false;
-  validationMinDate: Dayjs;
-  validationMaxDate: Dayjs;
-  validationMinTime: Dayjs;
-  validationMaxTime: Dayjs;
+  validationMinDate?: Dayjs;
+  validationMaxDate?: Dayjs;
+  validationMinTime?: Dayjs;
+  validationMaxTime?: Dayjs;
   placeholder: string = 'Choose a date...';
-  displayDate: Dayjs | string;
+  displayDate: Dayjs | string = '';
   locale: string = dayjs.locale();
 
   displayDateChanged(displayDate: Dayjs | string): void {
@@ -83,15 +83,15 @@ export abstract class DateComponent {
   }
 
   openCalendar(): void {
-    (this.dateComponent || this.dateDirective).api.open();
+    (this.dateComponent() || this.dateDirective())?.api.open();
   }
 
   closeCalendar(): void {
-    (this.dateComponent || this.dateDirective).api.close();
+    (this.dateComponent() || this.dateDirective())?.api.close();
   }
 
   moveCalendarTo($event: Dayjs): void {
-    (this.dateComponent || this.dateDirective).api.moveCalendarTo($event);
+    (this.dateComponent() || this.dateDirective())?.api.moveCalendarTo($event);
   }
 
   onLeftNav(change: INavEvent) {
@@ -131,34 +131,34 @@ export abstract class DateComponent {
 
   private getValidations(): ValidatorFn[] {
     return [
-      this.required ? Validators.required : () => undefined,
+      this.required ? Validators.required : () => null,
       (control) => {
         return this.validationMinDate &&
           this.config &&
           dayjs(control.value, this.config.format).isBefore(this.validationMinDate)
           ? { minDate: 'minDate Invalid' }
-          : undefined;
+          : null;
       },
       (control) => {
         return this.validationMaxDate &&
           this.config &&
           dayjs(control.value, this.config.format).isAfter(this.validationMaxDate)
           ? { maxDate: 'maxDate Invalid' }
-          : undefined;
+          : null;
       },
       (control) => {
         return this.validationMinTime &&
           this.config &&
           dayjs(control.value, this.config.format).isBefore(this.validationMinTime)
           ? { minDate: 'minDate Invalid' }
-          : undefined;
+          : null;
       },
       (control) => {
         return this.validationMaxTime &&
           this.config &&
           dayjs(control.value, this.config.format).isAfter(this.validationMaxTime)
           ? { maxDate: 'maxDate Invalid' }
-          : undefined;
+          : null;
       },
     ].filter(Boolean);
   }

@@ -65,11 +65,11 @@
       <div class="dp-option">
         <span class="dp-option-header"> Min-Date Validation (minDate): </span>
         <div class="dp-option-playground">
-          {{ pickerMode }}
+          {{ pickerMode() }}
           <dp-date-picker
             [config]="{ format: localFormat }"
             [formControl]="minValidation"
-            [mode]="pickerMode.startsWith('daytime') ? 'daytime' : 'day'"
+            [mode]="pickerMode()?.startsWith('daytime') ? 'daytime' : 'day'"
             id="minDatePicker"
             placeholder="Select a min date"
             theme="dp-material"
@@ -86,7 +86,7 @@
           <dp-date-picker
             [config]="{ format: localFormat }"
             [formControl]="maxValidation"
-            [mode]="pickerMode.startsWith('daytime') ? 'daytime' : 'day'"
+            [mode]="pickerMode()?.startsWith('daytime') ? 'daytime' : 'day'"
             id="maxDatePicker"
             placeholder="Select a max date"
             theme="dp-material"
@@ -210,7 +210,7 @@
           <dp-date-picker
             [config]="{ format: localFormat }"
             [formControl]="min"
-            [mode]="pickerMode.startsWith('daytime') ? 'daytime' : 'day'"
+            [mode]="pickerMode()?.startsWith('daytime') ? 'daytime' : 'day'"
             id="minSelectable"
             placeholder="Select a min date"
             theme="dp-material"
@@ -227,7 +227,7 @@
           <dp-date-picker
             [config]="{ format: localFormat }"
             [formControl]="max"
-            [mode]="pickerMode.startsWith('daytime') ? 'daytime' : 'day'"
+            [mode]="pickerMode()?.startsWith('daytime') ? 'daytime' : 'day'"
             id="maxSelectable"
             placeholder="Select a max date"
             theme="dp-material"
