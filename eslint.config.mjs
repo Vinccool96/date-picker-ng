@@ -1,7 +1,7 @@
 // @ts-check
 import eslint from '@eslint/js';
 import { includeIgnoreFile } from '@eslint/config-helpers';
-// import vitest from '@vitest/eslint-plugin';
+import vitest from '@vitest/eslint-plugin';
 import angular from 'angular-eslint';
 // import jsdocPlugin from 'eslint-plugin-jsdoc';
 // import perfectionist from 'eslint-plugin-perfectionist';
@@ -185,23 +185,23 @@ export default tseslint.config(
   },
   {
     files: ['**/*.spec.ts', '**/test/*.ts'],
-    // plugins: {
-    //   vitest,
-    // },
+    plugins: {
+      vitest,
+    },
     rules: {
-      // ...vitest.configs.recommended.rules,
+      ...vitest.configs.recommended.rules,
       '@typescript-eslint/unbound-method': 'off',
     },
-    // settings: {
-    //   vitest: {
-    //     typecheck: true,
-    //   },
-    // },
-    // languageOptions: {
-    //   globals: {
-    //     ...vitest.environments.env.globals,
-    //   },
-    // },
+    settings: {
+      vitest: {
+        typecheck: true,
+      },
+    },
+    languageOptions: {
+      globals: {
+        ...vitest.environments.env.globals,
+      },
+    },
   },
   {
     languageOptions: {
