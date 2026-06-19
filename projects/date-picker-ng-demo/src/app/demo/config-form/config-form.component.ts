@@ -697,9 +697,11 @@ export class ConfigFormComponent implements OnInit {
   }
 
   private static getDefaultFormatByMode(mode: string | undefined): string {
+    console.log(`mode: ${mode}`);
     switch (mode) {
       case 'daytimePicker':
       case 'daytimeInline':
+      case 'daytimeDirective':
         return 'DD-MM-YYYY HH:mm:ss';
       case 'dayPicker':
       case 'dayInline':

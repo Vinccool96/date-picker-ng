@@ -1,11 +1,14 @@
-import './polyfills';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
+import './app/locale.import';
+import { enableProdMode } from '@angular/core';
 import { environment } from './environments/environment';
-import { DemoModule } from './app/demo.module';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { App } from './app/app';
+import { appConfig } from './app/app.config';
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(DemoModule, { applicationProviders: [provideZoneChangeDetection()] });
+bootstrapApplication(App, appConfig).catch((err: unknown) => {
+  console.error(err);
+});
