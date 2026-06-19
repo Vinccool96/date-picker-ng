@@ -3,7 +3,6 @@ import { IDatePickerDirectiveConfig } from './date-picker-directive-config.model
 import { DatePickerComponent } from './date-picker.component';
 import {
   Directive,
-  effect,
   ElementRef,
   EventEmitter,
   HostListener,
@@ -53,12 +52,11 @@ export class DatePickerDirective implements OnInit {
   public readonly utilsService = inject(UtilsService);
 
   public constructor() {
-    effect(() => {
-      this.datePicker.theme.set(this.theme());
+    toObservable(this.theme).subscribe((theme) => {
+      this.datePicker.theme.set(theme);
       this.markForCheck();
     });
-    effect(() => {
-      const config = this.dpDayPicker();
+    toObservable(this.dpDayPicker).subscribe((config) => {
       this.config.set({
         ...config,
         hideInputContainer: true,
@@ -67,27 +65,27 @@ export class DatePickerDirective implements OnInit {
       this.updateDatepickerConfig();
       this.markForCheck();
     });
-    effect(() => {
-      this.datePicker.mode.set(this.mode());
+    toObservable(this.mode).subscribe((mode) => {
+      this.datePicker.mode.set(mode);
       this.markForCheck();
     });
-    effect(() => {
-      this.datePicker.minDate.set(this.minDate());
+    toObservable(this.minDate).subscribe((minDate) => {
+      this.datePicker.minDate.set(minDate);
       this.datePicker.initialize();
       this.markForCheck();
     });
-    effect(() => {
-      this.datePicker.maxDate.set(this.maxDate());
+    toObservable(this.maxDate).subscribe((maxDate) => {
+      this.datePicker.maxDate.set(maxDate);
       this.datePicker.initialize();
       this.markForCheck();
     });
-    effect(() => {
-      this.datePicker.minTime.set(this.minTime());
+    toObservable(this.minTime).subscribe((minTime) => {
+      this.datePicker.minTime.set(minTime);
       this.datePicker.initialize();
       this.markForCheck();
     });
-    effect(() => {
-      this.datePicker.maxTime.set(this.maxTime());
+    toObservable(this.maxTime).subscribe((maxTime) => {
+      this.datePicker.maxTime.set(maxTime);
       this.datePicker.initialize();
       this.markForCheck();
     });
