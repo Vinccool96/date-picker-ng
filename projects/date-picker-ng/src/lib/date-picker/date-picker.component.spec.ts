@@ -2,7 +2,7 @@ import { DatePickerComponent } from './date-picker.component';
 import { CalendarMode } from '../common/types/calendar-mode';
 import { By } from '@angular/platform-browser';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { createComponentFactory, Spectator } from '@ngneat/spectator';
+import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
 
 describe('DatePickerComponent', () => {
   let spectator: Spectator<DatePickerComponent>;

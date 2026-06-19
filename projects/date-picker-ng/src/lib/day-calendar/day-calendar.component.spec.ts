@@ -1,7 +1,7 @@
 import { DayCalendarComponent } from './day-calendar.component';
 import { IDay } from './day.model';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
-import { createComponentFactory, Spectator } from '@ngneat/spectator';
+import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
 
 describe('DayCalendarComponent', () => {
   let spectator: Spectator<DayCalendarComponent>;

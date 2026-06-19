@@ -1,7 +1,7 @@
 import { MonthCalendarComponent } from './month-calendar.component';
 import { Dayjs } from 'dayjs';
 import { IMonth } from './month.model';
-import { createComponentFactory, Spectator } from '@ngneat/spectator';
+import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
 
 describe('Component: MonthCalendarComponent', () => {
   let spectator: Spectator<MonthCalendarComponent>;
