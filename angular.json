@@ -35,9 +35,10 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/**/*.ts",
-              "projects/**/*.html"
-            ]
+              "projects/date-picker-ng/**/*.ts",
+              "projects/date-picker-ng/**/*.html"
+            ],
+            "eslintConfig": "projects/date-picker-ng/eslint.config.mjs"
           }
         }
       },

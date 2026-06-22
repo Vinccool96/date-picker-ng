@@ -26,14 +26,15 @@ interface Validator {
   providedIn: 'root',
 })
 export class UtilsService {
-  public static debounce(func: Function, wait: number): () => void {
-    let timeout;
-    return function (): void {
+  public static debounce(func: (...arg: unknown[]) => void, wait: number): () => void {
+    let timeout: NodeJS.Timeout | undefined;
+    return function (...args: unknown[]): void {
+      /* eslint-disable @typescript-eslint/no-this-alias, @typescript-eslint/no-unsafe-assignment */
       // @ts-expect-error What the hell?
       const context = this;
-      const args = arguments;
-      timeout = clearTimeout(timeout);
-      setTimeout(() => {
+      /* eslint-enable @typescript-eslint/no-this-alias, @typescript-eslint/no-unsafe-assignment */
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
         func.apply(context, args);
       }, wait);
     };
@@ -143,7 +144,7 @@ export class UtilsService {
       case ECalendarValue.Dayjs:
         return value[0] ? dayjsRef(value[0].toDate()) : value[0];
       case ECalendarValue.DayjsArr:
-        return value ? value.map((v) => dayjsRef(v?.toDate())) : value;
+        return (value as (Dayjs | undefined)[] | undefined) ? value.map((v) => dayjsRef(v?.toDate())) : undefined;
       default:
         return value as unknown as CalendarValue;
     }
@@ -177,6 +178,7 @@ export class UtilsService {
       return obj;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
     return obj;
   }
@@ -200,8 +202,14 @@ export class UtilsService {
     if (!element) {
       return undefined;
     }
-    const match = element.querySelector(selector) as HTMLElement;
-    return match || this.closestParent(element.parentElement, selector);
+
+    const match = element.querySelector(selector);
+
+    if (match === null) {
+      return undefined;
+    }
+
+    return this.closestParent(element.parentElement, selector);
   }
 
   onlyTime(m: Dayjs | null | undefined): Dayjs {
@@ -228,7 +236,7 @@ export class UtilsService {
     format: string | undefined,
     calendarType: CalendarMode,
   ): DateValidator {
-    let isValid: boolean;
+    let isValid = false;
     let value: Dayjs[];
     const validators: Validator[] = [];
     const granularity = this.granularityFromType(calendarType);
@@ -282,8 +290,6 @@ export class UtilsService {
     }
 
     return (inputVal: CalendarValue) => {
-      isValid = true;
-
       value = this.convertToDayjsArray(inputVal, {
         format,
         allowMultiSelect: true,
@@ -357,15 +363,19 @@ export class UtilsService {
     return date.isBetween(from, to, 'day', '[]');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public convertPropsToDayjs(obj: Record<string, any>, format: string | undefined, props: string[]): void {
     props.forEach((prop) => {
-      if (obj.hasOwnProperty(prop)) {
-        obj[prop] = this.convertToDayjs(obj[prop], format);
+      if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+        obj[prop] = this.convertToDayjs(obj[prop] as SingleCalendarValue | null | undefined, format);
       }
     });
   }
 
-  shouldResetCurrentView<T extends ICalendarInternal>(prevConf: T, currentConf: T): boolean {
+  shouldResetCurrentView<T extends ICalendarInternal>(
+    prevConf: T | undefined | null,
+    currentConf: T | undefined | null,
+  ): boolean {
     if (prevConf && currentConf) {
       if (!prevConf.min && currentConf.min) {
         return true;
