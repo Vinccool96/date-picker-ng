@@ -38,4 +38,5 @@ export { MonthCalendarComponent } from './month-calendar/month-calendar.componen
     DayTimeCalendarComponent,
   ],
 })
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class DpDatePickerModule {}

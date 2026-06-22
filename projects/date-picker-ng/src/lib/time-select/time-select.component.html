@@ -5,6 +5,7 @@
       [disabled]="!showIncHour"
       class="dp-time-select-control-up"
       type="button"
+      aria-label="Increase hour"
     ></button>
     <span [innerText]="hours" class="dp-time-select-display-hours"> </span>
     <button
@@ -12,6 +13,7 @@
       [disabled]="!showDecHour"
       class="dp-time-select-control-down"
       type="button"
+      aria-label="Decrease hour"
     ></button>
   </li>
   <li [innerText]="componentConfig.timeSeparator" class="dp-time-select-control dp-time-select-separator"></li>
@@ -21,6 +23,7 @@
       [disabled]="!showIncMinute"
       class="dp-time-select-control-up"
       type="button"
+      aria-label="Increase minute"
     ></button>
     <span [innerText]="minutes" class="dp-time-select-display-minutes"> </span>
     <button
@@ -28,8 +31,10 @@
       [disabled]="!showDecMinute"
       class="dp-time-select-control-down"
       type="button"
+      aria-label="Decrease minute"
     ></button>
   </li>
+
   @if (componentConfig.showSeconds) {
     <li [innerText]="componentConfig.timeSeparator" class="dp-time-select-control dp-time-select-separator"></li>
     <li class="dp-time-select-control dp-time-select-control-seconds">
@@ -38,6 +43,7 @@
         [disabled]="!showIncSecond"
         class="dp-time-select-control-up"
         type="button"
+        aria-label="Increase second"
       ></button>
       <span [innerText]="seconds" class="dp-time-select-display-seconds"> </span>
       <button
@@ -45,9 +51,11 @@
         [disabled]="!showDecSecond"
         class="dp-time-select-control-down"
         type="button"
+        aria-label="Decrease second"
       ></button>
     </li>
   }
+
   @if (!componentConfig.showTwentyFourHours) {
     <li class="dp-time-select-control dp-time-select-control-meridiem">
       <button
@@ -55,6 +63,7 @@
         [disabled]="!showToggleMeridiem"
         class="dp-time-select-control-up"
         type="button"
+        aria-label="Toggle meridiem up"
       ></button>
       <span [innerText]="meridiem" class="dp-time-select-display-meridiem"> </span>
       <button
@@ -62,6 +71,7 @@
         [disabled]="!showToggleMeridiem"
         class="dp-time-select-control-down"
         type="button"
+        aria-label="Toggle meridiem down"
       ></button>
     </li>
   }

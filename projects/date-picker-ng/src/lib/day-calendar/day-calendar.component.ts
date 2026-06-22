@@ -7,14 +7,10 @@ import {
   Component,
   EventEmitter,
   forwardRef,
-  HostBinding,
+  inject,
   input,
-  Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChange,
-  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { DayCalendarService } from './day-calendar.service';
@@ -42,6 +38,9 @@ import { MonthCalendarComponent } from '../month-calendar/month-calendar.compone
 import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
 import { NgClass } from '@angular/common';
 import { WeekDays } from '../common/types/week-days.type';
+import { ConfigChange } from '../common/models/config-change';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { pairwise } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'dp-day-calendar',
@@ -49,6 +48,9 @@ import { WeekDays } from '../common/types/week-days.type';
   styleUrls: ['day-calendar.component.less'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class]': 'theme()',
+  },
   providers: [
     DayCalendarService,
     {
@@ -64,12 +66,12 @@ import { WeekDays } from '../common/types/week-days.type';
   ],
   imports: [MonthCalendarComponent, CalendarNavComponent, NgClass, FormsModule],
 })
-export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
+export class DayCalendarComponent implements OnInit, ControlValueAccessor, Validator {
   public readonly config = input<IDayCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
   public readonly minDate = input<Dayjs>();
   public readonly maxDate = input<Dayjs>();
-  @HostBinding('class') @Input() theme!: string;
+  public readonly theme = input<string>('');
   @Output() onSelect = new EventEmitter<IDay>();
   @Output() onMonthSelect = new EventEmitter<IMonth>();
   @Output() onNavHeaderBtnClick = new EventEmitter<ECalendarMode>();
@@ -96,11 +98,26 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     toggleCalendarMode: this.toggleCalendarMode.bind(this),
   };
 
-  constructor(
-    public readonly dayCalendarService: DayCalendarService,
-    public readonly utilsService: UtilsService,
-    public readonly cd: ChangeDetectorRef,
-  ) {}
+  public readonly dayCalendarService = inject(DayCalendarService);
+  private readonly utilsService = inject(UtilsService);
+  private readonly cd = inject(ChangeDetectorRef);
+
+  public constructor() {
+    toObservable(this.config)
+      .pipe(pairwise())
+      .subscribe(([previousValue, currentValue]): void => {
+        this.onChanges('config', { currentValue, previousValue });
+      });
+    toObservable(this.displayDate).subscribe((): void => {
+      this.onChanges('display');
+    });
+    toObservable(this.minDate).subscribe((): void => {
+      this.onChanges('date');
+    });
+    toObservable(this.maxDate).subscribe((): void => {
+      this.onChanges('date');
+    });
+  }
 
   _selected: Dayjs[] = [];
 
@@ -126,7 +143,8 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     this.showLeftNav = this.dayCalendarService.shouldShowLeft(this.componentConfig.min, this.currentDateView);
     this.showRightNav = this.dayCalendarService.shouldShowRight(this.componentConfig.max, this.currentDateView);
   }
-  ngOnInit() {
+
+  public ngOnInit() {
     this.isInited = true;
     this.init();
     this.initValidators();
@@ -148,20 +166,21 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     this._shouldShowCurrent = this.shouldShowCurrent();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  private onChanges(change: 'config' | 'date' | 'display', configChange?: ConfigChange): void {
     if (this.isInited) {
-      const { minDate, maxDate, config } = changes;
+      if (change === 'config') {
+        this.handleConfigChange(configChange as ConfigChange);
+      }
 
-      this.handleConfigChange(config);
       this.init();
 
-      if (minDate || maxDate) {
+      if (change === 'date') {
         this.initValidators();
       }
     }
   }
 
-  writeValue(value: CalendarValue): void {
+  public writeValue(value: CalendarValue): void {
     this.inputValue = value;
 
     if (value) {
@@ -180,17 +199,21 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     this.cd.markForCheck();
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: (arg: unknown) => void): void {
     this.onChangeCallback = fn;
   }
 
-  onChangeCallback(_: any) {}
+  private onChangeCallback(_: CalendarValue | undefined): void {
+    // No op
+  }
 
-  registerOnTouched(fn: any): void {}
+  public registerOnTouched(_: unknown): void {
+    // No op
+  }
 
-  validate(formControl: UntypedFormControl): ValidationErrors | any {
+  public validate(formControl: UntypedFormControl): ValidationErrors | null {
     if (this.minDate() || this.maxDate()) {
-      return this.validateFn(formControl.value);
+      return this.validateFn(formControl.value as CalendarValue);
     } else {
       return () => null;
     }
@@ -329,14 +352,12 @@ export class DayCalendarComponent implements OnInit, OnChanges, ControlValueAcce
     this.onGoToCurrent.emit();
   }
 
-  handleConfigChange(config: SimpleChange): void {
-    if (config) {
-      const prevConf: IDayCalendarConfigInternal = this.dayCalendarService.getConfig(config.previousValue);
-      const currentConf: IDayCalendarConfigInternal = this.dayCalendarService.getConfig(config.currentValue);
+  handleConfigChange(config: ConfigChange): void {
+    const prevConf: IDayCalendarConfigInternal = this.dayCalendarService.getConfig(config.previousValue);
+    const currentConf: IDayCalendarConfigInternal = this.dayCalendarService.getConfig(config.currentValue);
 
-      if (this.utilsService.shouldResetCurrentView(prevConf, currentConf)) {
-        this._currentDateView = null;
-      }
+    if (this.utilsService.shouldResetCurrentView(prevConf, currentConf)) {
+      this._currentDateView = null;
     }
   }
 }

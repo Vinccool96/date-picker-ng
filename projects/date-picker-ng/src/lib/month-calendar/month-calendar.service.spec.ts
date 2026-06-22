@@ -23,11 +23,7 @@ describe('Service: MonthCalendarService', () => {
     genYear.forEach((row) => {
       row.forEach((month) => {
         expect(month.date?.isSame(current, 'month')).toBe(true);
-        if (month.date?.format('MMM') === 'Jan') {
-          expect(month.selected).toBe(true);
-        } else {
-          expect(month.selected).toBe(false);
-        }
+        expect(month.selected).toBe(month.date?.format('MMM') === 'Jan');
         expect(month.currentMonth).toBe(false);
 
         current = current.add(1, 'month');
@@ -91,11 +87,7 @@ describe('Service: MonthCalendarService', () => {
       };
 
       for (let i = 0; i < 12; i++) {
-        if (i % 2 === 0) {
-          expect(service.isMonthDisabled(month.date as Dayjs, config1)).toBe(true);
-        } else {
-          expect(service.isMonthDisabled(month.date as Dayjs, config1)).toBe(false);
-        }
+        expect(service.isMonthDisabled(month.date as Dayjs, config1)).toBe(i % 2 === 0);
 
         month.date = month.date?.add(1, 'month');
       }
@@ -123,15 +115,15 @@ describe('Service: MonthCalendarService', () => {
   it('should validate numOfMonthRows config', () => {
     inject([MonthCalendarService], (service: MonthCalendarService) => {
       [-1, 0, 5, 7, 8, 9, 10, 11, 13].forEach((numOfMonthRows) => {
-        expect(service.getConfig({ numOfMonthRows })).toThrowError(
+        expect(service.getConfig({ numOfMonthRows })).toThrow(
           'numOfMonthRows has to be between 1 - 12 and divide 12 to integer',
         );
       });
 
       [1, 2, 3, 4, 6, 12].forEach((numOfMonthRows) => {
-        expect(service.getConfig({ numOfMonthRows })).not.toThrowError();
-        expect(service.getConfig({ numOfMonthRows })).not.toThrowError();
-        expect(service.getConfig({ numOfMonthRows })).not.toThrowError();
+        expect(service.getConfig({ numOfMonthRows })).not.toThrow();
+        expect(service.getConfig({ numOfMonthRows })).not.toThrow();
+        expect(service.getConfig({ numOfMonthRows })).not.toThrow();
       });
     });
   });

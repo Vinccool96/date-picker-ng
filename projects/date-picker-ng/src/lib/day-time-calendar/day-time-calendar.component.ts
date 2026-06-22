@@ -6,22 +6,19 @@ import {
   Component,
   EventEmitter,
   forwardRef,
-  HostBinding,
+  inject,
   input,
-  Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import {
+  AbstractControl,
   ControlValueAccessor,
   FormsModule,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  UntypedFormControl,
   ValidationErrors,
   Validator,
 } from '@angular/forms';
@@ -37,6 +34,7 @@ import { DateValidator } from '../common/types/validator.type';
 import { DayCalendarComponent } from '../day-calendar/day-calendar.component';
 import { INavEvent } from '../common/models/navigation-event.model';
 import { TimeSelectComponent } from '../time-select/time-select.component';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'dp-day-time-calendar',
@@ -44,6 +42,9 @@ import { TimeSelectComponent } from '../time-select/time-select.component';
   styleUrls: ['day-time-calendar.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  host: {
+    '[class]': 'theme()',
+  },
   providers: [
     DayTimeCalendarService,
     DayCalendarService,
@@ -61,12 +62,12 @@ import { TimeSelectComponent } from '../time-select/time-select.component';
   ],
   imports: [DayCalendarComponent, TimeSelectComponent, FormsModule],
 })
-export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
+export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, Validator {
   public readonly config = input<IDayTimeCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
   public readonly minDate = input<SingleCalendarValue>();
   public readonly maxDate = input<SingleCalendarValue>();
-  @HostBinding('class') @Input() theme!: string;
+  public readonly theme = input<string>('');
   @Output() onChange = new EventEmitter<IDate>();
   @Output() onGoToCurrent = new EventEmitter<void>();
   @Output() onLeftNav = new EventEmitter<INavEvent>();
@@ -81,11 +82,24 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
     moveCalendarTo: this.moveCalendarTo.bind(this),
   };
 
-  constructor(
-    public dayTimeCalendarService: DayTimeCalendarService,
-    public utilsService: UtilsService,
-    public cd: ChangeDetectorRef,
-  ) {}
+  public readonly dayTimeCalendarService = inject(DayTimeCalendarService);
+  private readonly utilsService = inject(UtilsService);
+  private readonly cd = inject(ChangeDetectorRef);
+
+  public constructor() {
+    toObservable(this.config).subscribe(() => {
+      this.onChanges();
+    });
+    toObservable(this.displayDate).subscribe(() => {
+      this.onChanges();
+    });
+    toObservable(this.minDate).subscribe(() => {
+      this.onChanges(true);
+    });
+    toObservable(this.maxDate).subscribe(() => {
+      this.onChanges(true);
+    });
+  }
 
   _selected: Dayjs | undefined;
 
@@ -97,7 +111,8 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
     this._selected = selected;
     this.onChangeCallback(this.processOnChangeCallback(selected));
   }
-  ngOnInit() {
+
+  public ngOnInit() {
     this.isInited = true;
     this.init();
     this.initValidators();
@@ -108,18 +123,17 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
     this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  private onChanges(date = false) {
     if (this.isInited) {
-      const { minDate, maxDate } = changes;
       this.init();
 
-      if (minDate || maxDate) {
+      if (date) {
         this.initValidators();
       }
     }
   }
 
-  writeValue(value: CalendarValue): void {
+  public writeValue(value: CalendarValue): void {
     this.inputValue = value;
 
     if (value) {
@@ -135,17 +149,21 @@ export class DayTimeCalendarComponent implements OnInit, OnChanges, ControlValue
     this.cd.markForCheck();
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: (arg: unknown) => void): void {
     this.onChangeCallback = fn;
   }
 
-  onChangeCallback(_: any) {}
+  private onChangeCallback(_: CalendarValue | undefined): void {
+    // No op
+  }
 
-  registerOnTouched(fn: any): void {}
+  public registerOnTouched(_: unknown): void {
+    // No op
+  }
 
-  validate(formControl: UntypedFormControl): ValidationErrors | any {
+  public validate(formControl: AbstractControl): ValidationErrors | null {
     if (this.minDate() || this.maxDate()) {
-      return this.validateFn(formControl.value);
+      return this.validateFn(formControl.value as CalendarValue);
     } else {
       return () => null;
     }

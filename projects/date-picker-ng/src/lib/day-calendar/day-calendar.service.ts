@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { WeekDays } from '../common/types/week-days.type';
 import { UtilsService } from '../common/services/utils/utils.service';
@@ -26,7 +26,7 @@ export class DayCalendarService {
   };
   private readonly DAYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
 
-  constructor(private utilsService: UtilsService) {}
+  private readonly utilsService = inject(UtilsService);
 
   public getConfig(config: IDayCalendarConfig | undefined): IDayCalendarConfigInternal {
     const _config = {

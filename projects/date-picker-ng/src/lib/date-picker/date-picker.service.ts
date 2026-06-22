@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, inject, Injectable } from '@angular/core';
 import { IDatePickerConfig, IDatePickerConfigInternal } from './date-picker-config.model';
 
 import { UtilsService } from '../common/services/utils/utils.service';
@@ -32,14 +32,12 @@ export class DatePickerService {
     hideOnOutsideClick: true,
   };
 
-  constructor(
-    private readonly utilsService: UtilsService,
-    private readonly timeSelectService: TimeSelectService,
-    private readonly daytimeCalendarService: DayTimeCalendarService,
-  ) {}
+  private readonly utilsService = inject(UtilsService);
+  private readonly timeSelectService = inject(TimeSelectService);
+  private readonly daytimeCalendarService = inject(DayTimeCalendarService);
 
   // todo:: add unit tests
-  getConfig(config: IDatePickerConfig, mode: CalendarMode = 'daytime'): IDatePickerConfigInternal {
+  getConfig(config: IDatePickerConfig | undefined, mode: CalendarMode = 'daytime'): IDatePickerConfigInternal {
     const _config = {
       ...this.defaultConfig,
       format: DatePickerService.getDefaultFormatByMode(mode),
@@ -48,7 +46,7 @@ export class DatePickerService {
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);
 
-    if (config && config.allowMultiSelect && config.closeOnSelect === undefined) {
+    if (config !== undefined && config.allowMultiSelect && config.closeOnSelect === undefined) {
       _config.closeOnSelect = false;
     }
 

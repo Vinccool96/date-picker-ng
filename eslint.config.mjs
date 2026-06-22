@@ -52,18 +52,18 @@ export default tseslint.config(
       //   },
       // ],
       // '@typescript-eslint/no-unnecessary-type-parameters': 'off',
-      // '@typescript-eslint/no-unused-vars': [
-      //   'error',
-      //   {
-      //     args: 'all',
-      //     argsIgnorePattern: '^_',
-      //     caughtErrors: 'all',
-      //     caughtErrorsIgnorePattern: '^_',
-      //     destructuredArrayIgnorePattern: '^_',
-      //     varsIgnorePattern: '^_',
-      //     ignoreRestSiblings: true,
-      //   },
-      // ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
       // '@typescript-eslint/non-nullable-type-assertion-style': 'off',
       // '@typescript-eslint/restrict-template-expressions': [
       //   'error',
@@ -152,6 +152,15 @@ export default tseslint.config(
       //     },
       //   },
       // ],
+
+      /*
+       *****************************************************************************************************************
+       * angular-eslint
+       *****************************************************************************************************************
+       */
+
+      '@angular-eslint/no-output-native': 'off',
+      '@angular-eslint/no-output-on-prefix': 'off',
     },
   },
   {

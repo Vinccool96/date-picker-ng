@@ -24,23 +24,22 @@ import {
   EventEmitter,
   forwardRef,
   HostListener,
+  inject,
   input,
   model,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   Renderer2,
-  SimpleChanges,
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import {
+  AbstractControl,
   ControlValueAccessor,
   FormsModule,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  UntypedFormControl,
   ValidationErrors,
   Validator,
 } from '@angular/forms';
@@ -54,6 +53,7 @@ import { ISelectionEvent } from '../common/types/selection-event.model';
 import { Dayjs, UnitType } from 'dayjs';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'dp-date-picker',
@@ -89,7 +89,7 @@ import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
     CdkConnectedOverlay,
   ],
 })
-export class DatePickerComponent implements OnChanges, OnInit, ControlValueAccessor, Validator, OnDestroy {
+export class DatePickerComponent implements OnInit, ControlValueAccessor, Validator, OnDestroy {
   isInitialized = false;
   public readonly config = model<IDatePickerConfig>({});
   public readonly mode = model<CalendarMode>('day');
@@ -122,9 +122,9 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
   isFocusedTrigger = false;
   inputElementValue: string | undefined;
   calendarWrapper!: HTMLElement;
-  appendToElement!: HTMLElement;
-  handleInnerElementClickUnlisteners: Function[] = [];
-  globalListenersUnlisteners: Function[] = [];
+  appendToElement?: HTMLElement;
+  handleInnerElementClickUnlisteners: (() => void)[] = [];
+  globalListenersUnlisteners: (() => void)[] = [];
   validateFn!: DateValidator;
   api: IDpDayPickerApi = {
     open: this.showCalendars.bind(this),
@@ -133,14 +133,42 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
   };
   selectEvent = SelectEvent;
   origin: ElementRef | HTMLElement | null = null;
-  private onOpenDelayTimeoutHandler;
+  private onOpenDelayTimeoutHandler?: NodeJS.Timeout;
 
-  constructor(
-    private readonly dayPickerService: DatePickerService,
-    private readonly renderer: Renderer2,
-    private readonly utilsService: UtilsService,
-    public readonly cd: ChangeDetectorRef,
-  ) {}
+  private readonly dayPickerService = inject(DatePickerService);
+  private readonly renderer = inject(Renderer2);
+  private readonly utilsService = inject(UtilsService);
+  public readonly cd = inject(ChangeDetectorRef);
+
+  public constructor() {
+    toObservable(this.config).subscribe((): void => {
+      this.onChanges();
+    });
+    toObservable(this.mode).subscribe((): void => {
+      this.onChanges();
+    });
+    toObservable(this.placeholder).subscribe((): void => {
+      this.onChanges();
+    });
+    toObservable(this.disabled).subscribe((): void => {
+      this.onChanges();
+    });
+    toObservable(this.displayDate).subscribe((): void => {
+      this.onChanges();
+    });
+    toObservable(this.minDate).subscribe((): void => {
+      this.onChanges();
+    });
+    toObservable(this.maxDate).subscribe((): void => {
+      this.onChanges();
+    });
+    toObservable(this.minTime).subscribe((): void => {
+      this.onChanges();
+    });
+    toObservable(this.maxTime).subscribe((): void => {
+      this.onChanges();
+    });
+  }
 
   get openOnFocus(): boolean {
     return this.componentConfig.openOnFocus ?? false;
@@ -195,7 +223,7 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
       return;
     }
 
-    if (!this.isFocusedTrigger && !this.disabled) {
+    if (!this.isFocusedTrigger && !this.disabled()) {
       if (!this.areCalendarsShown) {
         this.showCalendars();
       }
@@ -212,7 +240,7 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
     }
   }
 
-  writeValue(value: CalendarValue): void {
+  public writeValue(value: CalendarValue): void {
     this.inputValue = value;
 
     if (value || value === '') {
@@ -225,20 +253,24 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
     this.cd.markForCheck();
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: (arg1: CalendarValue | undefined, arg2: boolean) => void): void {
     this.onChangeCallback = fn;
   }
 
-  onChangeCallback(_: any, __: boolean) {}
+  private onChangeCallback(_arg1: CalendarValue | undefined, _arg2: boolean): void {
+    // No op
+  }
 
-  registerOnTouched(fn: any): void {
+  public registerOnTouched(fn: () => void): void {
     this.onTouchedCallback = fn;
   }
 
-  onTouchedCallback() {}
+  private onTouchedCallback(): void {
+    // No op
+  }
 
-  validate(formControl: UntypedFormControl): ValidationErrors | null {
-    return this.validateFn(formControl.value);
+  public validate(formControl: AbstractControl): ValidationErrors | null {
+    return this.validateFn(formControl.value as CalendarValue);
   }
 
   processOnChangeCallback(selected: Dayjs[] | string): CalendarValue | undefined {
@@ -278,7 +310,7 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
     this.init();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  private onChanges(): void {
     if (this.isInitialized) {
       this.init();
     }
@@ -430,12 +462,16 @@ export class DatePickerComponent implements OnChanges, OnInit, ControlValueAcces
   }
 
   stopGlobalListeners(): void {
-    this.globalListenersUnlisteners.forEach((ul) => ul());
+    this.globalListenersUnlisteners.forEach((ul): void => {
+      ul();
+    });
     this.globalListenersUnlisteners = [];
   }
 
-  ngOnDestroy(): void {
-    this.handleInnerElementClickUnlisteners.forEach((ul) => ul());
+  public ngOnDestroy(): void {
+    this.handleInnerElementClickUnlisteners.forEach((ul): void => {
+      ul();
+    });
 
     if (this.appendToElement) {
       this.appendToElement.removeChild(this.calendarWrapper);

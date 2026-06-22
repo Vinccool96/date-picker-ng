@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { UtilsService } from '../common/services/utils/utils.service';
 import { ITimeSelectConfig, ITimeSelectConfigInternal } from './time-select-config.model';
@@ -25,7 +25,7 @@ export class TimeSelectService {
     timeSeparator: ':',
   };
 
-  constructor(private readonly utilsService: UtilsService) {}
+  private readonly utilsService = inject(UtilsService);
 
   public getConfig(config: ITimeSelectConfig | undefined): ITimeSelectConfigInternal {
     const timeConfigs = {
@@ -43,31 +43,31 @@ export class TimeSelectService {
   getTimeFormat(config: ITimeSelectConfigInternal): string {
     return (
       (config.showTwentyFourHours ? (config.hours24Format as string) : (config.hours12Format as string)) +
-      config.timeSeparator +
-      config.minutesFormat +
+      (config.timeSeparator as string) +
+      (config.minutesFormat as string) +
       (config.showSeconds ? (config.timeSeparator as string) + (config.secondsFormat as string) : '') +
-      (config.showTwentyFourHours ? '' : ' ' + config.meridiemFormat)
+      (config.showTwentyFourHours ? '' : ' ' + (config.meridiemFormat as string))
     );
   }
 
   public getHours(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
     const time = t || dayjsRef();
-    return time && time.format(config.showTwentyFourHours ? config.hours24Format : config.hours12Format);
+    return time.format(config.showTwentyFourHours ? config.hours24Format : config.hours12Format);
   }
 
   public getMinutes(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
     const time = t || dayjsRef();
-    return time && time.format(config.minutesFormat);
+    return time.format(config.minutesFormat);
   }
 
   public getSeconds(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
     const time = t || dayjsRef();
-    return time && time.format(config.secondsFormat);
+    return time.format(config.secondsFormat);
   }
 
   public getMeridiem(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
     const time = t || dayjsRef();
-    return time && time.format(config.meridiemFormat);
+    return time.format(config.meridiemFormat);
   }
 
   decrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {

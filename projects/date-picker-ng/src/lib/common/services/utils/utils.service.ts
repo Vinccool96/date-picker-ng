@@ -64,7 +64,7 @@ export class UtilsService {
   // todo:: add unit test
   public getDefaultDisplayDate(
     current: Dayjs | null | undefined,
-    selected: Dayjs[],
+    selected: Dayjs[] | undefined,
     allowMultiSelect: boolean | undefined,
     minDate: Dayjs | undefined,
   ): Dayjs {
@@ -73,10 +73,10 @@ export class UtilsService {
     } else if (minDate && minDate.isAfter(dayjsRef())) {
       return dayjsRef(minDate.toDate());
     } else if (allowMultiSelect) {
-      if (selected && selected[selected.length]) {
+      if (selected !== undefined && selected[selected.length]) {
         return dayjsRef(selected[selected.length].toDate());
       }
-    } else if (selected && selected[0]) {
+    } else if (selected !== undefined && selected[0]) {
       return dayjsRef(selected[0].toDate());
     }
 
@@ -120,7 +120,7 @@ export class UtilsService {
         retVal = value ? [dayjsRef((value as Dayjs).toDate())] : [];
         break;
       case ECalendarValue.DayjsArr:
-        retVal = ((value as Dayjs[]) || []).map((v) => dayjsRef(v.toDate()));
+        retVal = ((value as Dayjs[] | undefined) ?? []).map((v) => dayjsRef(v.toDate()));
         break;
       default:
         retVal = [];

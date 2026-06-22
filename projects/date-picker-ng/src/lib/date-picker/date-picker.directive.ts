@@ -114,7 +114,7 @@ export class DatePickerDirective implements OnInit {
       return;
     }
 
-    this.datePicker.onViewDateChange(formControl.value);
+    this.datePicker.onViewDateChange(formControl.value as CalendarValue);
 
     (formControl.valueChanges as Observable<CalendarValue>).subscribe((value) => {
       if (value !== this.datePicker.inputElementValue) {
@@ -134,7 +134,7 @@ export class DatePickerDirective implements OnInit {
         }
       }
 
-      const errors = this.datePicker.validateFn(value);
+      const errors = this.datePicker.validateFn(value as CalendarValue);
 
       if (!setup) {
         (formControl.control as AbstractControl).markAsDirty({
@@ -177,7 +177,7 @@ export class DatePickerDirective implements OnInit {
   }
 
   markForCheck() {
-    if (this.datePicker) {
+    if ((this.datePicker as DatePickerComponent | undefined) !== undefined) {
       this.datePicker.cd.markForCheck();
     }
   }

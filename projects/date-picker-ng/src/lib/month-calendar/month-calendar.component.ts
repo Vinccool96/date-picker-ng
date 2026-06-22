@@ -5,14 +5,10 @@ import {
   Component,
   EventEmitter,
   forwardRef,
-  HostBinding,
+  inject,
   input,
-  Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChange,
-  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { IMonth } from './month.model';
@@ -20,10 +16,10 @@ import { MonthCalendarService } from './month-calendar.service';
 
 import { IMonthCalendarConfig, IMonthCalendarConfigInternal } from './month-calendar-config';
 import {
+  AbstractControl,
   ControlValueAccessor,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  UntypedFormControl,
   ValidationErrors,
   Validator,
 } from '@angular/forms';
@@ -36,6 +32,9 @@ import { Dayjs } from 'dayjs';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { NgClass } from '@angular/common';
 import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { pairwise } from 'rxjs/internal/operators';
+import { ConfigChange } from '../common/models/config-change';
 
 @Component({
   selector: 'dp-month-calendar',
@@ -43,6 +42,9 @@ import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
   styleUrls: ['month-calendar.component.less'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class]': 'theme()',
+  },
   providers: [
     MonthCalendarService,
     {
@@ -58,12 +60,12 @@ import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
   ],
   imports: [NgClass, CalendarNavComponent],
 })
-export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
+export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Validator {
   public readonly config = input<IMonthCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
   public readonly minDate = input<Dayjs>();
   public readonly maxDate = input<Dayjs>();
-  @HostBinding('class') @Input() theme!: string;
+  public readonly theme = input<string>('');
   @Output() onSelect = new EventEmitter<IMonth>();
   @Output() onNavHeaderBtnClick = new EventEmitter<null>();
   @Output() onGoToCurrent = new EventEmitter<void>();
@@ -88,11 +90,26 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     moveCalendarTo: this.moveCalendarTo.bind(this),
   };
 
-  constructor(
-    public readonly monthCalendarService: MonthCalendarService,
-    public readonly utilsService: UtilsService,
-    public readonly cd: ChangeDetectorRef,
-  ) {}
+  public readonly monthCalendarService = inject(MonthCalendarService);
+  private readonly utilsService = inject(UtilsService);
+  private readonly cd = inject(ChangeDetectorRef);
+
+  public constructor() {
+    toObservable(this.config)
+      .pipe(pairwise())
+      .subscribe(([previousValue, currentValue]): void => {
+        this.onChanges('config', { currentValue, previousValue });
+      });
+    toObservable(this.displayDate).subscribe((): void => {
+      this.onChanges('display');
+    });
+    toObservable(this.minDate).subscribe((): void => {
+      this.onChanges('date');
+    });
+    toObservable(this.maxDate).subscribe((): void => {
+      this.onChanges('date');
+    });
+  }
 
   _selected: Dayjs[] = [];
 
@@ -128,22 +145,24 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     this.showSecondaryRightNav = this.componentConfig.showMultipleYearsNavigation === true && this.showRightNav;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isInited = true;
     this.init();
     this.initValidators();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  private onChanges(change: 'config' | 'date' | 'display', configChange?: ConfigChange): void {
     if (this.isInited) {
-      const { minDate, maxDate, config } = changes;
+      if (change === 'config') {
+        this.handleConfigChange(configChange as ConfigChange);
+      }
 
-      this.handleConfigChange(config);
       this.init();
 
-      if (minDate || maxDate) {
+      if (change === 'date') {
         this.initValidators();
       }
+
       this.cd.markForCheck();
     }
   }
@@ -162,7 +181,7 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     this._shouldShowCurrent = this.shouldShowCurrent();
   }
 
-  writeValue(value: CalendarValue): void {
+  public writeValue(value: CalendarValue): void {
     this.inputValue = value;
 
     if (value) {
@@ -185,17 +204,21 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     this.cd.markForCheck();
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: (arg: unknown) => void): void {
     this.onChangeCallback = fn;
   }
 
-  onChangeCallback(_: any): void {}
+  private onChangeCallback(_: CalendarValue | undefined): void {
+    // No op
+  }
 
-  registerOnTouched(fn: any): void {}
+  public registerOnTouched(_: unknown): void {
+    // No op
+  }
 
-  validate(formControl: UntypedFormControl): ValidationErrors | any {
+  public validate(formControl: AbstractControl): ValidationErrors | null {
     if (this.minDate() || this.maxDate()) {
-      return this.validateFn(formControl.value);
+      return this.validateFn(formControl.value as CalendarValue);
     } else {
       return () => null;
     }
@@ -329,14 +352,12 @@ export class MonthCalendarComponent implements OnInit, OnChanges, ControlValueAc
     }
   }
 
-  handleConfigChange(config: SimpleChange): void {
-    if (config) {
-      const prevConf: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.previousValue);
-      const currentConf: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.currentValue);
+  handleConfigChange(config: ConfigChange): void {
+    const prevConf: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.previousValue);
+    const currentConf: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.currentValue);
 
-      if (this.utilsService.shouldResetCurrentView(prevConf, currentConf)) {
-        this._currentDateView = null;
-      }
+    if (this.utilsService.shouldResetCurrentView(prevConf, currentConf)) {
+      this._currentDateView = null;
     }
   }
 }

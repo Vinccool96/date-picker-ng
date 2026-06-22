@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { UtilsService } from '../common/services/utils/utils.service';
 import { IMonth } from './month.model';
@@ -22,7 +22,7 @@ export class MonthCalendarService {
     numOfMonthRows: 3,
   };
 
-  constructor(private utilsService: UtilsService) {}
+  private readonly utilsService = inject(UtilsService);
 
   public getConfig(config: IMonthCalendarConfig | undefined): IMonthCalendarConfigInternal {
     const _config = {
