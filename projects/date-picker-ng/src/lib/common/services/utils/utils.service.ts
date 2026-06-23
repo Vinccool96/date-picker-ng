@@ -203,13 +203,13 @@ export class UtilsService {
       return undefined;
     }
 
-    const match = element.querySelector(selector);
+    const match = element.querySelector<HTMLElement>(selector);
 
     if (match === null) {
-      return undefined;
+      return this.closestParent(element.parentElement, selector);
     }
 
-    return this.closestParent(element.parentElement, selector);
+    return match;
   }
 
   onlyTime(m: Dayjs | null | undefined): Dayjs {
