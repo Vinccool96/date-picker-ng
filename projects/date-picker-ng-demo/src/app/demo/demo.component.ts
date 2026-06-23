@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, OnInit, viewChild, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit, viewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs';
 import { GaService } from './common/services/ga/ga.service';

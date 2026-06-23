@@ -61,7 +61,7 @@
       },
       "root": "projects/date-picker-ng-demo",
       "sourceRoot": "projects/date-picker-ng-demo/src",
-      "prefix": "app",
+      "prefix": "dp",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -145,11 +145,11 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "demo",
+      "prefix": "dp",
       "style": "less"
     },
     "@schematics/angular:directive": {
-      "prefix": "demo"
+      "prefix": "dp"
     }
   },
   "cli": {
