@@ -27,6 +27,7 @@ import {
   inject,
   input,
   model,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
@@ -53,7 +54,6 @@ import { ISelectionEvent } from '../common/types/selection-event.model';
 import { Dayjs, UnitType } from 'dayjs';
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
-import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'dp-date-picker',
@@ -89,7 +89,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
     CdkConnectedOverlay,
   ],
 })
-export class DatePickerComponent implements OnInit, ControlValueAccessor, Validator, OnDestroy {
+export class DatePickerComponent implements OnInit, OnChanges, ControlValueAccessor, Validator, OnDestroy {
   isInitialized = false;
   public readonly config = model<IDatePickerConfig>({});
   public readonly mode = model<CalendarMode>('day');
@@ -139,36 +139,6 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor, Valida
   private readonly renderer = inject(Renderer2);
   private readonly utilsService = inject(UtilsService);
   public readonly cd = inject(ChangeDetectorRef);
-
-  public constructor() {
-    toObservable(this.config).subscribe((): void => {
-      this.onChanges();
-    });
-    toObservable(this.mode).subscribe((): void => {
-      this.onChanges();
-    });
-    toObservable(this.placeholder).subscribe((): void => {
-      this.onChanges();
-    });
-    toObservable(this.disabled).subscribe((): void => {
-      this.onChanges();
-    });
-    toObservable(this.displayDate).subscribe((): void => {
-      this.onChanges();
-    });
-    toObservable(this.minDate).subscribe((): void => {
-      this.onChanges();
-    });
-    toObservable(this.maxDate).subscribe((): void => {
-      this.onChanges();
-    });
-    toObservable(this.minTime).subscribe((): void => {
-      this.onChanges();
-    });
-    toObservable(this.maxTime).subscribe((): void => {
-      this.onChanges();
-    });
-  }
 
   get openOnFocus(): boolean {
     return this.componentConfig.openOnFocus ?? false;
@@ -265,7 +235,7 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor, Valida
     this.onTouchedCallback = fn;
   }
 
-  private onTouchedCallback(): void {
+  public onTouchedCallback(): void {
     // No op
   }
 
@@ -301,7 +271,7 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor, Valida
     this.onChangeCallback(this.processOnChangeCallback(this.selected), false);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.initialize();
   }
 
@@ -310,13 +280,13 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor, Valida
     this.init();
   }
 
-  private onChanges(): void {
+  public ngOnChanges(): void {
     if (this.isInitialized) {
       this.init();
     }
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  public setDisabledState(isDisabled: boolean): void {
     this.disabled.set(isDisabled);
     this.cd.markForCheck();
   }

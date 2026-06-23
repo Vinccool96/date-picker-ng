@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DateComponent } from '../../../common/date-component.component';
-import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { IDatePickerConfig, TimeSelectComponent } from 'date-picker-ng';
 import { DEF_CONF } from '../../../common/conts/consts';
 import { ConfigFormComponent } from '../../../config-form/config-form.component';

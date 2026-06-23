@@ -1,6 +1,6 @@
-import { Component, EventEmitter, input, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, input, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
-import { ECalendarValue, IDatePickerConfig, DatePickerComponent } from 'date-picker-ng';
+import { DatePickerComponent, ECalendarValue, IDatePickerConfig } from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
 
 const GLOBAL_OPTION_KEYS = ['theme', 'locale', 'returnedValueType', 'displayDate'];
@@ -403,6 +403,7 @@ export class ConfigFormComponent implements OnInit {
   }
 
   private initListeners(): void {
+    /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment */
     this.displayDate.valueChanges.subscribe((val) => {
       this.onDisplayDateChange.emit(val);
     });
@@ -694,10 +695,11 @@ export class ConfigFormComponent implements OnInit {
         numOfMonthRows: val,
       });
     });
+
+    /* eslint-enable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment */
   }
 
   private static getDefaultFormatByMode(mode: string | undefined): string {
-    console.log(`mode: ${mode}`);
     switch (mode) {
       case 'daytimePicker':
       case 'daytimeInline':

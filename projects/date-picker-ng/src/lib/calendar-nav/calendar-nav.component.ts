@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  HostBinding,
-  input,
-  Input,
-  Output,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, input, Output, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'dp-calendar-nav',
@@ -15,6 +6,9 @@ import {
   styleUrls: ['./calendar-nav.component.less'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class]': 'theme()',
+  },
 })
 export class CalendarNavComponent {
   public readonly label = input.required<string>();
@@ -28,7 +22,7 @@ export class CalendarNavComponent {
   public readonly rightNavDisabled = input(false);
   public readonly rightSecondaryNavDisabled = input(false);
   public readonly showGoToCurrent = input(true);
-  @HostBinding('class') @Input() theme!: string;
+  public readonly theme = input('');
 
   @Output() onLeftNav = new EventEmitter<null>();
   @Output() onLeftSecondaryNav = new EventEmitter<null>();

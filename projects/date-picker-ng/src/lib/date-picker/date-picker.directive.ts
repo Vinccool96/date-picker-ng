@@ -5,7 +5,6 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  HostListener,
   inject,
   input,
   OnInit,
@@ -26,6 +25,11 @@ import { IDpDayPickerApi } from './date-picker.api';
 @Directive({
   exportAs: 'dpDayPicker',
   selector: '[dpDayPicker]',
+  host: {
+    '(click)': 'onClick()',
+    '(focus)': 'onFocus()',
+    '(keydown.enter)': 'onEnter()',
+  },
 })
 export class DatePickerDirective implements OnInit {
   @Output() open = new EventEmitter<void>();
@@ -95,7 +99,7 @@ export class DatePickerDirective implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.datePicker = this.createDatePicker();
     this.api = this.datePicker.api;
     this.updateDatepickerConfig();
@@ -159,18 +163,15 @@ export class DatePickerDirective implements OnInit {
     });
   }
 
-  @HostListener('click')
-  onClick() {
+  protected onClick() {
     this.datePicker.onClick();
   }
 
-  @HostListener('focus')
-  onFocus() {
+  protected onFocus() {
     this.datePicker.inputFocused();
   }
 
-  @HostListener('keydown.enter')
-  onEnter() {
+  protected onEnter() {
     if (this.datePicker.componentConfig.closeOnEnter) {
       this.datePicker.hideCalendar();
     }

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DateComponent } from '../../../common/date-component.component';
-import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
-import { IDatePickerConfig, DatePickerComponent } from 'date-picker-ng';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DatePickerComponent, IDatePickerConfig } from 'date-picker-ng';
 import { DEF_CONF } from '../../../common/conts/consts';
 import { ConfigFormComponent } from '../../../config-form/config-form.component';
 

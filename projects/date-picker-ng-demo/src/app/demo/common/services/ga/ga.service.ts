@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 
-declare const gtag: Function;
+declare const gtag: (arg1: string, arg2: string, arg3: Record<string, string | number | null>) => void;
 
 @Injectable({
   providedIn: 'root',

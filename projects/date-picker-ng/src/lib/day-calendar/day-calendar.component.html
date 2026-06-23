@@ -10,7 +10,7 @@
       [showGoToCurrent]="_shouldShowCurrent"
       [showLeftNav]="showLeftNav"
       [showRightNav]="showRightNav"
-      [theme]="theme"
+      [theme]="theme()"
     >
     </dp-calendar-nav>
     <div [ngClass]="{ 'dp-hide-near-month': !componentConfig.showNearMonthDays }" class="dp-calendar-wrapper">
@@ -52,7 +52,7 @@
     [config]="monthCalendarConfig"
     [displayDate]="_currentDateView"
     [ngModel]="_selected"
-    [theme]="theme"
+    [theme]="theme()"
   >
   </dp-month-calendar>
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, OnInit, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, viewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs';
 import { GaService } from './common/services/ga/ga.service';
@@ -18,6 +18,9 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.less'],
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  host: {
+    '(document:scroll)': 'updateIsAtTop()',
+  },
 })
 export class DemoComponent implements OnInit {
   private readonly dateComponent = viewChild<DatePickerComponent>('dateComponent');
@@ -102,9 +105,8 @@ export class DemoComponent implements OnInit {
     this.formGroup = this.buildForm();
   }
 
-  @HostListener('document:scroll')
   @debounce(100)
-  updateIsAtTop() {
+  protected updateIsAtTop() {
     this.isAtTop = document.body.scrollTop === 0;
   }
 
@@ -168,22 +170,23 @@ export class DemoComponent implements OnInit {
   private buildForm(): UntypedFormGroup {
     return new UntypedFormGroup({
       datePicker: new UntypedFormControl({ value: this.date, disabled: this.disabled }, [
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         this.required ? Validators.required : () => null,
         (control) => {
           return this.validationMinDate &&
-            this.config &&
-            dayjs(control.value, this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode)).isBefore(
-              this.validationMinDate,
-            )
+            dayjs(
+              control.value as dayjs.ConfigType,
+              this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode),
+            ).isBefore(this.validationMinDate)
             ? { minDate: 'minDate Invalid' }
             : null;
         },
         (control) =>
           this.validationMaxDate &&
-          this.config &&
-          dayjs(control.value, this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode)).isAfter(
-            this.validationMaxDate,
-          )
+          dayjs(
+            control.value as dayjs.ConfigType,
+            this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode),
+          ).isAfter(this.validationMaxDate)
             ? { maxDate: 'maxDate Invalid' }
             : null,
       ]),
