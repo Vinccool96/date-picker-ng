@@ -10,7 +10,7 @@ import { dayjsRef } from '../common/dayjs/dayjs.ref';
   providedIn: 'root',
 })
 export class MonthCalendarService {
-  readonly DEFAULT_CONFIG: IMonthCalendarConfigInternal = {
+  private readonly DEFAULT_CONFIG: IMonthCalendarConfigInternal = {
     allowMultiSelect: false,
     yearFormat: 'YYYY',
     format: 'MM-YYYY',
@@ -58,7 +58,7 @@ export class MonthCalendarService {
     });
   }
 
-  isMonthDisabled(date: Dayjs, config: IMonthCalendarConfig) {
+  public isMonthDisabled(date: Dayjs, config: IMonthCalendarConfig) {
     if (config.isMonthDisabledCallback) {
       return config.isMonthDisabledCallback(date);
     }
@@ -86,7 +86,7 @@ export class MonthCalendarService {
     return year.format(config.yearFormat);
   }
 
-  getMonthBtnText(config: IMonthCalendarConfig, month: Dayjs): string {
+  public getMonthBtnText(config: IMonthCalendarConfig, month: Dayjs): string {
     if (config.monthBtnFormatter) {
       return config.monthBtnFormatter(month);
     }
@@ -94,7 +94,7 @@ export class MonthCalendarService {
     return month.format(config.monthBtnFormat);
   }
 
-  getMonthBtnCssClass(config: IMonthCalendarConfig, month: Dayjs): string {
+  public getMonthBtnCssClass(config: IMonthCalendarConfig, month: Dayjs): string {
     if (config.monthBtnCssClassCallback) {
       return config.monthBtnCssClassCallback(month);
     }

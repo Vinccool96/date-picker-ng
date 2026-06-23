@@ -16,7 +16,7 @@ const COMBINED_FORMAT = DAY_FORMAT + TIME_FORMAT;
   providedIn: 'root',
 })
 export class DayTimeCalendarService {
-  readonly DEFAULT_CONFIG: IDayTimeCalendarConfig = {};
+  private readonly DEFAULT_CONFIG: IDayTimeCalendarConfig = {};
 
   private readonly utilsService = inject(UtilsService);
   private readonly dayCalendarService = inject(DayCalendarService);

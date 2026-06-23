@@ -43,15 +43,15 @@ export default tseslint.config(
        */
 
       // '@typescript-eslint/explicit-function-return-type': ['error', { allowHigherOrderFunctions: false }],
-      // '@typescript-eslint/explicit-member-accessibility': 'error',
-      // '@typescript-eslint/no-extraneous-class': 'off',
-      // '@typescript-eslint/no-misused-promises': [
-      //   'error',
-      //   {
-      //     checksVoidReturn: false,
-      //   },
-      // ],
-      // '@typescript-eslint/no-unnecessary-type-parameters': 'off',
+      '@typescript-eslint/explicit-member-accessibility': 'error',
+      '@typescript-eslint/no-extraneous-class': 'off',
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        {
+          checksVoidReturn: false,
+        },
+      ],
+      '@typescript-eslint/no-unnecessary-type-parameters': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -64,7 +64,7 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
-      // '@typescript-eslint/non-nullable-type-assertion-style': 'off',
+      '@typescript-eslint/non-nullable-type-assertion-style': 'off',
       // '@typescript-eslint/restrict-template-expressions': [
       //   'error',
       //   {

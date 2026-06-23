@@ -24,30 +24,30 @@ export class CalendarNavComponent {
   public readonly showGoToCurrent = input(true);
   public readonly theme = input('');
 
-  @Output() onLeftNav = new EventEmitter<null>();
-  @Output() onLeftSecondaryNav = new EventEmitter<null>();
-  @Output() onRightNav = new EventEmitter<null>();
-  @Output() onRightSecondaryNav = new EventEmitter<null>();
-  @Output() onLabelClick = new EventEmitter<null>();
-  @Output() onGoToCurrent = new EventEmitter<null>();
+  @Output() public onLeftNav = new EventEmitter<null>();
+  @Output() public onLeftSecondaryNav = new EventEmitter<null>();
+  @Output() public onRightNav = new EventEmitter<null>();
+  @Output() public onRightSecondaryNav = new EventEmitter<null>();
+  @Output() public onLabelClick = new EventEmitter<null>();
+  @Output() public onGoToCurrent = new EventEmitter<null>();
 
-  leftNavClicked() {
+  protected leftNavClicked() {
     this.onLeftNav.emit();
   }
 
-  leftSecondaryNavClicked() {
+  protected leftSecondaryNavClicked() {
     this.onLeftSecondaryNav.emit();
   }
 
-  rightNavClicked() {
+  protected rightNavClicked() {
     this.onRightNav.emit();
   }
 
-  rightSecondaryNavClicked() {
+  protected rightSecondaryNavClicked() {
     this.onRightSecondaryNav.emit();
   }
 
-  labelClicked() {
+  protected labelClicked() {
     this.onLabelClick.emit();
   }
 }

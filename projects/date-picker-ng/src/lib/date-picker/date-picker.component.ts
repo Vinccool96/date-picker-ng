@@ -23,7 +23,6 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  HostListener,
   inject,
   input,
   model,
@@ -79,6 +78,7 @@ import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
   ],
   host: {
     '[class]': 'theme()',
+    '(click)': 'onClick()',
   },
   imports: [
     DayTimeCalendarComponent,
@@ -90,7 +90,7 @@ import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
   ],
 })
 export class DatePickerComponent implements OnInit, OnChanges, ControlValueAccessor, Validator, OnDestroy {
-  isInitialized = false;
+  private isInitialized = false;
   public readonly config = model<IDatePickerConfig>({});
   public readonly mode = model<CalendarMode>('day');
   public readonly placeholder = input('');
@@ -101,38 +101,38 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
   public readonly maxDate = model<SingleCalendarValue>();
   public readonly minTime = model<SingleCalendarValue>();
   public readonly maxTime = model<SingleCalendarValue>();
-  @Output() open = new EventEmitter<void>();
-  @Output() close = new EventEmitter<void>();
-  @Output() onChange = new EventEmitter<CalendarValue>();
-  @Output() onGoToCurrent = new EventEmitter<void>();
-  @Output() onLeftNav = new EventEmitter<INavEvent>();
-  @Output() onRightNav = new EventEmitter<INavEvent>();
-  @Output() onSelect = new EventEmitter<ISelectionEvent>();
+  @Output() public open = new EventEmitter<void>();
+  @Output() public close = new EventEmitter<void>();
+  @Output() public onChange = new EventEmitter<CalendarValue>();
+  @Output() public onGoToCurrent = new EventEmitter<void>();
+  @Output() public onLeftNav = new EventEmitter<INavEvent>();
+  @Output() public onRightNav = new EventEmitter<INavEvent>();
+  @Output() public onSelect = new EventEmitter<ISelectionEvent>();
   public readonly calendarContainer = viewChild<ElementRef>('container');
   public readonly dayCalendarRef = viewChild<DayCalendarComponent>('dayCalendar');
   public readonly monthCalendarRef = viewChild<MonthCalendarComponent>('monthCalendar');
   public readonly dayTimeCalendarRef = viewChild<DayTimeCalendarComponent>('daytimeCalendar');
   private readonly timeSelectRef = viewChild<TimeSelectComponent>('timeSelect');
   private readonly inputElement = viewChild.required<ElementRef<HTMLInputElement>>('inputElement');
-  componentConfig: IDatePickerConfigInternal = {};
-  dayCalendarConfig: IDayCalendarConfig = {};
-  dayTimeCalendarConfig: IDayTimeCalendarConfig = {};
-  timeSelectConfig: ITimeSelectConfig = {};
-  inputValue: CalendarValue = '';
-  isFocusedTrigger = false;
-  inputElementValue: string | undefined;
-  calendarWrapper!: HTMLElement;
-  appendToElement?: HTMLElement;
-  handleInnerElementClickUnlisteners: (() => void)[] = [];
-  globalListenersUnlisteners: (() => void)[] = [];
-  validateFn!: DateValidator;
-  api: IDpDayPickerApi = {
+  protected componentConfig: IDatePickerConfigInternal = {};
+  protected dayCalendarConfig: IDayCalendarConfig = {};
+  protected dayTimeCalendarConfig: IDayTimeCalendarConfig = {};
+  protected timeSelectConfig: ITimeSelectConfig = {};
+  private inputValue: CalendarValue = '';
+  private isFocusedTrigger = false;
+  protected inputElementValue: string | undefined;
+  private calendarWrapper!: HTMLElement;
+  private appendToElement?: HTMLElement;
+  private handleInnerElementClickUnlisteners: (() => void)[] = [];
+  private globalListenersUnlisteners: (() => void)[] = [];
+  public validateFn!: DateValidator;
+  public api: IDpDayPickerApi = {
     open: this.showCalendars.bind(this),
     close: this.hideCalendar.bind(this),
     moveCalendarTo: this.moveCalendarTo.bind(this),
   };
-  selectEvent = SelectEvent;
-  origin: ElementRef | HTMLElement | null = null;
+  protected selectEvent = SelectEvent;
+  protected origin: ElementRef | HTMLElement | null = null;
   private onOpenDelayTimeoutHandler?: NodeJS.Timeout;
 
   private readonly dayPickerService = inject(DatePickerService);
@@ -140,23 +140,23 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
   private readonly utilsService = inject(UtilsService);
   public readonly cd = inject(ChangeDetectorRef);
 
-  get openOnFocus(): boolean {
+  private get openOnFocus(): boolean {
     return this.componentConfig.openOnFocus ?? false;
   }
 
-  get openOnClick(): boolean {
+  private get openOnClick(): boolean {
     return this.componentConfig.openOnClick ?? false;
   }
 
-  areCalendarsShown = false;
+  protected areCalendarsShown = false;
 
-  _selected: Dayjs[] = [];
+  protected _selected: Dayjs[] = [];
 
-  get selected(): Dayjs[] {
+  private get selected(): Dayjs[] {
     return this._selected;
   }
 
-  set selected(selected: Dayjs[]) {
+  private set selected(selected: Dayjs[]) {
     this._selected = selected;
     this.inputElementValue = (
       this.utilsService.convertFromDayjsArray(
@@ -170,14 +170,14 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.onChange.emit(val);
   }
 
-  _currentDateView: Dayjs | null = null;
-  overlayPosition: ConnectedPosition[] = [];
+  private _currentDateView: Dayjs | null = null;
+  protected overlayPosition: ConnectedPosition[] = [];
 
-  get currentDateView(): Dayjs | null {
+  private get currentDateView(): Dayjs | null {
     return this._currentDateView;
   }
 
-  set currentDateView(date: Dayjs | null) {
+  private set currentDateView(date: Dayjs | null) {
     this._currentDateView = date;
 
     this.dayCalendarRef()?.moveCalendarTo(date);
@@ -187,8 +187,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.displayDate.set(date);
   }
 
-  @HostListener('click')
-  onClick(): void {
+  protected onClick(): void {
     if (!this.openOnClick) {
       return;
     }
@@ -200,7 +199,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     }
   }
 
-  onBodyClick(event: MouseEvent) {
+  protected onBodyClick(event: MouseEvent) {
     if (this.inputElement().nativeElement === event.target) {
       return;
     }
@@ -243,7 +242,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     return this.validateFn(formControl.value as CalendarValue);
   }
 
-  processOnChangeCallback(selected: Dayjs[] | string): CalendarValue | undefined {
+  private processOnChangeCallback(selected: Dayjs[] | string): CalendarValue | undefined {
     if (typeof selected === 'string') {
       return selected;
     } else {
@@ -256,7 +255,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     }
   }
 
-  initValidators(): void {
+  private initValidators(): void {
     this.validateFn = this.utilsService.createValidator(
       {
         minDate: this.minDate(),
@@ -291,7 +290,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.cd.markForCheck();
   }
 
-  init(): void {
+  private init(): void {
     this.componentConfig = this.dayPickerService.getConfig(this.config(), this.mode());
     this.currentDateView = this.displayDate()
       ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
@@ -309,7 +308,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.origin = this.utilsService.getNativeElement(this.componentConfig.inputElementContainer);
   }
 
-  inputFocused(): void {
+  protected inputFocused(): void {
     if (!this.openOnFocus) {
       return;
     }
@@ -326,12 +325,12 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     }, this.componentConfig.onOpenDelay);
   }
 
-  inputBlurred(): void {
+  protected inputBlurred(): void {
     clearTimeout(this.onOpenDelayTimeoutHandler);
     this.onTouchedCallback();
   }
 
-  showCalendars(): void {
+  public showCalendars(): void {
     this.areCalendarsShown = true;
     this.startGlobalListeners();
 
@@ -341,7 +340,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.cd.markForCheck();
   }
 
-  hideCalendar(): void {
+  protected hideCalendar(): void {
     this.areCalendarsShown = false;
 
     this.dayCalendarRef()?.api.toggleCalendarMode(ECalendarMode.Day);
@@ -351,7 +350,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.cd.markForCheck();
   }
 
-  onViewDateChange(value: CalendarValue): void {
+  protected onViewDateChange(value: CalendarValue): void {
     const strVal = value ? this.utilsService.convertToString(value, this.componentConfig.format) : '';
     if (this.dayPickerService.isValidInputDateValue(strVal, this.componentConfig)) {
       this.selected = this.dayPickerService.convertInputValueToDayjsArray(strVal, this.componentConfig);
@@ -375,7 +374,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     }
   }
 
-  dateSelected(date: IDate, granularity: UnitType, type: SelectEvent, ignoreClose?: boolean): void {
+  protected dateSelected(date: IDate, granularity: UnitType, type: SelectEvent, ignoreClose?: boolean): void {
     this.selected = this.utilsService.updateSelected(
       this.componentConfig.allowMultiSelect,
       this.selected,
@@ -393,13 +392,13 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     });
   }
 
-  onDateClick(): void {
+  protected onDateClick(): void {
     if (this.componentConfig.closeOnSelect) {
       setTimeout(this.hideCalendar.bind(this), this.componentConfig.closeOnSelectDelay);
     }
   }
 
-  onKeyPress(event: KeyboardEvent): void {
+  protected onKeyPress(event: KeyboardEvent): void {
     switch (event.key) {
       case 'Escape':
       case 'Esc':
@@ -409,21 +408,21 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     }
   }
 
-  moveCalendarTo(date: SingleCalendarValue): void {
+  private moveCalendarTo(date: SingleCalendarValue): void {
     this.currentDateView = this.utilsService.convertToDayjs(date, this.componentConfig.format);
   }
 
-  onLeftNavClick(change: INavEvent): void {
+  protected onLeftNavClick(change: INavEvent): void {
     this.displayDate.set(change.to);
     this.onLeftNav.emit(change);
   }
 
-  onRightNavClick(change: INavEvent): void {
+  protected onRightNavClick(change: INavEvent): void {
     this.displayDate.set(change.to);
     this.onRightNav.emit(change);
   }
 
-  startGlobalListeners(): void {
+  private startGlobalListeners(): void {
     this.globalListenersUnlisteners.push(
       this.renderer.listen(document, 'keydown', (e: KeyboardEvent) => {
         this.onKeyPress(e);
@@ -431,7 +430,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     );
   }
 
-  stopGlobalListeners(): void {
+  private stopGlobalListeners(): void {
     this.globalListenersUnlisteners.forEach((ul): void => {
       ul();
     });
@@ -448,7 +447,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     }
   }
 
-  goToCurrent(): void {
+  protected goToCurrent(): void {
     this.currentDateView = dayjsRef();
     this.onGoToCurrent.emit();
   }

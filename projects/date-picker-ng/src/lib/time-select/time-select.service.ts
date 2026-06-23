@@ -12,7 +12,7 @@ export const FIRST_PM_HOUR = 12;
   providedIn: 'root',
 })
 export class TimeSelectService {
-  readonly DEFAULT_CONFIG: ITimeSelectConfigInternal = {
+  private readonly DEFAULT_CONFIG: ITimeSelectConfigInternal = {
     hours12Format: 'hh',
     hours24Format: 'HH',
     meridiemFormat: 'A',
@@ -40,7 +40,7 @@ export class TimeSelectService {
     } as ITimeSelectConfigInternal;
   }
 
-  getTimeFormat(config: ITimeSelectConfigInternal): string {
+  public getTimeFormat(config: ITimeSelectConfigInternal): string {
     return (
       (config.showTwentyFourHours ? (config.hours24Format as string) : (config.hours12Format as string)) +
       (config.timeSeparator as string) +
@@ -70,7 +70,7 @@ export class TimeSelectService {
     return time.format(config.meridiemFormat);
   }
 
-  decrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
+  public decrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
     let amount = 1;
     switch (unit) {
       case 'minute':
@@ -83,7 +83,7 @@ export class TimeSelectService {
     return time.subtract(amount, unit);
   }
 
-  increase(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
+  public increase(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
     let amount = 1;
     switch (unit) {
       case 'minute':
@@ -96,7 +96,7 @@ export class TimeSelectService {
     return time.add(amount, unit);
   }
 
-  toggleMeridiem(time: Dayjs): Dayjs {
+  public toggleMeridiem(time: Dayjs): Dayjs {
     if (time.hour() < FIRST_PM_HOUR) {
       return time.add(12, 'hour');
     } else {
@@ -104,7 +104,7 @@ export class TimeSelectService {
     }
   }
 
-  shouldShowDecrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): boolean {
+  public shouldShowDecrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): boolean {
     if (!config.min && !config.minTime) {
       return true;
     }
@@ -116,7 +116,7 @@ export class TimeSelectService {
     );
   }
 
-  shouldShowIncrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): boolean {
+  public shouldShowIncrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): boolean {
     if (!config.max && !config.maxTime) {
       return true;
     }
@@ -128,7 +128,7 @@ export class TimeSelectService {
     );
   }
 
-  shouldShowToggleMeridiem(config: ITimeSelectConfigInternal, time: Dayjs): boolean {
+  public shouldShowToggleMeridiem(config: ITimeSelectConfigInternal, time: Dayjs): boolean {
     if (!config.min && !config.max && !config.minTime && !config.maxTime) {
       return true;
     }

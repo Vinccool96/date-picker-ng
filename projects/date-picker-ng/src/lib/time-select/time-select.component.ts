@@ -62,24 +62,24 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
   public readonly minTime = input<SingleCalendarValue>();
   public readonly maxTime = input<SingleCalendarValue>();
   public readonly theme = input<string>('');
-  @Output() onChange = new EventEmitter<IDate>();
-  isInited = false;
-  componentConfig: ITimeSelectConfigInternal = {};
-  inputValue: CalendarValue = '';
-  inputValueType!: ECalendarValue;
-  validateFn!: DateValidator;
-  hours = '';
-  minutes = '';
-  seconds = '';
-  meridiem = '';
-  showDecHour = false;
-  showDecMinute = false;
-  showDecSecond = false;
-  showIncHour = false;
-  showIncMinute = false;
-  showIncSecond = false;
-  showToggleMeridiem = false;
-  api = {
+  @Output() public onChange = new EventEmitter<IDate>();
+  private isInited = false;
+  protected componentConfig: ITimeSelectConfigInternal = {};
+  private inputValue: CalendarValue = '';
+  private inputValueType!: ECalendarValue;
+  private validateFn!: DateValidator;
+  public hours = '';
+  public minutes = '';
+  public seconds = '';
+  public meridiem = '';
+  protected showDecHour = false;
+  protected showDecMinute = false;
+  protected showDecSecond = false;
+  protected showIncHour = false;
+  protected showIncMinute = false;
+  protected showIncSecond = false;
+  protected showToggleMeridiem = false;
+  public api = {
     triggerChange: this.emitChange.bind(this),
   };
 
@@ -108,13 +108,13 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     });
   }
 
-  _selected?: Dayjs;
+  private _selected?: Dayjs;
 
-  get selected(): Dayjs | undefined {
+  public get selected(): Dayjs | undefined {
     return this._selected;
   }
 
-  set selected(selected: Dayjs | undefined) {
+  public set selected(selected: Dayjs | undefined) {
     this._selected = selected;
     this.calculateTimeParts(this.selected);
 
@@ -156,7 +156,7 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     this.initValidators();
   }
 
-  init(): void {
+  private init(): void {
     this.componentConfig = this.timeSelectService.getConfig(this.config());
     this.selected = this.selected || dayjsRef();
     this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
@@ -206,7 +206,7 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     }
   }
 
-  processOnChangeCallback(value: Dayjs | undefined): CalendarValue | undefined {
+  private processOnChangeCallback(value: Dayjs | undefined): CalendarValue | undefined {
     return this.utilsService.convertFromDayjsArray(
       this.timeSelectService.getTimeFormat(this.componentConfig),
       [value],
@@ -214,7 +214,7 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     );
   }
 
-  initValidators() {
+  private initValidators() {
     this.validateFn = this.utilsService.createValidator(
       {
         minDate: this.minDate(),
@@ -229,22 +229,22 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     this.onChangeCallback(this.processOnChangeCallback(this.selected));
   }
 
-  decrease(unit: TimeUnit) {
+  protected decrease(unit: TimeUnit) {
     this.selected = this.timeSelectService.decrease(this.componentConfig, this.selected as Dayjs, unit);
     this.emitChange();
   }
 
-  increase(unit: TimeUnit) {
+  protected increase(unit: TimeUnit) {
     this.selected = this.timeSelectService.increase(this.componentConfig, this.selected as Dayjs, unit);
     this.emitChange();
   }
 
-  toggleMeridiem(): void {
+  protected toggleMeridiem(): void {
     this.selected = this.timeSelectService.toggleMeridiem(this.selected as Dayjs);
     this.emitChange();
   }
 
-  emitChange(): void {
+  private emitChange(): void {
     this.onChange.emit({ date: this.selected as Dayjs, selected: false });
     this.cd.markForCheck();
   }

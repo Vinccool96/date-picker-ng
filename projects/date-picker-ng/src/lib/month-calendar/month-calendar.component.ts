@@ -66,26 +66,26 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   public readonly minDate = input<Dayjs>();
   public readonly maxDate = input<Dayjs>();
   public readonly theme = input<string>('');
-  @Output() onSelect = new EventEmitter<IMonth>();
-  @Output() onNavHeaderBtnClick = new EventEmitter<null>();
-  @Output() onGoToCurrent = new EventEmitter<void>();
-  @Output() onLeftNav = new EventEmitter<INavEvent>();
-  @Output() onRightNav = new EventEmitter<INavEvent>();
-  @Output() onLeftSecondaryNav = new EventEmitter<INavEvent>();
-  @Output() onRightSecondaryNav = new EventEmitter<INavEvent>();
-  isInited = false;
-  componentConfig: IMonthCalendarConfigInternal = {};
-  yearMonths: IMonth[][] = [];
-  inputValue: CalendarValue = '';
-  inputValueType!: ECalendarValue;
-  validateFn!: DateValidator;
-  _shouldShowCurrent = true;
-  navLabel = '';
-  showLeftNav = false;
-  showRightNav = false;
-  showSecondaryLeftNav = false;
-  showSecondaryRightNav = false;
-  api = {
+  @Output() public onSelect = new EventEmitter<IMonth>();
+  @Output() public onNavHeaderBtnClick = new EventEmitter<null>();
+  @Output() public onGoToCurrent = new EventEmitter<void>();
+  @Output() public onLeftNav = new EventEmitter<INavEvent>();
+  @Output() public onRightNav = new EventEmitter<INavEvent>();
+  @Output() public onLeftSecondaryNav = new EventEmitter<INavEvent>();
+  @Output() public onRightSecondaryNav = new EventEmitter<INavEvent>();
+  private isInited = false;
+  public componentConfig: IMonthCalendarConfigInternal = {};
+  protected yearMonths: IMonth[][] = [];
+  private inputValue: CalendarValue = '';
+  private inputValueType!: ECalendarValue;
+  private validateFn!: DateValidator;
+  protected _shouldShowCurrent = true;
+  protected navLabel = '';
+  protected showLeftNav = false;
+  protected showRightNav = false;
+  protected showSecondaryLeftNav = false;
+  protected showSecondaryRightNav = false;
+  public api = {
     toggleCalendar: this.toggleCalendarMode.bind(this),
     moveCalendarTo: this.moveCalendarTo.bind(this),
   };
@@ -111,24 +111,24 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     });
   }
 
-  _selected: Dayjs[] = [];
+  private _selected: Dayjs[] = [];
 
-  get selected(): Dayjs[] {
+  private get selected(): Dayjs[] {
     return this._selected;
   }
 
-  set selected(selected: Dayjs[]) {
+  private set selected(selected: Dayjs[]) {
     this._selected = selected;
     this.onChangeCallback(this.processOnChangeCallback(selected));
   }
 
-  _currentDateView: Dayjs | null = null;
+  private _currentDateView: Dayjs | null = null;
 
-  get currentDateView(): Dayjs | null {
+  private get currentDateView(): Dayjs | null {
     return this._currentDateView;
   }
 
-  set currentDateView(current: Dayjs | null) {
+  private set currentDateView(current: Dayjs | null) {
     this._currentDateView = dayjsRef(current?.toDate());
     this.yearMonths = this.monthCalendarService.generateYear(
       this.componentConfig,
@@ -167,7 +167,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     }
   }
 
-  init(): void {
+  private init(): void {
     this.componentConfig = this.monthCalendarService.getConfig(this.config());
     this.currentDateView =
       (this.displayDate() as Dayjs | undefined) ??
@@ -224,7 +224,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     }
   }
 
-  processOnChangeCallback(value: Dayjs[]): CalendarValue | undefined {
+  private processOnChangeCallback(value: Dayjs[]): CalendarValue | undefined {
     return this.utilsService.convertFromDayjsArray(
       this.componentConfig.format,
       value,
@@ -232,7 +232,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     );
   }
 
-  initValidators(): void {
+  private initValidators(): void {
     this.validateFn = this.utilsService.createValidator(
       { minDate: this.minDate(), maxDate: this.maxDate() },
       this.componentConfig.format,
@@ -242,7 +242,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this.onChangeCallback(this.processOnChangeCallback(this.selected));
   }
 
-  monthClicked(month: IMonth): void {
+  protected monthClicked(month: IMonth): void {
     if (month.selected && !this.componentConfig.unSelectOnClick) {
       return;
     }
@@ -261,7 +261,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this.onSelect.emit(month);
   }
 
-  onLeftNavClick() {
+  protected onLeftNavClick() {
     const from = dayjsRef(this.currentDateView?.toDate());
     this.currentDateView = this.currentDateView?.subtract(1, 'year') ?? null;
     const to = dayjsRef(this.currentDateView?.toDate());
@@ -273,7 +273,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this.onLeftNav.emit({ from, to });
   }
 
-  onLeftSecondaryNavClick(): void {
+  protected onLeftSecondaryNavClick(): void {
     let navigateBy = this.componentConfig.multipleYearsNavigateBy as number;
     const isOutsideRange =
       this.componentConfig.min && (this.currentDateView as Dayjs).year() - this.componentConfig.min.year() < navigateBy;
@@ -288,14 +288,14 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this.onLeftSecondaryNav.emit({ from, to });
   }
 
-  onRightNavClick(): void {
+  protected onRightNavClick(): void {
     const from = dayjsRef(this.currentDateView?.toDate());
     this.currentDateView = this.currentDateView?.add(1, 'year') ?? null;
     const to = dayjsRef(this.currentDateView?.toDate());
     this.onRightNav.emit({ from, to });
   }
 
-  onRightSecondaryNavClick(): void {
+  protected onRightSecondaryNavClick(): void {
     let navigateBy = this.componentConfig.multipleYearsNavigateBy as number;
     const isOutsideRange =
       this.componentConfig.max && this.componentConfig.max.year() - (this.currentDateView as Dayjs).year() < navigateBy;
@@ -310,11 +310,11 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this.onRightSecondaryNav.emit({ from, to });
   }
 
-  toggleCalendarMode(): void {
+  protected toggleCalendarMode(): void {
     this.onNavHeaderBtnClick.emit();
   }
 
-  getMonthBtnCssClass(month: IMonth): Record<string, boolean> {
+  public getMonthBtnCssClass(month: IMonth): Record<string, boolean> {
     const cssClass: Record<string, boolean> = {
       'dp-selected': month.selected,
       'dp-current-month': month.currentMonth,
@@ -331,7 +331,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     return cssClass;
   }
 
-  shouldShowCurrent(): boolean {
+  protected shouldShowCurrent(): boolean {
     return this.utilsService.shouldShowCurrent(
       this.componentConfig.showGoToCurrent,
       'month',
@@ -340,19 +340,19 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     );
   }
 
-  goToCurrent(): void {
+  public goToCurrent(): void {
     this.currentDateView = dayjsRef();
     this.onGoToCurrent.emit();
   }
 
-  moveCalendarTo(to: SingleCalendarValue | null): void {
+  public moveCalendarTo(to: SingleCalendarValue | null): void {
     if (to) {
       this.currentDateView = this.utilsService.convertToDayjs(to, this.componentConfig.format);
       this.cd.markForCheck();
     }
   }
 
-  handleConfigChange(config: ConfigChange): void {
+  private handleConfigChange(config: ConfigChange): void {
     const prevConf: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.previousValue);
     const currentConf: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.currentValue);
 

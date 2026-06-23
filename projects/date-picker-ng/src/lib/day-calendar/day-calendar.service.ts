@@ -12,7 +12,7 @@ import { dayjsRef } from '../common/dayjs/dayjs.ref';
   providedIn: 'root',
 })
 export class DayCalendarService {
-  readonly DEFAULT_CONFIG: IDayCalendarConfig = {
+  private readonly DEFAULT_CONFIG: IDayCalendarConfig = {
     showNearMonthDays: true,
     showWeekNumbers: false,
     firstDayOfWeek: 'su',
@@ -39,7 +39,7 @@ export class DayCalendarService {
     return _config as IDayCalendarConfigInternal;
   }
 
-  generateDaysMap(firstDayOfWeek: WeekDays) {
+  public generateDaysMap(firstDayOfWeek: WeekDays) {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
     const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
     return daysArr.reduce<Record<string, number>>((map, day, index) => {
@@ -96,7 +96,7 @@ export class DayCalendarService {
     return monthArray;
   }
 
-  generateWeekdays(firstDayOfWeek: WeekDays): Dayjs[] {
+  public generateWeekdays(firstDayOfWeek: WeekDays): Dayjs[] {
     const weekdayNames: Record<string, Dayjs> = {
       su: dayjsRef().day(0),
       mo: dayjsRef().day(1),
@@ -118,7 +118,7 @@ export class DayCalendarService {
     return weekdays;
   }
 
-  isDateDisabled(date: Dayjs, config: IDayCalendarConfigInternal): boolean {
+  public isDateDisabled(date: Dayjs, config: IDayCalendarConfigInternal): boolean {
     if (config.isDayDisabledCallback) {
       return config.isDayDisabledCallback(date);
     }
@@ -131,7 +131,7 @@ export class DayCalendarService {
   }
 
   // todo:: add unit tests
-  getHeaderLabel(config: IDayCalendarConfigInternal, month: Dayjs): string {
+  public getHeaderLabel(config: IDayCalendarConfigInternal, month: Dayjs): string {
     if (config.monthFormatter) {
       return config.monthFormatter(month);
     }
@@ -149,7 +149,7 @@ export class DayCalendarService {
     return max ? max.isAfter(currentMonthView, 'month') : true;
   }
 
-  generateDaysIndexMap(firstDayOfWeek: WeekDays) {
+  public generateDaysIndexMap(firstDayOfWeek: WeekDays) {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
     const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
     return daysArr.reduce<Record<number, string>>((map, day, index) => {
@@ -159,7 +159,7 @@ export class DayCalendarService {
     }, {});
   }
 
-  getMonthCalendarConfig(componentConfig: IDayCalendarConfigInternal): IMonthCalendarConfig {
+  public getMonthCalendarConfig(componentConfig: IDayCalendarConfigInternal): IMonthCalendarConfig {
     return this.utilsService.clearUndefined({
       min: componentConfig.min,
       max: componentConfig.max,
@@ -179,7 +179,7 @@ export class DayCalendarService {
     });
   }
 
-  getDayBtnText(config: IDayCalendarConfigInternal, day: Dayjs | undefined): string {
+  public getDayBtnText(config: IDayCalendarConfigInternal, day: Dayjs | undefined): string {
     const date = day ?? dayjsRef();
 
     if (config.dayBtnFormatter) {

@@ -54,7 +54,7 @@ export class UtilsService {
     }
   }
 
-  isDateValid(date: string, format: string | undefined): boolean {
+  public isDateValid(date: string, format: string | undefined): boolean {
     if (date === '') {
       return true;
     }
@@ -106,7 +106,7 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  convertToDayjsArray(value: CalendarValue, config: { allowMultiSelect?: boolean; format?: string }): Dayjs[] {
+  public convertToDayjsArray(value: CalendarValue, config: { allowMultiSelect?: boolean; format?: string }): Dayjs[] {
     let retVal: Dayjs[];
     switch (this.getInputType(value, config.allowMultiSelect)) {
       case ECalendarValue.String:
@@ -150,7 +150,7 @@ export class UtilsService {
     }
   }
 
-  convertToString(value: CalendarValue | null, format: string | undefined): string {
+  public convertToString(value: CalendarValue | null, format: string | undefined): string {
     let tmpVal: string[];
 
     if (typeof value === 'string') {
@@ -173,7 +173,7 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  clearUndefined<T>(obj: T): T {
+  public clearUndefined<T>(obj: T): T {
     if (!obj) {
       return obj;
     }
@@ -183,7 +183,7 @@ export class UtilsService {
     return obj;
   }
 
-  updateSelected(
+  public updateSelected(
     isMultiple: boolean | undefined,
     currentlySelected: Dayjs[],
     date: IDate,
@@ -212,7 +212,7 @@ export class UtilsService {
     return match;
   }
 
-  onlyTime(m: Dayjs | null | undefined): Dayjs {
+  public onlyTime(m: Dayjs | null | undefined): Dayjs {
     if (dayjsRef.isDayjs(m)) {
       return dayjsRef(m.format('HH:mm:ss'), 'HH:mm:ss');
     } else {
@@ -220,7 +220,7 @@ export class UtilsService {
     }
   }
 
-  granularityFromType(calendarType: CalendarMode): UnitType {
+  private granularityFromType(calendarType: CalendarMode): UnitType {
     switch (calendarType) {
       case 'time':
         return 'second';
@@ -317,14 +317,14 @@ export class UtilsService {
     };
   }
 
-  datesStringToStringArray(value: string): string[] {
+  public datesStringToStringArray(value: string): string[] {
     return (value || '')
       .split('|')
       .map((m) => m.trim())
       .filter(Boolean);
   }
 
-  getValidDayjsArray(value: string, format: string | undefined): Dayjs[] {
+  public getValidDayjsArray(value: string, format: string | undefined): Dayjs[] {
     return this.datesStringToStringArray(value)
       .filter((d) => this.isDateValid(d, format))
       .map((d) => dayjsRef(d, format));
@@ -372,7 +372,7 @@ export class UtilsService {
     });
   }
 
-  shouldResetCurrentView<T extends ICalendarInternal>(
+  public shouldResetCurrentView<T extends ICalendarInternal>(
     prevConf: T | undefined | null,
     currentConf: T | undefined | null,
   ): boolean {

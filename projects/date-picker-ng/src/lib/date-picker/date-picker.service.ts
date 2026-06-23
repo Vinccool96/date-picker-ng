@@ -16,7 +16,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 })
 export class DatePickerService {
   public readonly onPickerClosed = new EventEmitter<null>();
-  private defaultConfig: IDatePickerConfigInternal = {
+  private readonly defaultConfig: IDatePickerConfigInternal = {
     closeOnSelect: true,
     closeOnSelectDelay: 100,
     closeOnEnter: true,
@@ -37,7 +37,7 @@ export class DatePickerService {
   private readonly daytimeCalendarService = inject(DayTimeCalendarService);
 
   // todo:: add unit tests
-  getConfig(config: IDatePickerConfig | undefined, mode: CalendarMode = 'daytime'): IDatePickerConfigInternal {
+  public getConfig(config: IDatePickerConfig | undefined, mode: CalendarMode = 'daytime'): IDatePickerConfigInternal {
     const _config = {
       ...this.defaultConfig,
       format: DatePickerService.getDefaultFormatByMode(mode),
@@ -53,7 +53,7 @@ export class DatePickerService {
     return _config;
   }
 
-  getDayConfigService(pickerConfig: IDatePickerConfig): IDayCalendarConfig {
+  public getDayConfigService(pickerConfig: IDatePickerConfig): IDayCalendarConfig {
     return {
       min: pickerConfig.min,
       max: pickerConfig.max,
@@ -86,7 +86,7 @@ export class DatePickerService {
     };
   }
 
-  getDayTimeConfig(pickerConfig: IDatePickerConfig): IDayTimeCalendarConfig {
+  public getDayTimeConfig(pickerConfig: IDatePickerConfig): IDayTimeCalendarConfig {
     return this.daytimeCalendarService.getConfig(pickerConfig);
   }
 
@@ -94,12 +94,12 @@ export class DatePickerService {
     return this.timeSelectService.getConfig(pickerConfig);
   }
 
-  pickerClosed() {
+  public pickerClosed() {
     this.onPickerClosed.emit();
   }
 
   // todo:: add unit tests
-  isValidInputDateValue(value: string, config: IDatePickerConfig): boolean {
+  public isValidInputDateValue(value: string, config: IDatePickerConfig): boolean {
     value = value ? value : '';
     const datesStrArr: string[] = this.utilsService.datesStringToStringArray(value);
 
@@ -107,7 +107,7 @@ export class DatePickerService {
   }
 
   // todo:: add unit tests
-  convertInputValueToDayjsArray(value: string, config: IDatePickerConfig): Dayjs[] {
+  public convertInputValueToDayjsArray(value: string, config: IDatePickerConfig): Dayjs[] {
     value = value ? value : '';
     const datesStrArr: string[] = this.utilsService.datesStringToStringArray(value);
 

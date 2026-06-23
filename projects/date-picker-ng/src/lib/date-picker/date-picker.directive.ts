@@ -32,13 +32,13 @@ import { IDpDayPickerApi } from './date-picker.api';
   },
 })
 export class DatePickerDirective implements OnInit {
-  @Output() open = new EventEmitter<void>();
-  @Output() close = new EventEmitter<void>();
-  @Output() onChange = new EventEmitter<CalendarValue>();
-  @Output() onGoToCurrent = new EventEmitter<void>();
-  @Output() onLeftNav = new EventEmitter<INavEvent>();
-  @Output() onRightNav = new EventEmitter<INavEvent>();
-  @Output() onSelect = new EventEmitter<ISelectionEvent>();
+  @Output() public open = new EventEmitter<void>();
+  @Output() public close = new EventEmitter<void>();
+  @Output() public onChange = new EventEmitter<CalendarValue>();
+  @Output() public onGoToCurrent = new EventEmitter<void>();
+  @Output() public onLeftNav = new EventEmitter<INavEvent>();
+  @Output() public onRightNav = new EventEmitter<INavEvent>();
+  @Output() public onSelect = new EventEmitter<ISelectionEvent>();
   private datePicker!: DatePickerComponent;
   public api!: IDpDayPickerApi;
   public readonly theme = input.required<string>();
@@ -111,7 +111,7 @@ export class DatePickerDirective implements OnInit {
     return this.viewContainerRef.createComponent(DatePickerComponent).instance;
   }
 
-  attachModelToDatePicker() {
+  private attachModelToDatePicker() {
     const formControl = this.formControl;
 
     if (formControl === null) {
@@ -177,7 +177,7 @@ export class DatePickerDirective implements OnInit {
     }
   }
 
-  markForCheck() {
+  private markForCheck() {
     if ((this.datePicker as DatePickerComponent | undefined) !== undefined) {
       this.datePicker.cd.markForCheck();
     }
