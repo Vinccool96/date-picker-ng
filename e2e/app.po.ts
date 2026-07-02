@@ -1,11 +1,9 @@
 import { Locator, Page } from '@playwright/test';
 
 export class DemoPage {
-
   private popupSelector = '.dp-popup.dp-main';
 
-  constructor(private page: Page) {
-  }
+  constructor(private page: Page) {}
 
   dayPickerInput(): Locator {
     return this.page.locator('#picker input');

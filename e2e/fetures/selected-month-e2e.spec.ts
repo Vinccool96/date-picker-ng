@@ -1,11 +1,11 @@
-import {DemoPage} from '../app.po';
-import {expect, Page, test} from '@playwright/test';
+import { DemoPage } from '../app.po';
+import { expect, Page, test } from '@playwright/test';
 
 test.describe('selected-month', () => {
   let po: DemoPage;
   let page: Page;
 
-  test.beforeAll(async ({browser}) => {
+  test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
   });
 

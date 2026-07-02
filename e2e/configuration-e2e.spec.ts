@@ -1,6 +1,5 @@
-import {DemoPage} from './app.po';
-import {expect, Page, test} from '@playwright/test';
-
+import { DemoPage } from './app.po';
+import { expect, Page, test } from '@playwright/test';
 
 test.describe('dpDayPicker configuration', () => {
   let po: DemoPage;
@@ -20,13 +19,13 @@ test.describe('dpDayPicker configuration', () => {
     await po.openOnClickRadioOff().click();
     await po.openOnFocusRadioOff().click();
     await po.daytimePickerInput().click();
-    await expect(await po.datePickerPopup()).toBeHidden()
+    await expect(await po.datePickerPopup()).toBeHidden();
   });
 
   test('openOnClick = true, should open picker when clicked', async () => {
     await po.openOnClickRadioOn().click();
     await po.openOnFocusRadioOff().click();
     await po.daytimePickerInput().click();
-    await expect(await po.datePickerPopup()).toBeVisible()
+    await expect(await po.datePickerPopup()).toBeVisible();
   });
 });

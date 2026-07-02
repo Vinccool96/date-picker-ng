@@ -1,12 +1,12 @@
-import {DemoPage} from './app.po';
+import { DemoPage } from './app.po';
 import dayjs from 'dayjs';
-import {expect, Page, test} from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 
 test.describe('dpDayPicker dayPicker', () => {
   let po: DemoPage;
   let page: Page;
 
-  test.beforeAll(async ({browser}) => {
+  test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
   });
 
@@ -272,7 +272,8 @@ test.describe('dpDayPicker dayPicker', () => {
     await expect(await po.selectedDays().count()).toBe(3);
     await expect(po.datePickerPopup()).toBeVisible();
     await expect(po.dayPickerInput()).toHaveValue(
-      `${dayjs().date(18).format('DD-MM-YYYY')} | ${dayjs().date(15).format('DD-MM-YYYY')} | ${dayjs().date(16)
+      `${dayjs().date(18).format('DD-MM-YYYY')} | ${dayjs().date(15).format('DD-MM-YYYY')} | ${dayjs()
+        .date(16)
         .format('DD-MM-YYYY')}`,
     );
 
@@ -311,7 +312,9 @@ test.describe('dpDayPicker dayPicker', () => {
     await po.dayPickerInput().click();
     await po.dayCalendarNavHeaderBtn().click();
     await po.dayCalendarLeftSecondaryNavBtn().click();
-    await expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(dayjs().subtract(20, 'year').format('YYYY'));
+    await expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(
+      dayjs().subtract(20, 'year').format('YYYY'),
+    );
 
     await po.dayCalendarRightSecondaryNavBtn().click();
     await po.dayCalendarRightSecondaryNavBtn().click();

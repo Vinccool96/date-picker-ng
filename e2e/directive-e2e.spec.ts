@@ -1,12 +1,12 @@
-import {DemoPage} from './app.po';
-import {expect, Page, test} from '@playwright/test';
+import { DemoPage } from './app.po';
+import { expect, Page, test } from '@playwright/test';
 import dayjs from 'dayjs';
 
 test.describe('dpDayPicker directive', () => {
   let po: DemoPage;
   let page: Page;
 
-  test.beforeAll(async ({browser}) => {
+  test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
   });
 
@@ -29,8 +29,9 @@ test.describe('dpDayPicker directive', () => {
     await po.clickOnBody();
 
     await po.dayDirectiveInput().click();
-    await expect(await po.dayCalendarNavHeaderBtn().textContent())
-      .toEqual(dayjs().subtract(1, 'month').format('MMM, YYYY'));
+    await expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(
+      dayjs().subtract(1, 'month').format('MMM, YYYY'),
+    );
   });
 
   test('should check that the theme is added and removed', async () => {
@@ -58,7 +59,7 @@ test.describe('dpDayPicker directive', () => {
   });
 
   test('should allow input to be modified from beginning', async () => {
-    await po.setText(po.dayDirectiveInput(), '10-04-2017')
+    await po.setText(po.dayDirectiveInput(), '10-04-2017');
     await po.dayDirectiveInput().focus();
 
     for (let i = 0; i < 11; i++) {
