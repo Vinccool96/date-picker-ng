@@ -12,7 +12,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   imports: [ConfigFormComponent, TimeSelectComponent, ReactiveFormsModule],
 })
 export class TimeInlineDemoComponent extends DateComponent {
-  config: IDatePickerConfig = {
+  protected config: IDatePickerConfig = {
     ...DEF_CONF,
     format: 'HH:mm:ss',
   };

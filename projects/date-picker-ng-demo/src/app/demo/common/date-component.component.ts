@@ -9,35 +9,35 @@ export abstract class DateComponent {
   private readonly dateComponent = viewChild<DatePickerComponent>('dateComponent');
   private readonly dateDirective = viewChild(DatePickerDirective);
 
-  ready = true;
-  control: UntypedFormControl = this.buildForm();
+  protected ready = true;
+  protected control: UntypedFormControl = this.buildForm();
 
-  abstract config: IDatePickerConfig;
-  date = dayjs();
-  material = true;
-  required = false;
-  disabled = false;
-  validationMinDate?: Dayjs;
-  validationMaxDate?: Dayjs;
-  validationMinTime?: Dayjs;
-  validationMaxTime?: Dayjs;
-  placeholder = 'Choose a date...';
-  displayDate: Dayjs | string = '';
-  locale: string = dayjs.locale();
+  protected abstract config: IDatePickerConfig;
+  private date = dayjs();
+  protected material = true;
+  protected required = false;
+  private disabled = false;
+  private validationMinDate?: Dayjs;
+  private validationMaxDate?: Dayjs;
+  private validationMinTime?: Dayjs;
+  private validationMaxTime?: Dayjs;
+  protected placeholder = 'Choose a date...';
+  protected displayDate: Dayjs | string = '';
+  protected locale: string = dayjs.locale();
 
-  displayDateChanged(displayDate: Dayjs | string): void {
+  protected displayDateChanged(displayDate: Dayjs | string): void {
     this.displayDate = displayDate;
   }
 
-  onDisplayDateChange(displayDate: Dayjs | string): void {
+  protected onDisplayDateChange(displayDate: Dayjs | string): void {
     this.displayDate = displayDate;
   }
 
-  onMaterialThemeChange(material: boolean): void {
+  protected onMaterialThemeChange(material: boolean): void {
     this.material = material;
   }
 
-  onDisabledChange(disabled: boolean): void {
+  protected onDisabledChange(disabled: boolean): void {
     this.disabled = disabled;
     if (disabled) {
       this.control.disable();
@@ -46,84 +46,84 @@ export abstract class DateComponent {
     }
   }
 
-  onRequireValidationChange(required: boolean): void {
+  protected onRequireValidationChange(required: boolean): void {
     this.required = required;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
 
-  onMinValidationChange($event: Dayjs): void {
+  protected onMinValidationChange($event: Dayjs): void {
     this.validationMinDate = $event;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
 
-  onMaxValidationChange($event: Dayjs): void {
+  protected onMaxValidationChange($event: Dayjs): void {
     this.validationMaxDate = $event;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
 
-  onMinTimeValidationChange($event: Dayjs): void {
+  protected onMinTimeValidationChange($event: Dayjs): void {
     this.validationMinTime = $event;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
 
-  onMaxTimeValidationChange($event: Dayjs): void {
+  protected onMaxTimeValidationChange($event: Dayjs): void {
     this.validationMaxTime = $event;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
 
-  onPlaceholderChange(placeholder: string): void {
+  protected onPlaceholderChange(placeholder: string): void {
     this.placeholder = placeholder;
   }
 
-  onConfigChange($event: IDatePickerConfig): void {
+  protected onConfigChange($event: IDatePickerConfig): void {
     this.config = {
       ...this.config,
       ...$event,
     };
   }
 
-  openCalendar(): void {
+  protected openCalendar(): void {
     (this.dateComponent() || this.dateDirective())?.api.open();
   }
 
-  closeCalendar(): void {
+  protected closeCalendar(): void {
     (this.dateComponent() || this.dateDirective())?.api.close();
   }
 
-  moveCalendarTo($event: Dayjs): void {
+  protected moveCalendarTo($event: Dayjs): void {
     (this.dateComponent() || this.dateDirective())?.api.moveCalendarTo($event);
   }
 
-  onLeftNav(change: INavEvent) {
+  protected onLeftNav(change: INavEvent) {
     console.info('left nav', change);
   }
 
-  onRightNav(change: INavEvent) {
+  protected onRightNav(change: INavEvent) {
     console.info('right nav', change);
   }
 
-  opened() {
+  protected opened() {
     console.info('opened');
   }
 
-  closed() {
+  protected closed() {
     console.info('closed');
   }
 
-  onSelect(data: unknown) {
+  protected onSelect(data: unknown) {
     console.info(data);
   }
 
-  log(item: unknown): void {
+  protected log(item: unknown): void {
     console.info(item);
   }
 
-  onLocaleChange(locale: string): void {
+  protected onLocaleChange(locale: string): void {
     this.ready = false;
     this.locale = locale;
     dayjs.locale(locale);

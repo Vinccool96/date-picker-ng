@@ -12,7 +12,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   imports: [ConfigFormComponent, ReactiveFormsModule, DayTimeCalendarComponent],
 })
 export class DayTimeInlineDemoComponent extends DateComponent {
-  config: IDatePickerConfig = {
+  protected config: IDatePickerConfig = {
     ...DEF_CONF,
     format: 'DD-MM-YYYY HH:mm:ss',
   };

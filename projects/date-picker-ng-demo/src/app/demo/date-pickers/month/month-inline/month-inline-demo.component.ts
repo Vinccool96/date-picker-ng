@@ -12,7 +12,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   imports: [ConfigFormComponent, ReactiveFormsModule, MonthCalendarComponent],
 })
 export class MonthInlineDemoComponent extends DateComponent {
-  config: IDatePickerConfig = {
+  protected config: IDatePickerConfig = {
     ...DEF_CONF,
     format: 'MMM, YYYY',
   };

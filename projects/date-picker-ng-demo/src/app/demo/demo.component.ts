@@ -26,19 +26,18 @@ export class DemoComponent implements OnInit {
   private readonly dateComponent = viewChild<DatePickerComponent>('dateComponent');
   private readonly donateForm = viewChild.required<ElementRef<HTMLFormElement>>('donateForm');
   private readonly datePickerDirective = viewChild<DatePickerDirective>('dateDirectivePicker');
-  demoFormat = 'DD-MM-YYYY';
-  pickerMode = 'daytimePicker';
+  private demoFormat = 'DD-MM-YYYY';
+  private pickerMode = 'daytimePicker';
 
-  date: Dayjs | null = null;
-  dates: Dayjs[] = [];
-  material = true;
-  required = false;
-  disabled = false;
-  validationMinDate: Dayjs | null = null;
-  validationMaxDate: Dayjs | null = null;
-  placeholder = 'Choose a date...';
-  displayDate!: Dayjs | string;
-  dateTypes: { name: string; value: ECalendarValue | null }[] = [
+  private date: Dayjs | null = null;
+  private material = true;
+  private required = false;
+  private disabled = false;
+  private validationMinDate: Dayjs | null = null;
+  private validationMaxDate: Dayjs | null = null;
+  private placeholder = 'Choose a date...';
+  public displayDate!: Dayjs | string;
+  private dateTypes: { name: string; value: ECalendarValue | null }[] = [
     {
       name: 'Guess',
       value: null,
@@ -60,7 +59,7 @@ export class DemoComponent implements OnInit {
       value: ECalendarValue.StringArr,
     },
   ];
-  config: IDatePickerConfig = {
+  protected config: IDatePickerConfig = {
     firstDayOfWeek: 'su',
     monthFormat: 'MMM, YYYY',
     disableKeypress: false,
@@ -96,12 +95,12 @@ export class DemoComponent implements OnInit {
     hideOnOutsideClick: true,
   };
 
-  formGroup!: UntypedFormGroup;
-  isAtTop = true;
+  protected formGroup!: UntypedFormGroup;
+  protected isAtTop = true;
 
   private readonly gaService = inject(GaService);
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.formGroup = this.buildForm();
   }
 
@@ -110,11 +109,11 @@ export class DemoComponent implements OnInit {
     this.isAtTop = document.body.scrollTop === 0;
   }
 
-  validatorsChanged() {
+  protected validatorsChanged() {
     this.formGroup.get('datePicker')?.updateValueAndValidity();
   }
 
-  openCalendar() {
+  protected openCalendar() {
     if (this.dateComponent()) {
       this.dateComponent()?.api.open();
     } else if (this.datePickerDirective()) {
@@ -122,7 +121,7 @@ export class DemoComponent implements OnInit {
     }
   }
 
-  closeCalendar() {
+  protected closeCalendar() {
     if (this.dateComponent()) {
       this.dateComponent()?.api.close();
     } else if (this.datePickerDirective()) {
@@ -130,40 +129,40 @@ export class DemoComponent implements OnInit {
     }
   }
 
-  opened() {
+  protected opened() {
     console.info('opened');
   }
 
-  closed() {
+  protected closed() {
     console.info('closed');
   }
 
-  log(_) {
-    // console.info(item);
+  protected log(item: unknown) {
+    console.info(item);
   }
 
-  onLeftNav(change: INavEvent) {
+  protected onLeftNav(change: INavEvent) {
     console.info('left nav', change);
   }
 
-  onRightNav(change: INavEvent) {
+  protected onRightNav(change: INavEvent) {
     console.info('right nav', change);
   }
 
-  moveCalendarTo() {
+  protected moveCalendarTo() {
     this.dateComponent()?.api.moveCalendarTo(dayjs('14-01-1987', this.demoFormat));
   }
 
-  donateClicked() {
+  protected donateClicked() {
     this.gaService.emitEvent('donate', 'clicked');
     this.donateForm().nativeElement.submit();
   }
 
-  becomeABackerClicked() {
+  protected becomeABackerClicked() {
     this.gaService.emitEvent('becomeABacker', 'clicked');
   }
 
-  onSelect(data: ISelectionEvent) {
+  protected onSelect(data: ISelectionEvent) {
     console.info(data);
   }
 
