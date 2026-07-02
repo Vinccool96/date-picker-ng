@@ -11,6 +11,11 @@ interface DebounceResult {
 
 type DebounceFunction = (_target: unknown, propertyKey: string, descriptor: PropertyDescriptor) => DebounceResult;
 
+/**
+ * Debounce the function so it gets executed a bit later
+ * @param ms The amount of time to wait
+ * @returns The result
+ */
 export function debounce(ms: number = DEFAULT_DEBOUNCE_MS): DebounceFunction {
   return function (_target: unknown, propertyKey: string, descriptor: PropertyDescriptor): DebounceResult {
     return {

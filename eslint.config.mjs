@@ -3,7 +3,7 @@ import eslint from '@eslint/js';
 import { includeIgnoreFile } from '@eslint/config-helpers';
 import vitest from '@vitest/eslint-plugin';
 import angular from 'angular-eslint';
-// import jsdocPlugin from 'eslint-plugin-jsdoc';
+import jsdocPlugin from 'eslint-plugin-jsdoc';
 // import perfectionist from 'eslint-plugin-perfectionist';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 // import eslintPluginUnicorn from 'eslint-plugin-unicorn';
@@ -25,7 +25,7 @@ export default tseslint.config(
       eslintPluginPrettierRecommended,
       // eslintPluginUnicorn.configs.recommended,
       // perfectionist.configs['recommended-natural'],
-      // jsdocPlugin.configs['flat/recommended-typescript-error'],
+      jsdocPlugin.configs['flat/recommended-typescript-error'],
     ],
     settings: {
       perfectionist: {
@@ -98,7 +98,7 @@ export default tseslint.config(
        *****************************************************************************************************************
        */
 
-      // 'jsdoc/multiline-blocks': ['error', { noSingleLineBlocks: true }],
+      'jsdoc/multiline-blocks': ['error', { noSingleLineBlocks: true }],
 
       /*
        *****************************************************************************************************************

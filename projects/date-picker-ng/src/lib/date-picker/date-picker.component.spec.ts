@@ -13,6 +13,10 @@ describe('DatePickerComponent', () => {
     imports: [OverlayModule],
   });
 
+  /**
+   * Sets the mode of the component
+   * @param mode The mode
+   */
   function setComponentMode(mode: CalendarMode): void {
     spectator.setInput('mode', mode);
     component.init();
