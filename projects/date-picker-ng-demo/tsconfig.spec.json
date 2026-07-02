@@ -5,7 +5,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "../../out-tsc/spec",
-    "types": ["vitest/globals"],
+    "types": ["node", "vitest/globals"],
     "paths": {
       "date-picker-ng": ["../date-picker-ng/index"]
     }

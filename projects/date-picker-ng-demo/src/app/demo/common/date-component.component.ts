@@ -17,8 +17,8 @@ export abstract class DateComponent {
   protected material = true;
   protected required = false;
   private disabled = false;
-  private validationMinDate?: Dayjs;
-  private validationMaxDate?: Dayjs;
+  protected validationMinDate?: Dayjs;
+  protected validationMaxDate?: Dayjs;
   private validationMinTime?: Dayjs;
   private validationMaxTime?: Dayjs;
   protected placeholder = 'Choose a date...';

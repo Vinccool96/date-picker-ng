@@ -114,13 +114,13 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
   public readonly dayTimeCalendarRef = viewChild<DayTimeCalendarComponent>('daytimeCalendar');
   private readonly timeSelectRef = viewChild<TimeSelectComponent>('timeSelect');
   private readonly inputElement = viewChild.required<ElementRef<HTMLInputElement>>('inputElement');
-  protected componentConfig: IDatePickerConfigInternal = {};
+  public componentConfig: IDatePickerConfigInternal = {};
   protected dayCalendarConfig: IDayCalendarConfig = {};
   protected dayTimeCalendarConfig: IDayTimeCalendarConfig = {};
   protected timeSelectConfig: ITimeSelectConfig = {};
   private inputValue: CalendarValue = '';
   private isFocusedTrigger = false;
-  protected inputElementValue: string | undefined;
+  public inputElementValue: string | undefined;
   private calendarWrapper!: HTMLElement;
   private appendToElement?: HTMLElement;
   private handleInnerElementClickUnlisteners: (() => void)[] = [];
@@ -187,7 +187,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.displayDate.set(date);
   }
 
-  protected onClick(): void {
+  public onClick(): void {
     if (!this.openOnClick) {
       return;
     }
@@ -290,7 +290,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.cd.markForCheck();
   }
 
-  private init(): void {
+  public init(): void {
     this.componentConfig = this.dayPickerService.getConfig(this.config(), this.mode());
     this.currentDateView = this.displayDate()
       ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
@@ -308,7 +308,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.origin = this.utilsService.getNativeElement(this.componentConfig.inputElementContainer);
   }
 
-  protected inputFocused(): void {
+  public inputFocused(): void {
     if (!this.openOnFocus) {
       return;
     }
@@ -340,7 +340,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.cd.markForCheck();
   }
 
-  protected hideCalendar(): void {
+  public hideCalendar(): void {
     this.areCalendarsShown = false;
 
     this.dayCalendarRef()?.api.toggleCalendarMode(ECalendarMode.Day);
@@ -350,7 +350,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.cd.markForCheck();
   }
 
-  protected onViewDateChange(value: CalendarValue): void {
+  public onViewDateChange(value: CalendarValue): void {
     const strVal = value ? this.utilsService.convertToString(value, this.componentConfig.format) : '';
     if (this.dayPickerService.isValidInputDateValue(strVal, this.componentConfig)) {
       this.selected = this.dayPickerService.convertInputValueToDayjsArray(strVal, this.componentConfig);
