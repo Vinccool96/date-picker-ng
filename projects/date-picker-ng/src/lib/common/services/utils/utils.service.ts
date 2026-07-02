@@ -72,7 +72,7 @@ export class UtilsService {
   ): Dayjs {
     if (current !== null && current !== undefined) {
       return dayjsRef(current.toDate());
-    } else if (minDate !== undefined && minDate.isAfter(dayjsRef())) {
+    } else if (minDate?.isAfter(dayjsRef()) === true) {
       return dayjsRef(minDate.toDate());
     } else if (allowMultiSelect === true) {
       if (selected?.at(selected.length) !== undefined) {

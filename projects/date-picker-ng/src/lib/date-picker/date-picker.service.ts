@@ -46,7 +46,7 @@ export class DatePickerService {
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);
 
-    if (config !== undefined && config.allowMultiSelect === true && config.closeOnSelect === undefined) {
+    if (config?.allowMultiSelect === true && config.closeOnSelect === undefined) {
       _config.closeOnSelect = false;
     }
 

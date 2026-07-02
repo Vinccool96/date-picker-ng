@@ -53,7 +53,7 @@ export class DayTimeCalendarService {
   }
 
   public updateTime(current: Dayjs | undefined, time: Dayjs | undefined): Dayjs {
-    const day = current !== undefined ? current : dayjsRef();
+    const day = current ?? dayjsRef();
     const usedTime = time ?? dayjsRef();
 
     return dayjsRef(day.format(DAY_FORMAT) + usedTime.format(TIME_FORMAT), COMBINED_FORMAT);

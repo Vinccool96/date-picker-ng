@@ -20,7 +20,7 @@ export default tseslint.config(
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.strictTypeChecked,
-      ...tseslint.configs.stylistic,
+      ...tseslint.configs.stylisticTypeChecked,
       ...angular.configs.tsRecommended,
       eslintPluginPrettierRecommended,
       // eslintPluginUnicorn.configs.recommended,
