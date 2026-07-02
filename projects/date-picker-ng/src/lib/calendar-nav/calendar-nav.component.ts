@@ -31,23 +31,23 @@ export class CalendarNavComponent {
   @Output() public onLabelClick = new EventEmitter<null>();
   @Output() public onGoToCurrent = new EventEmitter<null>();
 
-  protected leftNavClicked() {
+  protected leftNavClicked(): void {
     this.onLeftNav.emit();
   }
 
-  protected leftSecondaryNavClicked() {
+  protected leftSecondaryNavClicked(): void {
     this.onLeftSecondaryNav.emit();
   }
 
-  protected rightNavClicked() {
+  protected rightNavClicked(): void {
     this.onRightNav.emit();
   }
 
-  protected rightSecondaryNavClicked() {
+  protected rightSecondaryNavClicked(): void {
     this.onRightSecondaryNav.emit();
   }
 
-  protected labelClicked() {
+  protected labelClicked(): void {
     this.onLabelClick.emit();
   }
 }

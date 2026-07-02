@@ -167,7 +167,7 @@ describe('DayCalendarService', () => {
     expect(service.isDateDisabled(dayjsRef('14-10-2016', 'DD-MM-YYYY'), config)).toBe(false);
     expect(service.isDateDisabled(dayjsRef('15-10-2016', 'DD-MM-YYYY'), config)).toBe(true);
 
-    config.isDayDisabledCallback = (date: Dayjs) => {
+    config.isDayDisabledCallback = (date: Dayjs): boolean => {
       return date.isSame(dayjsRef('13-10-2016', 'DD-MM-YYYY'), 'day');
     };
 

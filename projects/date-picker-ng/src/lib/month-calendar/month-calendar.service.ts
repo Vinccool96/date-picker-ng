@@ -58,7 +58,7 @@ export class MonthCalendarService {
     });
   }
 
-  public isMonthDisabled(date: Dayjs, config: IMonthCalendarConfig) {
+  public isMonthDisabled(date: Dayjs, config: IMonthCalendarConfig): boolean {
     if (config.isMonthDisabledCallback) {
       return config.isMonthDisabledCallback(date);
     }

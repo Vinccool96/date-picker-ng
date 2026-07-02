@@ -111,7 +111,7 @@ export class DatePickerDirective implements OnInit {
     return this.viewContainerRef.createComponent(DatePickerComponent).instance;
   }
 
-  private attachModelToDatePicker() {
+  private attachModelToDatePicker(): void {
     const formControl = this.formControl;
 
     if (formControl === null) {
@@ -163,27 +163,27 @@ export class DatePickerDirective implements OnInit {
     });
   }
 
-  protected onClick() {
+  protected onClick(): void {
     this.datePicker.onClick();
   }
 
-  protected onFocus() {
+  protected onFocus(): void {
     this.datePicker.inputFocused();
   }
 
-  protected onEnter() {
+  protected onEnter(): void {
     if (this.datePicker.componentConfig.closeOnEnter) {
       this.datePicker.hideCalendar();
     }
   }
 
-  private markForCheck() {
+  private markForCheck(): void {
     if ((this.datePicker as DatePickerComponent | undefined) !== undefined) {
       this.datePicker.cd.markForCheck();
     }
   }
 
-  private updateDatepickerConfig() {
+  private updateDatepickerConfig(): void {
     this.datePicker.minDate.set(this.minDate());
     this.datePicker.maxDate.set(this.maxDate());
     this.datePicker.minTime.set(this.minTime());

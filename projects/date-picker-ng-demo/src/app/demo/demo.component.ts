@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, OnInit, viewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs';
 import { GaService } from './common/services/ga/ga.service';
 import {
@@ -105,15 +105,15 @@ export class DemoComponent implements OnInit {
   }
 
   @debounce(100)
-  protected updateIsAtTop() {
+  protected updateIsAtTop(): void {
     this.isAtTop = document.body.scrollTop === 0;
   }
 
-  protected validatorsChanged() {
+  protected validatorsChanged(): void {
     this.formGroup.get('datePicker')?.updateValueAndValidity();
   }
 
-  protected openCalendar() {
+  protected openCalendar(): void {
     if (this.dateComponent()) {
       this.dateComponent()?.api.open();
     } else if (this.datePickerDirective()) {
@@ -121,7 +121,7 @@ export class DemoComponent implements OnInit {
     }
   }
 
-  protected closeCalendar() {
+  protected closeCalendar(): void {
     if (this.dateComponent()) {
       this.dateComponent()?.api.close();
     } else if (this.datePickerDirective()) {
@@ -129,49 +129,48 @@ export class DemoComponent implements OnInit {
     }
   }
 
-  protected opened() {
+  protected opened(): void {
     console.info('opened');
   }
 
-  protected closed() {
+  protected closed(): void {
     console.info('closed');
   }
 
-  protected log(item: unknown) {
+  protected log(item: unknown): void {
     console.info(item);
   }
 
-  protected onLeftNav(change: INavEvent) {
+  protected onLeftNav(change: INavEvent): void {
     console.info('left nav', change);
   }
 
-  protected onRightNav(change: INavEvent) {
+  protected onRightNav(change: INavEvent): void {
     console.info('right nav', change);
   }
 
-  protected moveCalendarTo() {
+  protected moveCalendarTo(): void {
     this.dateComponent()?.api.moveCalendarTo(dayjs('14-01-1987', this.demoFormat));
   }
 
-  protected donateClicked() {
+  protected donateClicked(): void {
     this.gaService.emitEvent('donate', 'clicked');
     this.donateForm().nativeElement.submit();
   }
 
-  protected becomeABackerClicked() {
+  protected becomeABackerClicked(): void {
     this.gaService.emitEvent('becomeABacker', 'clicked');
   }
 
-  protected onSelect(data: ISelectionEvent) {
+  protected onSelect(data: ISelectionEvent): void {
     console.info(data);
   }
 
   private buildForm(): UntypedFormGroup {
     return new UntypedFormGroup({
       datePicker: new UntypedFormControl({ value: this.date, disabled: this.disabled }, [
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        this.required ? Validators.required : () => null,
-        (control) => {
+        this.required ? Validators.required : (): ValidationErrors | null => null,
+        (control): ValidationErrors | null => {
           return this.validationMinDate &&
             dayjs(
               control.value as dayjs.ConfigType,
@@ -180,7 +179,7 @@ export class DemoComponent implements OnInit {
             ? { minDate: 'minDate Invalid' }
             : null;
         },
-        (control) =>
+        (control): ValidationErrors | null =>
           this.validationMaxDate &&
           dayjs(
             control.value as dayjs.ConfigType,

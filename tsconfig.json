@@ -22,7 +22,7 @@
     "esModuleInterop": true,
     "useDefineForClassFields": false,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

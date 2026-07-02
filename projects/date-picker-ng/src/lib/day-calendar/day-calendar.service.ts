@@ -39,7 +39,7 @@ export class DayCalendarService {
     return _config as IDayCalendarConfigInternal;
   }
 
-  public generateDaysMap(firstDayOfWeek: WeekDays) {
+  public generateDaysMap(firstDayOfWeek: WeekDays): Record<string, number> {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
     const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
     return daysArr.reduce<Record<string, number>>((map, day, index) => {
@@ -149,7 +149,7 @@ export class DayCalendarService {
     return max ? max.isAfter(currentMonthView, 'month') : true;
   }
 
-  public generateDaysIndexMap(firstDayOfWeek: WeekDays) {
+  public generateDaysIndexMap(firstDayOfWeek: WeekDays): Record<number, string> {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
     const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
     return daysArr.reduce<Record<number, string>>((map, day, index) => {

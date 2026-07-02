@@ -261,7 +261,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this.onSelect.emit(month);
   }
 
-  protected onLeftNavClick() {
+  protected onLeftNavClick(): void {
     const from = dayjsRef(this.currentDateView?.toDate());
     this.currentDateView = this.currentDateView?.subtract(1, 'year') ?? null;
     const to = dayjsRef(this.currentDateView?.toDate());

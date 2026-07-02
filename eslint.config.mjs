@@ -42,7 +42,7 @@ export default tseslint.config(
        *****************************************************************************************************************
        */
 
-      // '@typescript-eslint/explicit-function-return-type': ['error', { allowHigherOrderFunctions: false }],
+      '@typescript-eslint/explicit-function-return-type': ['error', { allowHigherOrderFunctions: false }],
       '@typescript-eslint/explicit-member-accessibility': 'error',
       '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/no-misused-promises': [
@@ -74,12 +74,12 @@ export default tseslint.config(
       //   },
       // ],
       // '@typescript-eslint/strict-boolean-expressions': ['error', { allowNullableObject: false, allowString: false }],
-      // '@typescript-eslint/unbound-method': [
-      //   'error',
-      //   {
-      //     ignoreStatic: true,
-      //   },
-      // ],
+      '@typescript-eslint/unbound-method': [
+        'error',
+        {
+          ignoreStatic: true,
+        },
+      ],
 
       /*
        *****************************************************************************************************************
@@ -90,7 +90,7 @@ export default tseslint.config(
       'curly': 'error',
       'eqeqeq': 'error',
       'no-multi-assign': 'error',
-      'object-shorthand': ['error'],
+      'object-shorthand': ['error', 'always'],
 
       /*
        *****************************************************************************************************************

@@ -150,7 +150,7 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     this.onChangeCallback(this.processOnChangeCallback(selected));
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.isInited = true;
     this.init();
     this.initValidators();
@@ -214,7 +214,7 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     );
   }
 
-  private initValidators() {
+  private initValidators(): void {
     this.validateFn = this.utilsService.createValidator(
       {
         minDate: this.minDate(),
@@ -229,12 +229,12 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     this.onChangeCallback(this.processOnChangeCallback(this.selected));
   }
 
-  protected decrease(unit: TimeUnit) {
+  protected decrease(unit: TimeUnit): void {
     this.selected = this.timeSelectService.decrease(this.componentConfig, this.selected as Dayjs, unit);
     this.emitChange();
   }
 
-  protected increase(unit: TimeUnit) {
+  protected increase(unit: TimeUnit): void {
     this.selected = this.timeSelectService.increase(this.componentConfig, this.selected as Dayjs, unit);
     this.emitChange();
   }

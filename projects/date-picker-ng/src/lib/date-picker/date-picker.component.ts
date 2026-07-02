@@ -199,7 +199,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     }
   }
 
-  protected onBodyClick(event: MouseEvent) {
+  protected onBodyClick(event: MouseEvent): void {
     if (this.inputElement().nativeElement === event.target) {
       return;
     }

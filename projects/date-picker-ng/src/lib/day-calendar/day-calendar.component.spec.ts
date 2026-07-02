@@ -107,7 +107,7 @@ describe('DayCalendarComponent', () => {
     });
 
     it('custom days', () => {
-      component.componentConfig.dayBtnCssClassCallback = () => 'custom-class';
+      component.componentConfig.dayBtnCssClassCallback = (): string => 'custom-class';
 
       expect(
         component.getDayBtnCssClass({
@@ -128,7 +128,7 @@ describe('DayCalendarComponent', () => {
     });
 
     it('weekdayFormatter', () => {
-      component.componentConfig.weekDayFormatter = (x: number) => x.toString();
+      component.componentConfig.weekDayFormatter = (x: number): string => x.toString();
 
       expect(component.getWeekdayName(dayjsRef())).toBe(dayjsRef().day().toString());
     });

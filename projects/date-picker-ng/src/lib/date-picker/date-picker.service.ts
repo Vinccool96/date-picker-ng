@@ -94,7 +94,7 @@ export class DatePickerService {
     return this.timeSelectService.getConfig(pickerConfig);
   }
 
-  public pickerClosed() {
+  public pickerClosed(): void {
     this.onPickerClosed.emit();
   }
 

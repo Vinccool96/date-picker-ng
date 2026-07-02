@@ -318,7 +318,7 @@ export class ConfigFormComponent implements OnInit {
   protected closeOnEnter!: UntypedFormControl;
   protected numOfMonthRows!: UntypedFormControl;
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.localFormat = ConfigFormComponent.getDefaultFormatByMode(this.pickerMode());
 
     this.format = new UntypedFormControl(ConfigFormComponent.getDefaultFormatByMode(this.pickerMode()));

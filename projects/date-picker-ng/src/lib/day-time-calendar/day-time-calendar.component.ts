@@ -112,18 +112,18 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
     this.onChangeCallback(this.processOnChangeCallback(selected));
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.isInited = true;
     this.init();
     this.initValidators();
   }
 
-  private init() {
+  private init(): void {
     this.componentConfig = this.dayTimeCalendarService.getConfig(this.config());
     this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
   }
 
-  private onChanges(date = false) {
+  private onChanges(date = false): void {
     if (this.isInited) {
       this.init();
 
@@ -177,7 +177,7 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
     );
   }
 
-  private initValidators() {
+  private initValidators(): void {
     this.validateFn = this.utilsService.createValidator(
       {
         minDate: this.minDate(),
@@ -190,31 +190,31 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
     this.onChangeCallback(this.processOnChangeCallback(this.selected));
   }
 
-  protected dateSelected(day: IDate) {
+  protected dateSelected(day: IDate): void {
     this.selected = this.dayTimeCalendarService.updateDay(this.selected, day.date, this.componentConfig);
     this.emitChange();
   }
 
-  protected timeChange(time: IDate) {
+  protected timeChange(time: IDate): void {
     this.selected = this.dayTimeCalendarService.updateTime(this.selected, time.date);
     this.emitChange();
   }
 
-  private emitChange() {
+  private emitChange(): void {
     this.onChange.emit({ date: this.selected as Dayjs, selected: false });
   }
 
-  public moveCalendarTo(to: SingleCalendarValue | null) {
+  public moveCalendarTo(to: SingleCalendarValue | null): void {
     if (to) {
       this.dayCalendarRef().moveCalendarTo(to);
     }
   }
 
-  protected onLeftNavClick(change: INavEvent) {
+  protected onLeftNavClick(change: INavEvent): void {
     this.onLeftNav.emit(change);
   }
 
-  protected onRightNavClick(change: INavEvent) {
+  protected onRightNavClick(change: INavEvent): void {
     this.onRightNav.emit(change);
   }
 }

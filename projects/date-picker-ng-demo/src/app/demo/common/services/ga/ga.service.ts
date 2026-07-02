@@ -7,7 +7,7 @@ declare const gtag: (arg1: string, arg2: string, arg3: Record<string, string | n
   providedIn: 'root',
 })
 export class GaService {
-  public emitEvent(eventCategory: string, eventLabel: string, eventValue: number | null = null) {
+  public emitEvent(eventCategory: string, eventLabel: string, eventValue: number | null = null): void {
     if (environment.production && window['gtag']) {
       gtag('event', 'send', {
         event_category: eventCategory,

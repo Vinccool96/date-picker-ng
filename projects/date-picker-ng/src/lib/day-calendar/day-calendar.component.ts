@@ -144,13 +144,13 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     this.showRightNav = this.dayCalendarService.shouldShowRight(this.componentConfig.max, this.currentDateView);
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.isInited = true;
     this.init();
     this.initValidators();
   }
 
-  private init() {
+  private init(): void {
     this.componentConfig = this.dayCalendarService.getConfig(this.config());
     this.currentDateView = this.displayDate()
       ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
@@ -227,7 +227,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     );
   }
 
-  private initValidators() {
+  private initValidators(): void {
     this.validateFn = this.utilsService.createValidator(
       { minDate: this.minDate(), maxDate: this.maxDate() },
       this.componentConfig.format,
@@ -237,7 +237,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     this.onChangeCallback(this.processOnChangeCallback(this.selected));
   }
 
-  protected dayClicked(day: IDay) {
+  protected dayClicked(day: IDay): void {
     if (day.selected && !this.componentConfig.unSelectOnClick) {
       return;
     }
@@ -272,33 +272,33 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     return cssClasses;
   }
 
-  protected onLeftNavClick() {
+  protected onLeftNavClick(): void {
     const from = dayjsRef(this.currentDateView?.toDate());
     this.moveCalendarsBy(this.currentDateView, -1, 'month');
     const to = dayjsRef(this.currentDateView?.toDate());
     this.onLeftNav.emit({ from, to });
   }
 
-  protected onRightNavClick() {
+  protected onRightNavClick(): void {
     const from = dayjsRef(this.currentDateView?.toDate());
     this.moveCalendarsBy(this.currentDateView, 1, 'month');
     const to = dayjsRef(this.currentDateView?.toDate());
     this.onRightNav.emit({ from, to });
   }
 
-  protected onMonthCalendarLeftClick(change: INavEvent) {
+  protected onMonthCalendarLeftClick(change: INavEvent): void {
     this.onLeftNav.emit(change);
   }
 
-  protected onMonthCalendarRightClick(change: INavEvent) {
+  protected onMonthCalendarRightClick(change: INavEvent): void {
     this.onRightNav.emit(change);
   }
 
-  protected onMonthCalendarSecondaryLeftClick(change: INavEvent) {
+  protected onMonthCalendarSecondaryLeftClick(change: INavEvent): void {
     this.onRightNav.emit(change);
   }
 
-  protected onMonthCalendarSecondaryRightClick(change: INavEvent) {
+  protected onMonthCalendarSecondaryRightClick(change: INavEvent): void {
     this.onLeftNav.emit(change);
   }
 
@@ -310,7 +310,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     return weekday.format(this.componentConfig.weekDayFormat);
   }
 
-  protected toggleCalendarMode(mode: ECalendarMode) {
+  protected toggleCalendarMode(mode: ECalendarMode): void {
     if (this.currentCalendarMode !== mode) {
       this.currentCalendarMode = mode;
       this.onNavHeaderBtnClick.emit(mode);
@@ -319,18 +319,18 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     this.cd.markForCheck();
   }
 
-  protected monthSelected(month: IMonth) {
+  protected monthSelected(month: IMonth): void {
     this.currentDateView = dayjsRef(month.date?.toDate());
     this.currentCalendarMode = ECalendarMode.Day;
     this.onMonthSelect.emit(month);
   }
 
-  private moveCalendarsBy(current: Dayjs | null, amount: number, granularity: ManipulateType = 'month') {
+  private moveCalendarsBy(current: Dayjs | null, amount: number, granularity: ManipulateType = 'month'): void {
     this.currentDateView = dayjsRef(current?.toDate()).add(amount, granularity);
     this.cd.markForCheck();
   }
 
-  public moveCalendarTo(to: SingleCalendarValue | null) {
+  public moveCalendarTo(to: SingleCalendarValue | null): void {
     if (to) {
       this.currentDateView = this.utilsService.convertToDayjs(to, this.componentConfig.format);
     }
@@ -347,7 +347,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     );
   }
 
-  public goToCurrent() {
+  public goToCurrent(): void {
     this.currentDateView = dayjsRef();
     this.onGoToCurrent.emit();
   }
