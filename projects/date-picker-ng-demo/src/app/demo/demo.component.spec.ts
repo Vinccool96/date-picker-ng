@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DemoComponent } from './demo.component';
-import { GaService } from './common/services/ga/ga.service';
 import { ActivatedRoute } from '@angular/router';
 
 describe('Demo', () => {
@@ -11,7 +10,7 @@ describe('Demo', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DemoComponent],
-      providers: [GaService, { provide: ActivatedRoute, useValue: {} }],
+      providers: [{ provide: ActivatedRoute, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

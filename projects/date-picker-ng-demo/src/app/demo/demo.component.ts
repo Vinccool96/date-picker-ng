@@ -1,7 +1,6 @@
-import { Component, ElementRef, inject, OnInit, viewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs';
-import { GaService } from './common/services/ga/ga.service';
 import {
   DatePickerComponent,
   DatePickerDirective,
@@ -24,7 +23,6 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 })
 export class DemoComponent implements OnInit {
   private readonly dateComponent = viewChild<DatePickerComponent>('dateComponent');
-  private readonly donateForm = viewChild.required<ElementRef<HTMLFormElement>>('donateForm');
   private readonly datePickerDirective = viewChild<DatePickerDirective>('dateDirectivePicker');
   private demoFormat = 'DD-MM-YYYY';
   private pickerMode = 'daytimePicker';
@@ -98,8 +96,6 @@ export class DemoComponent implements OnInit {
   protected formGroup!: UntypedFormGroup;
   protected isAtTop = true;
 
-  private readonly gaService = inject(GaService);
-
   public ngOnInit(): void {
     this.formGroup = this.buildForm();
   }
@@ -151,15 +147,6 @@ export class DemoComponent implements OnInit {
 
   protected moveCalendarTo(): void {
     this.dateComponent()?.api.moveCalendarTo(dayjs('14-01-1987', this.demoFormat));
-  }
-
-  protected donateClicked(): void {
-    this.gaService.emitEvent('donate', 'clicked');
-    this.donateForm().nativeElement.submit();
-  }
-
-  protected becomeABackerClicked(): void {
-    this.gaService.emitEvent('becomeABacker', 'clicked');
   }
 
   protected onSelect(data: ISelectionEvent): void {

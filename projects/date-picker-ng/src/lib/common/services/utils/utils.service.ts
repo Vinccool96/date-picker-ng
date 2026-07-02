@@ -9,6 +9,7 @@ import { CalendarMode } from '../../types/calendar-mode';
 import { DateValidator } from '../../types/validator.type';
 import { ICalendarInternal } from '../../models/calendar.model';
 import { dayjsRef } from '../../dayjs/dayjs.ref';
+import { ValidationErrors } from '@angular/forms';
 
 export interface DateLimits {
   minDate?: SingleCalendarValue;
@@ -173,13 +174,15 @@ export class UtilsService {
   }
 
   // todo:: add unit test
-  public clearUndefined<T>(obj: T): T {
+  public clearUndefined<T extends object>(obj: T | undefined): T {
     if (!obj) {
-      return obj;
+      return {} as T;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+    Object.keys(obj).forEach(
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      (key) => obj[key as keyof typeof obj] === undefined && delete obj[key as keyof typeof obj],
+    );
     return obj;
   }
 
@@ -303,7 +306,7 @@ export class UtilsService {
         };
       }
 
-      const errors = validators.reduce((map, err) => {
+      const errors = validators.reduce<ValidationErrors>((map, err) => {
         if (!err.isValid()) {
           map[err.key] = {
             given: value,

@@ -24,7 +24,7 @@ export function debounce(ms: number = DEFAULT_DEBOUNCE_MS): DebounceFunction {
           value: UtilsService.debounce(descriptor.value as (arg: unknown) => void, ms),
         });
 
-        return this[propertyKey];
+        return this[propertyKey as keyof typeof this];
       },
     };
   };
