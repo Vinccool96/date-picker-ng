@@ -35,16 +35,16 @@ export class DayTimeCalendarService {
   }
 
   public updateDay(current: Dayjs | undefined, day: Dayjs | undefined, config: IDayCalendarConfigInternal): Dayjs {
-    const time = current ? current : dayjsRef();
+    const time = current ?? dayjsRef();
     const usedDay = day ?? dayjsRef();
     let updated = dayjsRef(usedDay.format(DAY_FORMAT) + time.format(TIME_FORMAT), COMBINED_FORMAT);
 
-    if (config.min) {
+    if (config.min !== undefined) {
       const min = config.min;
       updated = min.isAfter(updated) ? min : updated;
     }
 
-    if (config.max) {
+    if (config.max !== undefined) {
       const max = config.max;
       updated = max.isBefore(updated) ? max : updated;
     }
@@ -53,7 +53,7 @@ export class DayTimeCalendarService {
   }
 
   public updateTime(current: Dayjs | undefined, time: Dayjs | undefined): Dayjs {
-    const day = current ? current : dayjsRef();
+    const day = current !== undefined ? current : dayjsRef();
     const usedTime = time ?? dayjsRef();
 
     return dayjsRef(day.format(DAY_FORMAT) + usedTime.format(TIME_FORMAT), COMBINED_FORMAT);

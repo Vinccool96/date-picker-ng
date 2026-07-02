@@ -46,7 +46,7 @@ export class UtilsService {
   }
 
   public convertToDayjs(date: SingleCalendarValue | null | undefined, format: string | undefined): Dayjs | null {
-    if (!date) {
+    if (date === null || date === undefined) {
       return null;
     } else if (typeof date === 'string') {
       return dayjsRef(date, format);
@@ -70,15 +70,15 @@ export class UtilsService {
     allowMultiSelect: boolean | undefined,
     minDate: Dayjs | undefined,
   ): Dayjs {
-    if (current) {
+    if (current !== null && current !== undefined) {
       return dayjsRef(current.toDate());
-    } else if (minDate && minDate.isAfter(dayjsRef())) {
+    } else if (minDate !== undefined && minDate.isAfter(dayjsRef())) {
       return dayjsRef(minDate.toDate());
-    } else if (allowMultiSelect) {
-      if (selected !== undefined && selected[selected.length]) {
+    } else if (allowMultiSelect === true) {
+      if (selected?.at(selected.length) !== undefined) {
         return dayjsRef(selected[selected.length].toDate());
       }
-    } else if (selected !== undefined && selected[0]) {
+    } else if (selected?.at(0) !== undefined) {
       return dayjsRef(selected[0].toDate());
     }
 
@@ -103,23 +103,26 @@ export class UtilsService {
       }
     }
 
-    return allowMultiSelect ? ECalendarValue.DayjsArr : ECalendarValue.Dayjs;
+    return allowMultiSelect === true ? ECalendarValue.DayjsArr : ECalendarValue.Dayjs;
   }
 
   // todo:: add unit test
-  public convertToDayjsArray(value: CalendarValue, config: { allowMultiSelect?: boolean; format?: string }): Dayjs[] {
+  public convertToDayjsArray(
+    value: CalendarValue | undefined,
+    config: { allowMultiSelect?: boolean; format?: string },
+  ): Dayjs[] {
     let retVal: Dayjs[];
-    switch (this.getInputType(value, config.allowMultiSelect)) {
+    switch (this.getInputType(value as CalendarValue, config.allowMultiSelect)) {
       case ECalendarValue.String:
-        retVal = value ? [dayjsRef(value as string, config.format, true)] : [];
+        retVal = value !== undefined && value !== '' ? [dayjsRef(value as string, config.format, true)] : [];
         break;
       case ECalendarValue.StringArr:
         retVal = (value as string[])
-          .map((v) => (v ? dayjsRef(v, config.format, true) : null))
+          .map((v) => (v !== '' ? dayjsRef(v, config.format, true) : null))
           .filter((value) => value !== null);
         break;
       case ECalendarValue.Dayjs:
-        retVal = value ? [dayjsRef((value as Dayjs).toDate())] : [];
+        retVal = value !== undefined && value !== '' ? [dayjsRef((value as Dayjs).toDate())] : [];
         break;
       case ECalendarValue.DayjsArr:
         retVal = ((value as Dayjs[] | undefined) ?? []).map((v) => dayjsRef(v.toDate()));
@@ -139,13 +142,15 @@ export class UtilsService {
   ): CalendarValue | undefined {
     switch (convertTo) {
       case ECalendarValue.String:
-        return value[0] && value[0].format(format);
+        return value.at(0)?.format(format);
       case ECalendarValue.StringArr:
         return value.filter((v) => v !== undefined).map((v) => v.format(format));
       case ECalendarValue.Dayjs:
-        return value[0] ? dayjsRef(value[0].toDate()) : value[0];
+        return value.at(0) !== undefined ? dayjsRef(value.at(0)?.toDate()) : value[0];
       case ECalendarValue.DayjsArr:
-        return (value as (Dayjs | undefined)[] | undefined) ? value.map((v) => dayjsRef(v?.toDate())) : undefined;
+        return (value as (Dayjs | undefined)[] | undefined) !== undefined
+          ? value.map((v) => dayjsRef(v?.toDate()))
+          : undefined;
       default:
         return value as unknown as CalendarValue;
     }
@@ -175,7 +180,7 @@ export class UtilsService {
 
   // todo:: add unit test
   public clearUndefined<T extends object>(obj: T | undefined): T {
-    if (!obj) {
+    if (obj === undefined) {
       return {} as T;
     }
 
@@ -192,7 +197,7 @@ export class UtilsService {
     date: IDate,
     granularity: UnitType = 'day',
   ): Dayjs[] {
-    if (isMultiple) {
+    if (isMultiple === true) {
       return !date.selected
         ? currentlySelected.concat([date.date as Dayjs])
         : currentlySelected.filter((d) => !d.isSame(date.date, granularity));
@@ -202,7 +207,7 @@ export class UtilsService {
   }
 
   public closestParent(element: HTMLElement | null | undefined, selector: string): HTMLElement | undefined {
-    if (!element) {
+    if (element === null || element === undefined) {
       return undefined;
     }
 
@@ -244,7 +249,7 @@ export class UtilsService {
     const validators: Validator[] = [];
     const granularity = this.granularityFromType(calendarType);
 
-    if (minDate) {
+    if (minDate !== undefined && minDate !== '') {
       const md = this.convertToDayjs(minDate, format);
       validators.push({
         key: 'minDate',
@@ -256,7 +261,7 @@ export class UtilsService {
       });
     }
 
-    if (maxDate) {
+    if (maxDate !== undefined && maxDate !== '') {
       const md = this.convertToDayjs(maxDate, format);
       validators.push({
         key: 'maxDate',
@@ -268,7 +273,7 @@ export class UtilsService {
       });
     }
 
-    if (minTime) {
+    if (minTime !== undefined && minTime !== '') {
       const md = this.onlyTime(this.convertToDayjs(minTime, format));
       validators.push({
         key: 'minTime',
@@ -280,7 +285,7 @@ export class UtilsService {
       });
     }
 
-    if (maxTime) {
+    if (maxTime !== undefined && maxTime !== '') {
       const md = this.onlyTime(this.convertToDayjs(maxTime, format));
       validators.push({
         key: 'maxTime',
@@ -320,8 +325,8 @@ export class UtilsService {
     };
   }
 
-  public datesStringToStringArray(value: string): string[] {
-    return (value || '')
+  public datesStringToStringArray(value: string | null | undefined): string[] {
+    return (value ?? '')
       .split('|')
       .map((m) => m.trim())
       .filter(Boolean);
@@ -347,19 +352,19 @@ export class UtilsService {
     from: Dayjs | null | undefined,
     to: Dayjs | null | undefined,
   ): boolean {
-    if (!date) {
+    if (date === null || date === undefined) {
       return false;
     }
 
-    if (!from && !to) {
+    if ((from === null || from === undefined) && (to === null || to === undefined)) {
       return true;
     }
 
-    if (!from && to) {
+    if ((from === null || from === undefined) && to !== null && to !== undefined) {
       return date.isSameOrBefore(to);
     }
 
-    if (from && !to) {
+    if (from !== null && from !== undefined && (to === null || to === undefined)) {
       return date.isSameOrAfter(from);
     }
 
@@ -379,14 +384,22 @@ export class UtilsService {
     prevConf: T | undefined | null,
     currentConf: T | undefined | null,
   ): boolean {
-    if (prevConf && currentConf) {
-      if (!prevConf.min && currentConf.min) {
+    if (prevConf !== undefined && prevConf !== null && currentConf !== null && currentConf !== undefined) {
+      if (prevConf.min === undefined && currentConf.min !== undefined) {
         return true;
-      } else if (prevConf.min && currentConf.min && !prevConf.min.isSame(currentConf.min, 'd')) {
+      } else if (
+        prevConf.min !== undefined &&
+        currentConf.min !== undefined &&
+        !prevConf.min.isSame(currentConf.min, 'd')
+      ) {
         return true;
-      } else if (!prevConf.max && currentConf.max) {
+      } else if (prevConf.max === undefined && currentConf.max !== undefined) {
         return true;
-      } else if (prevConf.max && currentConf.max && !prevConf.max.isSame(currentConf.max, 'd')) {
+      } else if (
+        prevConf.max !== undefined &&
+        currentConf.max !== undefined &&
+        !prevConf.max.isSame(currentConf.max, 'd')
+      ) {
         return true;
       }
 
@@ -397,7 +410,7 @@ export class UtilsService {
   }
 
   public getNativeElement(elem: HTMLElement | string | ElementRef<HTMLElement> | undefined): HTMLElement | null {
-    if (!elem) {
+    if (elem === undefined || elem === '') {
       return null;
     } else if (typeof elem === 'string') {
       return document.querySelector(elem);

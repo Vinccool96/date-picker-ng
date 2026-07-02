@@ -46,7 +46,7 @@ export class DatePickerService {
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);
 
-    if (config !== undefined && config.allowMultiSelect && config.closeOnSelect === undefined) {
+    if (config !== undefined && config.allowMultiSelect === true && config.closeOnSelect === undefined) {
       _config.closeOnSelect = false;
     }
 
@@ -99,23 +99,23 @@ export class DatePickerService {
   }
 
   // todo:: add unit tests
-  public isValidInputDateValue(value: string, config: IDatePickerConfig): boolean {
-    value = value ? value : '';
-    const datesStrArr: string[] = this.utilsService.datesStringToStringArray(value);
+  public isValidInputDateValue(value: string | null | undefined, config: IDatePickerConfig): boolean {
+    const usedValue = value ?? '';
+    const datesStrArr: string[] = this.utilsService.datesStringToStringArray(usedValue);
 
     return datesStrArr.every((date) => this.utilsService.isDateValid(date, config.format));
   }
 
   // todo:: add unit tests
-  public convertInputValueToDayjsArray(value: string, config: IDatePickerConfig): Dayjs[] {
-    value = value ? value : '';
-    const datesStrArr: string[] = this.utilsService.datesStringToStringArray(value);
+  public convertInputValueToDayjsArray(value: string | null | undefined, config: IDatePickerConfig): Dayjs[] {
+    const usedValue = value ?? '';
+    const datesStrArr = this.utilsService.datesStringToStringArray(usedValue);
 
     return this.utilsService.convertToDayjsArray(datesStrArr, config);
   }
 
   public getOverlayPosition({ drops, opens }: IDatePickerConfig): ConnectedPosition[] | undefined {
-    if (!drops && !opens) {
+    if (drops === 'up' && opens === undefined) {
       return [
         {
           originX: 'start',
@@ -128,10 +128,10 @@ export class DatePickerService {
 
     return [
       {
-        originX: opens ? (opens === 'left' ? 'start' : 'end') : 'start',
-        originY: drops ? (drops === 'up' ? 'top' : 'bottom') : 'bottom',
-        overlayX: opens ? (opens === 'left' ? 'start' : 'end') : 'start',
-        overlayY: drops ? (drops === 'up' ? 'bottom' : 'top') : 'top',
+        originX: opens !== undefined ? (opens === 'left' ? 'start' : 'end') : 'start',
+        originY: drops !== undefined ? (drops === 'up' ? 'top' : 'bottom') : 'bottom',
+        overlayX: opens !== undefined ? (opens === 'left' ? 'start' : 'end') : 'start',
+        overlayY: drops !== undefined ? (drops === 'up' ? 'bottom' : 'top') : 'top',
       },
     ];
   }

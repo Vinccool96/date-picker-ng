@@ -110,17 +110,17 @@ export class DemoComponent implements OnInit {
   }
 
   protected openCalendar(): void {
-    if (this.dateComponent()) {
+    if (this.dateComponent() !== undefined) {
       this.dateComponent()?.api.open();
-    } else if (this.datePickerDirective()) {
+    } else if (this.datePickerDirective() !== undefined) {
       this.datePickerDirective()?.api.open();
     }
   }
 
   protected closeCalendar(): void {
-    if (this.dateComponent()) {
+    if (this.dateComponent() !== undefined) {
       this.dateComponent()?.api.close();
-    } else if (this.datePickerDirective()) {
+    } else if (this.datePickerDirective() !== undefined) {
       this.datePickerDirective()?.api.close();
     }
   }
@@ -158,19 +158,19 @@ export class DemoComponent implements OnInit {
       datePicker: new UntypedFormControl({ value: this.date, disabled: this.disabled }, [
         this.required ? Validators.required : (): ValidationErrors | null => null,
         (control): ValidationErrors | null => {
-          return this.validationMinDate &&
+          return this.validationMinDate !== null &&
             dayjs(
               control.value as dayjs.ConfigType,
-              this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode),
+              this.config.format ?? DemoComponent.getDefaultFormatByMode(this.pickerMode),
             ).isBefore(this.validationMinDate)
             ? { minDate: 'minDate Invalid' }
             : null;
         },
         (control): ValidationErrors | null =>
-          this.validationMaxDate &&
+          this.validationMaxDate !== null &&
           dayjs(
             control.value as dayjs.ConfigType,
-            this.config.format || DemoComponent.getDefaultFormatByMode(this.pickerMode),
+            this.config.format ?? DemoComponent.getDefaultFormatByMode(this.pickerMode),
           ).isAfter(this.validationMaxDate)
             ? { maxDate: 'maxDate Invalid' }
             : null,

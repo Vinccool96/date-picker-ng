@@ -133,10 +133,10 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
     }
   }
 
-  public writeValue(value: CalendarValue): void {
-    this.inputValue = value;
+  public writeValue(value: CalendarValue | null): void {
+    this.inputValue = value ?? '';
 
-    if (value) {
+    if (value !== null && value !== '') {
       this.selected = this.utilsService.convertToDayjsArray(value, {
         format: this.componentConfig.format,
         allowMultiSelect: false,
@@ -162,7 +162,7 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
   }
 
   public validate(formControl: AbstractControl): ValidationErrors | null {
-    if (this.minDate() || this.maxDate()) {
+    if (this.minDate() !== undefined || this.maxDate() !== undefined) {
       return this.validateFn(formControl.value as CalendarValue);
     } else {
       return () => null;
@@ -173,7 +173,7 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
     return this.utilsService.convertFromDayjsArray(
       this.componentConfig.format,
       [value],
-      this.componentConfig.returnedValueType || this.inputValueType,
+      this.componentConfig.returnedValueType ?? this.inputValueType,
     );
   }
 
@@ -205,7 +205,7 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
   }
 
   public moveCalendarTo(to: SingleCalendarValue | null): void {
-    if (to) {
+    if (to !== null) {
       this.dayCalendarRef().moveCalendarTo(to);
     }
   }

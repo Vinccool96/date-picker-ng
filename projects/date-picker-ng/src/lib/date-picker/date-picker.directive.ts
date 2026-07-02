@@ -130,7 +130,7 @@ export class DatePickerDirective implements OnInit {
     let setup = true;
 
     this.datePicker.registerOnChange((value, changedByInput) => {
-      if (value) {
+      if (value !== undefined && value !== '') {
         const isMultiselectEmpty = setup && Array.isArray(value) && !value.length;
 
         if (!isMultiselectEmpty && !changedByInput) {
@@ -148,7 +148,7 @@ export class DatePickerDirective implements OnInit {
         setup = false;
       }
 
-      if (errors) {
+      if (errors !== null) {
         if (Object.prototype.hasOwnProperty.call(errors, 'format')) {
           const { given } = errors['format'] as { given: string };
           this.datePicker.inputElementValue = given;
@@ -172,7 +172,7 @@ export class DatePickerDirective implements OnInit {
   }
 
   protected onEnter(): void {
-    if (this.datePicker.componentConfig.closeOnEnter) {
+    if (this.datePicker.componentConfig.closeOnEnter === true) {
       this.datePicker.hideCalendar();
     }
   }
@@ -201,7 +201,7 @@ export class DatePickerDirective implements OnInit {
 
     this.datePicker.init();
 
-    if (this.datePicker.componentConfig.disableKeypress) {
+    if (this.datePicker.componentConfig.disableKeypress === true) {
       this.elemRef.nativeElement.setAttribute('readonly', 'true');
     } else {
       this.elemRef.nativeElement.removeAttribute('readonly');

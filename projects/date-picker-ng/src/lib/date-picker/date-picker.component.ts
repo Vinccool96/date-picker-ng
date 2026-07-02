@@ -204,15 +204,15 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
       return;
     }
 
-    if (this.componentConfig.hideOnOutsideClick) {
+    if (this.componentConfig.hideOnOutsideClick === true) {
       this.hideCalendar();
     }
   }
 
-  public writeValue(value: CalendarValue): void {
-    this.inputValue = value;
+  public writeValue(value: CalendarValue | null): void {
+    this.inputValue = value ?? '';
 
-    if (value || value === '') {
+    if (value !== null && value !== '') {
       this.selected = this.utilsService.convertToDayjsArray(value, this.componentConfig);
       this.init();
     } else {
@@ -249,7 +249,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
       return this.utilsService.convertFromDayjsArray(
         this.componentConfig.format,
         selected,
-        this.componentConfig.returnedValueType ||
+        this.componentConfig.returnedValueType ??
           this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect),
       );
     }
@@ -292,14 +292,15 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
 
   public init(): void {
     this.componentConfig = this.dayPickerService.getConfig(this.config(), this.mode());
-    this.currentDateView = this.displayDate()
-      ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
-      : this.utilsService.getDefaultDisplayDate(
-          this.currentDateView,
-          this.selected,
-          this.componentConfig.allowMultiSelect,
-          this.componentConfig.min,
-        );
+    this.currentDateView =
+      this.displayDate() !== null
+        ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
+        : this.utilsService.getDefaultDisplayDate(
+            this.currentDateView,
+            this.selected,
+            this.componentConfig.allowMultiSelect,
+            this.componentConfig.min,
+          );
     this.dayCalendarConfig = this.dayPickerService.getDayConfigService(this.componentConfig);
     this.dayTimeCalendarConfig = this.dayPickerService.getDayTimeConfig(this.componentConfig);
     this.timeSelectConfig = this.dayPickerService.getTimeConfig(this.componentConfig);
@@ -350,8 +351,8 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
     this.cd.markForCheck();
   }
 
-  public onViewDateChange(value: CalendarValue): void {
-    const strVal = value ? this.utilsService.convertToString(value, this.componentConfig.format) : '';
+  public onViewDateChange(value: CalendarValue | null): void {
+    const strVal = value !== null ? this.utilsService.convertToString(value, this.componentConfig.format) : '';
     if (this.dayPickerService.isValidInputDateValue(strVal, this.componentConfig)) {
       this.selected = this.dayPickerService.convertInputValueToDayjsArray(strVal, this.componentConfig);
       this.currentDateView = this.selected.length
@@ -381,7 +382,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
       date,
       granularity,
     );
-    if (!ignoreClose) {
+    if (ignoreClose !== true) {
       this.onDateClick();
     }
 
@@ -393,7 +394,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
   }
 
   protected onDateClick(): void {
-    if (this.componentConfig.closeOnSelect) {
+    if (this.componentConfig.closeOnSelect === true) {
       setTimeout(this.hideCalendar.bind(this), this.componentConfig.closeOnSelectDelay);
     }
   }
@@ -442,7 +443,7 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
       ul();
     });
 
-    if (this.appendToElement) {
+    if (this.appendToElement !== undefined) {
       this.appendToElement.removeChild(this.calendarWrapper);
     }
   }

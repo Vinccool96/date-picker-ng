@@ -67,7 +67,7 @@ export class DayCalendarService {
     const daysOfCalendar: IDay[] = this.utilsService.createArray(42).reduce((array: IDay[]) => {
       array.push({
         date: dayjsRef(current.toDate()),
-        selected: !!selected.find((selectedDay) => current.isSame(selectedDay, 'day')),
+        selected: selected.find((selectedDay) => current.isSame(selectedDay, 'day')) !== undefined,
         currentMonth: current.isSame(parsedMonth, 'month'),
         prevMonth: current.isSame(prevMonth, 'month'),
         nextMonth: current.isSame(nextMonth, 'month'),
@@ -82,14 +82,14 @@ export class DayCalendarService {
     daysOfCalendar.forEach((day, index) => {
       const weekIndex = Math.floor(index / 7);
 
-      if (!monthArray[weekIndex]) {
+      if (monthArray.at(weekIndex) === undefined) {
         monthArray.push([]);
       }
 
       monthArray[weekIndex].push(day);
     });
 
-    if (!config.showNearMonthDays) {
+    if (config.showNearMonthDays !== true) {
       monthArray = this.removeNearMonthWeeks(parsedMonth, monthArray);
     }
 
@@ -119,20 +119,20 @@ export class DayCalendarService {
   }
 
   public isDateDisabled(date: Dayjs, config: IDayCalendarConfigInternal): boolean {
-    if (config.isDayDisabledCallback) {
+    if (config.isDayDisabledCallback !== undefined) {
       return config.isDayDisabledCallback(date);
     }
 
-    if (config.min && date.isBefore(config.min, 'day')) {
+    if (config.min !== undefined && date.isBefore(config.min, 'day')) {
       return true;
     }
 
-    return !!(config.max && date.isAfter(config.max, 'day'));
+    return config.max !== undefined && date.isAfter(config.max, 'day');
   }
 
   // todo:: add unit tests
   public getHeaderLabel(config: IDayCalendarConfigInternal, month: Dayjs): string {
-    if (config.monthFormatter) {
+    if (config.monthFormatter !== undefined) {
       return config.monthFormatter(month);
     }
 
@@ -141,12 +141,12 @@ export class DayCalendarService {
 
   // todo:: add unit tests
   public shouldShowLeft(min: Dayjs | null | undefined, currentMonthView: Dayjs | null | undefined): boolean {
-    return min ? min.isBefore(currentMonthView, 'month') : true;
+    return min?.isBefore(currentMonthView, 'month') ?? true;
   }
 
   // todo:: add unit tests
   public shouldShowRight(max: Dayjs | null | undefined, currentMonthView: Dayjs | null | undefined): boolean {
-    return max ? max.isAfter(currentMonthView, 'month') : true;
+    return max?.isAfter(currentMonthView, 'month') ?? true;
   }
 
   public generateDaysIndexMap(firstDayOfWeek: WeekDays): Record<number, string> {
@@ -182,7 +182,7 @@ export class DayCalendarService {
   public getDayBtnText(config: IDayCalendarConfigInternal, day: Dayjs | undefined): string {
     const date = day ?? dayjsRef();
 
-    if (config.dayBtnFormatter) {
+    if (config.dayBtnFormatter !== undefined) {
       return config.dayBtnFormatter(date);
     }
 
@@ -190,7 +190,7 @@ export class DayCalendarService {
   }
 
   public getDayBtnCssClass(config: IDayCalendarConfigInternal, day: Dayjs | undefined): string {
-    if (config.dayBtnCssClassCallback) {
+    if (config.dayBtnCssClassCallback !== undefined) {
       return config.dayBtnCssClassCallback(day);
     }
 
@@ -198,7 +198,9 @@ export class DayCalendarService {
   }
 
   private removeNearMonthWeeks(currentMonth: Dayjs, monthArray: IDay[][]): IDay[][] {
-    if (monthArray[monthArray.length - 1].find((day) => day.date?.isSame(currentMonth, 'month') ?? false)) {
+    if (
+      monthArray[monthArray.length - 1].find((day) => day.date?.isSame(currentMonth, 'month') ?? false) !== undefined
+    ) {
       return monthArray;
     } else {
       return monthArray.slice(0, -1);

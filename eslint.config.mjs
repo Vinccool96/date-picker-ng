@@ -65,15 +65,15 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/non-nullable-type-assertion-style': 'off',
-      // '@typescript-eslint/restrict-template-expressions': [
-      //   'error',
-      //   {
-      //     allowAny: false,
-      //     allowNever: false,
-      //     allowRegExp: false,
-      //   },
-      // ],
-      // '@typescript-eslint/strict-boolean-expressions': ['error', { allowNullableObject: false, allowString: false }],
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowAny: false,
+          allowNever: false,
+          allowRegExp: false,
+        },
+      ],
+      '@typescript-eslint/strict-boolean-expressions': ['error', { allowNullableObject: false, allowString: false }],
       '@typescript-eslint/unbound-method': [
         'error',
         {

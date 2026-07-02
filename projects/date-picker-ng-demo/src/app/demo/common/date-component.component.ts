@@ -88,15 +88,15 @@ export abstract class DateComponent {
   }
 
   protected openCalendar(): void {
-    (this.dateComponent() || this.dateDirective())?.api.open();
+    (this.dateComponent() ?? this.dateDirective())?.api.open();
   }
 
   protected closeCalendar(): void {
-    (this.dateComponent() || this.dateDirective())?.api.close();
+    (this.dateComponent() ?? this.dateDirective())?.api.close();
   }
 
   protected moveCalendarTo($event: Dayjs): void {
-    (this.dateComponent() || this.dateDirective())?.api.moveCalendarTo($event);
+    (this.dateComponent() ?? this.dateDirective())?.api.moveCalendarTo($event);
   }
 
   protected onLeftNav(change: INavEvent): void {
@@ -138,25 +138,25 @@ export abstract class DateComponent {
     return [
       this.required ? Validators.required : (): ValidationErrors | null => null,
       (control: AbstractControl): ValidationErrors | null => {
-        return this.validationMinDate &&
+        return this.validationMinDate !== undefined &&
           dayjs(control.value as dayjs.ConfigType, this.config.format).isBefore(this.validationMinDate)
           ? { minDate: 'minDate Invalid' }
           : null;
       },
       (control: AbstractControl): ValidationErrors | null => {
-        return this.validationMaxDate &&
+        return this.validationMaxDate !== undefined &&
           dayjs(control.value as dayjs.ConfigType, this.config.format).isAfter(this.validationMaxDate)
           ? { maxDate: 'maxDate Invalid' }
           : null;
       },
       (control: AbstractControl): ValidationErrors | null => {
-        return this.validationMinTime &&
+        return this.validationMinTime !== undefined &&
           dayjs(control.value as dayjs.ConfigType, this.config.format).isBefore(this.validationMinTime)
           ? { minDate: 'minDate Invalid' }
           : null;
       },
       (control: AbstractControl): ValidationErrors | null => {
-        return this.validationMaxTime &&
+        return this.validationMaxTime !== undefined &&
           dayjs(control.value as dayjs.ConfigType, this.config.format).isAfter(this.validationMaxTime)
           ? { maxDate: 'maxDate Invalid' }
           : null;

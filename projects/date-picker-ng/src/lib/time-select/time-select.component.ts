@@ -158,7 +158,7 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
 
   private init(): void {
     this.componentConfig = this.timeSelectService.getConfig(this.config());
-    this.selected = this.selected || dayjsRef();
+    this.selected = this.selected ?? dayjsRef();
     this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
   }
 
@@ -169,14 +169,15 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     }
   }
 
-  public writeValue(value: CalendarValue): void {
-    this.inputValue = value;
+  public writeValue(value: CalendarValue | null): void {
+    this.inputValue = value ?? '';
 
-    if (value) {
+    if (value !== null && value !== '') {
       const dayjsValue = this.utilsService.convertToDayjsArray(value, {
         allowMultiSelect: false,
         format: this.timeSelectService.getTimeFormat(this.componentConfig),
       })[0];
+
       if (dayjsValue.isValid()) {
         this.selected = dayjsValue;
         this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
@@ -199,7 +200,12 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
   }
 
   public validate(formControl: AbstractControl): ValidationErrors | null {
-    if (this.minDate() || this.maxDate() || this.minTime() || this.maxTime()) {
+    if (
+      this.minDate() !== undefined ||
+      this.maxDate() !== undefined ||
+      this.minTime() !== undefined ||
+      this.maxTime() !== undefined
+    ) {
       return this.validateFn(formControl.value as CalendarValue);
     } else {
       return () => null;
@@ -210,7 +216,7 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
     return this.utilsService.convertFromDayjsArray(
       this.timeSelectService.getTimeFormat(this.componentConfig),
       [value],
-      this.componentConfig.returnedValueType || this.inputValueType,
+      this.componentConfig.returnedValueType ?? this.inputValueType,
     );
   }
 

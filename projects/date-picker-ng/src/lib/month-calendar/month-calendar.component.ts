@@ -181,10 +181,10 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this._shouldShowCurrent = this.shouldShowCurrent();
   }
 
-  public writeValue(value: CalendarValue): void {
-    this.inputValue = value;
+  public writeValue(value: CalendarValue | null): void {
+    this.inputValue = value ?? '';
 
-    if (value) {
+    if (value !== null && value !== '') {
       this.selected = this.utilsService.convertToDayjsArray(value, this.componentConfig);
       this.yearMonths = this.monthCalendarService.generateYear(
         this.componentConfig,
@@ -217,7 +217,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   }
 
   public validate(formControl: AbstractControl): ValidationErrors | null {
-    if (this.minDate() || this.maxDate()) {
+    if (this.minDate() !== undefined || this.maxDate() !== undefined) {
       return this.validateFn(formControl.value as CalendarValue);
     } else {
       return () => null;
@@ -228,7 +228,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     return this.utilsService.convertFromDayjsArray(
       this.componentConfig.format,
       value,
-      this.componentConfig.returnedValueType || this.inputValueType,
+      this.componentConfig.returnedValueType ?? this.inputValueType,
     );
   }
 
@@ -243,7 +243,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   }
 
   protected monthClicked(month: IMonth): void {
-    if (month.selected && !this.componentConfig.unSelectOnClick) {
+    if (month.selected && this.componentConfig.unSelectOnClick !== true) {
       return;
     }
 
@@ -276,7 +276,8 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   protected onLeftSecondaryNavClick(): void {
     let navigateBy = this.componentConfig.multipleYearsNavigateBy as number;
     const isOutsideRange =
-      this.componentConfig.min && (this.currentDateView as Dayjs).year() - this.componentConfig.min.year() < navigateBy;
+      this.componentConfig.min !== undefined &&
+      (this.currentDateView as Dayjs).year() - this.componentConfig.min.year() < navigateBy;
 
     if (isOutsideRange) {
       navigateBy = (this.currentDateView as Dayjs).year() - (this.componentConfig.min as Dayjs).year();
@@ -298,7 +299,8 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   protected onRightSecondaryNavClick(): void {
     let navigateBy = this.componentConfig.multipleYearsNavigateBy as number;
     const isOutsideRange =
-      this.componentConfig.max && this.componentConfig.max.year() - (this.currentDateView as Dayjs).year() < navigateBy;
+      this.componentConfig.max !== undefined &&
+      this.componentConfig.max.year() - (this.currentDateView as Dayjs).year() < navigateBy;
 
     if (isOutsideRange) {
       navigateBy = (this.componentConfig.max as Dayjs).year() - (this.currentDateView as Dayjs).year();
@@ -324,7 +326,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
       month.date as Dayjs,
     );
 
-    if (customCssClass) {
+    if (customCssClass !== '') {
       cssClass[customCssClass] = true;
     }
 
@@ -346,7 +348,7 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   }
 
   public moveCalendarTo(to: SingleCalendarValue | null): void {
-    if (to) {
+    if (to !== null) {
       this.currentDateView = this.utilsService.convertToDayjs(to, this.componentConfig.format);
       this.cd.markForCheck();
     }

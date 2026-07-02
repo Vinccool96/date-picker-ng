@@ -152,14 +152,15 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
 
   private init(): void {
     this.componentConfig = this.dayCalendarService.getConfig(this.config());
-    this.currentDateView = this.displayDate()
-      ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
-      : this.utilsService.getDefaultDisplayDate(
-          this.currentDateView,
-          this.selected,
-          this.componentConfig.allowMultiSelect,
-          this.componentConfig.min,
-        );
+    this.currentDateView =
+      this.displayDate() !== null
+        ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
+        : this.utilsService.getDefaultDisplayDate(
+            this.currentDateView,
+            this.selected,
+            this.componentConfig.allowMultiSelect,
+            this.componentConfig.min,
+          );
     this.weekdays = this.dayCalendarService.generateWeekdays(this.componentConfig.firstDayOfWeek as WeekDays);
     this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
     this.monthCalendarConfig = this.dayCalendarService.getMonthCalendarConfig(this.componentConfig);
@@ -180,10 +181,10 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     }
   }
 
-  public writeValue(value: CalendarValue): void {
-    this.inputValue = value;
+  public writeValue(value: CalendarValue | null): void {
+    this.inputValue = value ?? '';
 
-    if (value) {
+    if (value !== null && value !== '') {
       this.selected = this.utilsService.convertToDayjsArray(value, this.componentConfig);
       this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
     } else {
@@ -212,7 +213,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
   }
 
   public validate(formControl: UntypedFormControl): ValidationErrors | null {
-    if (this.minDate() || this.maxDate()) {
+    if (this.minDate() !== undefined || this.maxDate() !== undefined) {
       return this.validateFn(formControl.value as CalendarValue);
     } else {
       return () => null;
@@ -223,7 +224,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     return this.utilsService.convertFromDayjsArray(
       this.componentConfig.format,
       value,
-      this.componentConfig.returnedValueType || this.inputValueType,
+      this.componentConfig.returnedValueType ?? this.inputValueType,
     );
   }
 
@@ -238,7 +239,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
   }
 
   protected dayClicked(day: IDay): void {
-    if (day.selected && !this.componentConfig.unSelectOnClick) {
+    if (day.selected && this.componentConfig.unSelectOnClick !== true) {
       return;
     }
 
@@ -265,7 +266,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     };
     const customCssClass: string = this.dayCalendarService.getDayBtnCssClass(this.componentConfig, day.date);
 
-    if (customCssClass) {
+    if (customCssClass !== '') {
       cssClasses[customCssClass] = true;
     }
 
@@ -303,7 +304,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
   }
 
   public getWeekdayName(weekday: Dayjs): string {
-    if (this.componentConfig.weekDayFormatter) {
+    if (this.componentConfig.weekDayFormatter !== undefined) {
       return this.componentConfig.weekDayFormatter(weekday.day());
     }
 
@@ -331,7 +332,7 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
   }
 
   public moveCalendarTo(to: SingleCalendarValue | null): void {
-    if (to) {
+    if (to !== null) {
       this.currentDateView = this.utilsService.convertToDayjs(to, this.componentConfig.format);
     }
 

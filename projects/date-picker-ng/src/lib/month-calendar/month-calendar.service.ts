@@ -45,7 +45,7 @@ export class MonthCalendarService {
         const date = dayjsRef(index);
         const month = {
           date,
-          selected: !!selected?.find((s) => index.isSame(s, 'month')),
+          selected: selected?.find((s): boolean => index.isSame(s, 'month')) !== undefined,
           currentMonth: index.isSame(dayjsRef(), 'month'),
           disabled: this.isMonthDisabled(date, config),
           text: this.getMonthBtnText(config, date),
@@ -59,27 +59,27 @@ export class MonthCalendarService {
   }
 
   public isMonthDisabled(date: Dayjs, config: IMonthCalendarConfig): boolean {
-    if (config.isMonthDisabledCallback) {
+    if (config.isMonthDisabledCallback !== undefined) {
       return config.isMonthDisabledCallback(date);
     }
 
-    if (config.min && date.isBefore(config.min, 'month')) {
+    if (config.min !== undefined && date.isBefore(config.min, 'month')) {
       return true;
     }
 
-    return !!(config.max && date.isAfter(config.max, 'month'));
+    return config.max !== undefined && config.max !== '' && date.isAfter(config.max, 'month');
   }
 
   public shouldShowLeft(min: Dayjs | undefined, currentMonthView: Dayjs): boolean {
-    return min ? min.isBefore(currentMonthView, 'year') : true;
+    return min !== undefined ? min.isBefore(currentMonthView, 'year') : true;
   }
 
   public shouldShowRight(max: Dayjs | undefined, currentMonthView: Dayjs): boolean {
-    return max ? max.isAfter(currentMonthView, 'year') : true;
+    return max !== undefined ? max.isAfter(currentMonthView, 'year') : true;
   }
 
   public getHeaderLabel(config: IMonthCalendarConfig, year: Dayjs): string {
-    if (config.yearFormatter) {
+    if (config.yearFormatter !== undefined) {
       return config.yearFormatter(year);
     }
 
@@ -87,7 +87,7 @@ export class MonthCalendarService {
   }
 
   public getMonthBtnText(config: IMonthCalendarConfig, month: Dayjs): string {
-    if (config.monthBtnFormatter) {
+    if (config.monthBtnFormatter !== undefined) {
       return config.monthBtnFormatter(month);
     }
 
@@ -95,7 +95,7 @@ export class MonthCalendarService {
   }
 
   public getMonthBtnCssClass(config: IMonthCalendarConfig, month: Dayjs): string {
-    if (config.monthBtnCssClassCallback) {
+    if (config.monthBtnCssClassCallback !== undefined) {
       return config.monthBtnCssClassCallback(month);
     }
 
