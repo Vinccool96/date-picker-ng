@@ -123,13 +123,15 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
     this.inputValueType = this.utilsService.getInputType(this.inputValue, false);
   }
 
-  private onChanges(date = false): void {
-    if (this.isInited) {
-      this.init();
+  private onChanges(isDateChanged = false): void {
+    if (!this.isInited) {
+      return;
+    }
 
-      if (date) {
-        this.initValidators();
-      }
+    this.init();
+
+    if (isDateChanged) {
+      this.initValidators();
     }
   }
 
@@ -149,8 +151,8 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
     this.cd.markForCheck();
   }
 
-  public registerOnChange(fn: (arg: unknown) => void): void {
-    this.onChangeCallback = fn;
+  public registerOnChange(callback: (argument: unknown) => void): void {
+    this.onChangeCallback = callback;
   }
 
   private onChangeCallback(_: CalendarValue | undefined): void {
@@ -162,11 +164,9 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
   }
 
   public validate(formControl: AbstractControl): ValidationErrors | null {
-    if (this.minDate() !== undefined || this.maxDate() !== undefined) {
-      return this.validateFn(formControl.value as CalendarValue);
-    } else {
-      return () => null;
-    }
+    return this.minDate() !== undefined || this.maxDate() !== undefined
+      ? this.validateFn(formControl.value as CalendarValue)
+      : (): ValidationErrors | null => null;
   }
 
   private processOnChangeCallback(value: Dayjs | undefined): CalendarValue | undefined {

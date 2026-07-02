@@ -121,17 +121,19 @@ export class DatePickerDirective implements OnInit {
     this.datePicker.onViewDateChange(formControl.value as CalendarValue);
 
     (formControl.valueChanges as Observable<CalendarValue>).subscribe((value) => {
-      if (value !== this.datePicker.inputElementValue) {
-        const strVal = this.utilsService.convertToString(value, this.datePicker.componentConfig.format);
-        this.datePicker.onViewDateChange(strVal);
+      if (value === this.datePicker.inputElementValue) {
+        return;
       }
+
+      const stringValue = this.utilsService.convertToString(value, this.datePicker.componentConfig.format);
+      this.datePicker.onViewDateChange(stringValue);
     });
 
-    let setup = true;
+    let isSetup = true;
 
     this.datePicker.registerOnChange((value, changedByInput) => {
       if (value !== undefined && value !== '') {
-        const isMultiselectEmpty = setup && Array.isArray(value) && !value.length;
+        const isMultiselectEmpty = isSetup && Array.isArray(value) && value.length === 0;
 
         if (!isMultiselectEmpty && !changedByInput) {
           (formControl.control as AbstractControl).setValue(this.datePicker.inputElementValue);
@@ -140,12 +142,12 @@ export class DatePickerDirective implements OnInit {
 
       const errors = this.datePicker.validateFn(value as CalendarValue);
 
-      if (!setup) {
+      if (isSetup) {
+        isSetup = false;
+      } else {
         (formControl.control as AbstractControl).markAsDirty({
           onlySelf: true,
         });
-      } else {
-        setup = false;
       }
 
       if (errors !== null) {
@@ -201,10 +203,6 @@ export class DatePickerDirective implements OnInit {
 
     this.datePicker.init();
 
-    if (this.datePicker.componentConfig.disableKeypress === true) {
-      this.elemRef.nativeElement.setAttribute('readonly', 'true');
-    } else {
-      this.elemRef.nativeElement.removeAttribute('readonly');
-    }
+    this.elemRef.nativeElement.toggleAttribute('readonly', this.datePicker.componentConfig.disableKeypress === true);
   }
 }

@@ -38,10 +38,10 @@ export class MonthCalendarService {
 
   public generateYear(config: IMonthCalendarConfig, year: Dayjs, selected: Dayjs[] | null = null): IMonth[][] {
     let index = year.startOf('year');
-    const numOfMonthRows = config.numOfMonthRows as number;
+    const numberOfMonthRows = config.numOfMonthRows as number;
 
-    return this.utilsService.createArray(numOfMonthRows).map(() => {
-      return this.utilsService.createArray(12 / numOfMonthRows).map(() => {
+    return this.utilsService.createArray(numberOfMonthRows).map(() => {
+      return this.utilsService.createArray(12 / numberOfMonthRows).map(() => {
         const date = dayjsRef(index);
         const month = {
           date,
@@ -71,11 +71,11 @@ export class MonthCalendarService {
   }
 
   public shouldShowLeft(min: Dayjs | undefined, currentMonthView: Dayjs): boolean {
-    return min !== undefined ? min.isBefore(currentMonthView, 'year') : true;
+    return min === undefined ? true : min.isBefore(currentMonthView, 'year');
   }
 
   public shouldShowRight(max: Dayjs | undefined, currentMonthView: Dayjs): boolean {
-    return max !== undefined ? max.isAfter(currentMonthView, 'year') : true;
+    return max === undefined ? true : max.isAfter(currentMonthView, 'year');
   }
 
   public getHeaderLabel(config: IMonthCalendarConfig, year: Dayjs): string {
@@ -103,9 +103,9 @@ export class MonthCalendarService {
   }
 
   private static validateConfig(config: IMonthCalendarConfigInternal): void {
-    const numOfMonthRows = config.numOfMonthRows as number;
+    const numberOfMonthRows = config.numOfMonthRows as number;
 
-    if (numOfMonthRows < 1 || numOfMonthRows > 12 || !Number.isInteger(12 / numOfMonthRows)) {
+    if (numberOfMonthRows < 1 || numberOfMonthRows > 12 || !Number.isSafeInteger(12 / numberOfMonthRows)) {
       throw new Error('numOfMonthRows has to be between 1 - 12 and divide 12 to integer');
     }
   }

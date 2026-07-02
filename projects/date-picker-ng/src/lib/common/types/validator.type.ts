@@ -1,4 +1,4 @@
 import { CalendarValue } from './calendar-value';
 import { ValidationErrors } from '@angular/forms';
 
-export type DateValidator = (inputVal: CalendarValue) => ValidationErrors | null;
+export type DateValidator = (inputValue: CalendarValue) => ValidationErrors | null;

@@ -182,21 +182,25 @@ export class DemoComponent implements OnInit {
     switch (mode) {
       case 'daytimePicker':
       case 'daytimeInline':
-      case 'daytimeDirective':
+      case 'daytimeDirective': {
         return 'DD-MM-YYYY HH:mm:ss';
+      }
       case 'dayPicker':
       case 'dayInline':
       case 'dayDirective':
-      case 'dayDirectiveReactiveMenu':
+      case 'dayDirectiveReactiveMenu': {
         return 'DD-MM-YYYY';
+      }
       case 'monthPicker':
       case 'monthInline':
-      case 'monthDirective':
+      case 'monthDirective': {
         return 'MMM, YYYY';
+      }
       case 'timePicker':
       case 'timeInline':
-      case 'timeDirective':
+      case 'timeDirective': {
         return 'HH:mm:ss';
+      }
     }
     throw new Error(`Invalid mode: ${mode}`);
   }

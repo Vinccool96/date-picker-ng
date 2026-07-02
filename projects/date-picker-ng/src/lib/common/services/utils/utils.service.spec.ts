@@ -32,17 +32,17 @@ describe('UtilsService', () => {
       selected: false,
     };
 
-    let arr1 = service.updateSelected(false, [], date1, 'day');
-    expect(arr1.length).toEqual(1);
-    expect(arr1[0]).toBe(date1.date as Dayjs);
+    let array1 = service.updateSelected(false, [], date1, 'day');
+    expect(array1.length).toEqual(1);
+    expect(array1[0]).toBe(date1.date as Dayjs);
 
-    arr1 = service.updateSelected(false, [], date2, 'day');
-    expect(arr1.length).toEqual(1);
-    expect(arr1[0]).toBe(date2.date as Dayjs);
+    array1 = service.updateSelected(false, [], date2, 'day');
+    expect(array1.length).toEqual(1);
+    expect(array1[0]).toBe(date2.date as Dayjs);
 
     date1.selected = true;
-    const arr2 = service.updateSelected(false, arr1, date1, 'day');
-    expect(arr2.length).toEqual(0);
+    const array2 = service.updateSelected(false, array1, date1, 'day');
+    expect(array2.length).toEqual(0);
 
     date2.selected = false;
     expect(service.updateSelected(true, [date1.date as Dayjs], date2, 'day').length).toEqual(2);
@@ -67,17 +67,17 @@ describe('UtilsService', () => {
       selected: false,
     };
 
-    let arr1 = service.updateSelected(false, [], date1, 'month');
-    expect(arr1.length).toEqual(1);
-    expect(arr1[0]).toBe(date1.date as Dayjs);
+    let array1 = service.updateSelected(false, [], date1, 'month');
+    expect(array1.length).toEqual(1);
+    expect(array1[0]).toBe(date1.date as Dayjs);
 
-    arr1 = service.updateSelected(false, [], date2, 'month');
-    expect(arr1.length).toEqual(1);
-    expect(arr1[0]).toBe(date2.date as Dayjs);
+    array1 = service.updateSelected(false, [], date2, 'month');
+    expect(array1.length).toEqual(1);
+    expect(array1[0]).toBe(date2.date as Dayjs);
 
     date1.selected = true;
-    const arr2 = service.updateSelected(false, arr1, date1, 'month');
-    expect(arr2.length).toEqual(0);
+    const array2 = service.updateSelected(false, array1, date1, 'month');
+    expect(array2.length).toEqual(0);
 
     date3.selected = false;
     expect(service.updateSelected(true, [date1.date as Dayjs], date3, 'month').length).toEqual(2);
@@ -99,10 +99,10 @@ describe('UtilsService', () => {
   }));
 
   it('should convertPropsToDayjs method', inject([UtilsService], (service: UtilsService) => {
-    const obj = { min: '14-01-1987', max: '14-01-1987' };
-    service.convertPropsToDayjs(obj, 'DD-MM-YYYY', ['min', 'max']);
-    expect(dayjsRef.isDayjs(obj.min)).toBeTruthy();
-    expect(dayjsRef.isDayjs(obj.max)).toBeTruthy();
+    const object = { min: '14-01-1987', max: '14-01-1987' };
+    service.convertPropsToDayjs(object, 'DD-MM-YYYY', ['min', 'max']);
+    expect(dayjsRef.isDayjs(object.min)).toBeTruthy();
+    expect(dayjsRef.isDayjs(object.max)).toBeTruthy();
   }));
 
   it('should test datesStringToStringArray', inject([UtilsService], (service: UtilsService) => {

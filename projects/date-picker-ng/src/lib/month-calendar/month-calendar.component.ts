@@ -152,19 +152,21 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   }
 
   private onChanges(change: 'config' | 'date' | 'display', configChange?: ConfigChange): void {
-    if (this.isInited) {
-      if (change === 'config') {
-        this.handleConfigChange(configChange as ConfigChange);
-      }
-
-      this.init();
-
-      if (change === 'date') {
-        this.initValidators();
-      }
-
-      this.cd.markForCheck();
+    if (!this.isInited) {
+      return;
     }
+
+    if (change === 'config') {
+      this.handleConfigChange(configChange as ConfigChange);
+    }
+
+    this.init();
+
+    if (change === 'date') {
+      this.initValidators();
+    }
+
+    this.cd.markForCheck();
   }
 
   private init(): void {
@@ -204,8 +206,8 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this.cd.markForCheck();
   }
 
-  public registerOnChange(fn: (arg: unknown) => void): void {
-    this.onChangeCallback = fn;
+  public registerOnChange(onChange: (argument: unknown) => void): void {
+    this.onChangeCallback = onChange;
   }
 
   private onChangeCallback(_: CalendarValue | undefined): void {
@@ -217,11 +219,9 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   }
 
   public validate(formControl: AbstractControl): ValidationErrors | null {
-    if (this.minDate() !== undefined || this.maxDate() !== undefined) {
-      return this.validateFn(formControl.value as CalendarValue);
-    } else {
-      return () => null;
-    }
+    return this.minDate() !== undefined || this.maxDate() !== undefined
+      ? this.validateFn(formControl.value as CalendarValue)
+      : (): ValidationErrors | null => null;
   }
 
   private processOnChangeCallback(value: Dayjs[]): CalendarValue | undefined {
@@ -348,17 +348,19 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   }
 
   public moveCalendarTo(to: SingleCalendarValue | null): void {
-    if (to !== null) {
-      this.currentDateView = this.utilsService.convertToDayjs(to, this.componentConfig.format);
-      this.cd.markForCheck();
+    if (to === null) {
+      return;
     }
+
+    this.currentDateView = this.utilsService.convertToDayjs(to, this.componentConfig.format);
+    this.cd.markForCheck();
   }
 
   private handleConfigChange(config: ConfigChange): void {
-    const prevConf: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.previousValue);
-    const currentConf: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.currentValue);
+    const previousConfig: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.previousValue);
+    const currentConfig: IMonthCalendarConfigInternal = this.monthCalendarService.getConfig(config.currentValue);
 
-    if (this.utilsService.shouldResetCurrentView(prevConf, currentConf)) {
+    if (this.utilsService.shouldResetCurrentView(previousConfig, currentConfig)) {
       this._currentDateView = null;
     }
   }

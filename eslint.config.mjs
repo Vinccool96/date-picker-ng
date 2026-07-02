@@ -6,7 +6,7 @@ import angular from 'angular-eslint';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 // import perfectionist from 'eslint-plugin-perfectionist';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-// import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import { fileURLToPath } from 'node:url';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -23,7 +23,7 @@ export default tseslint.config(
       ...tseslint.configs.stylisticTypeChecked,
       ...angular.configs.tsRecommended,
       eslintPluginPrettierRecommended,
-      // eslintPluginUnicorn.configs.recommended,
+      eslintPluginUnicorn.configs.recommended,
       // perfectionist.configs['recommended-natural'],
       jsdocPlugin.configs['flat/recommended-typescript-error'],
     ],
@@ -140,18 +140,21 @@ export default tseslint.config(
        *****************************************************************************************************************
        */
 
-      // 'unicorn/no-null': 'off',
-      // 'unicorn/prevent-abbreviations': [
-      //   'error',
-      //   {
-      //     replacements: {
-      //       dir: false,
-      //       ref: false,
-      //       tmpl: { template: true },
-      //       util: false,
-      //     },
-      //   },
-      // ],
+      'unicorn/consistent-class-member-order': 'off',
+      'unicorn/name-replacements': [
+        'error',
+        {
+          replacements: {
+            dir: false,
+            prod: false,
+            ref: false,
+            tmpl: { template: true },
+            util: false,
+            utils: false,
+          },
+        },
+      ],
+      'unicorn/no-null': 'off',
 
       /*
        *****************************************************************************************************************

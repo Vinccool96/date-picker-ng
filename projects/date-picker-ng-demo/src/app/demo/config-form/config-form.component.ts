@@ -369,32 +369,43 @@ export class ConfigFormComponent implements OnInit {
 
   protected isValidConfig(key: string): boolean {
     switch (this.pickerMode()) {
-      case 'dayInline':
+      case 'dayInline': {
         return [...DAY_CALENDAR_OPTION_KEYS].includes(key);
-      case 'monthInline':
+      }
+      case 'monthInline': {
         return [...MONTH_CALENDAR_OPTION_KEYS].includes(key);
-      case 'timeInline':
+      }
+      case 'timeInline': {
         return [...TIME_SELECT_OPTION_KEYS].includes(key);
-      case 'daytimeInline':
+      }
+      case 'daytimeInline': {
         return [...DAY_TIME_CALENDAR_OPTION_KEYS].includes(key);
-      case 'dayPicker':
+      }
+      case 'dayPicker': {
         return [...DAY_PICKER_OPTION_KEYS, ...DAY_CALENDAR_OPTION_KEYS].includes(key);
+      }
       case 'dayDirective':
-      case 'dayDirectiveReactiveMenu':
+      case 'dayDirectiveReactiveMenu': {
         return [...DAY_PICKER_DIRECTIVE_OPTION_KEYS, ...DAY_CALENDAR_OPTION_KEYS].includes(key);
-      case 'monthPicker':
+      }
+      case 'monthPicker': {
         return [...DAY_PICKER_OPTION_KEYS, ...MONTH_CALENDAR_OPTION_KEYS].includes(key);
-      case 'monthDirective':
+      }
+      case 'monthDirective': {
         return [...DAY_PICKER_DIRECTIVE_OPTION_KEYS, ...MONTH_CALENDAR_OPTION_KEYS].includes(key);
+      }
       case 'timePicker':
-      case 'timeDirective':
+      case 'timeDirective': {
         return [...TIME_PICKER_OPTION_KEYS, ...TIME_SELECT_OPTION_KEYS].includes(key);
+      }
       case 'daytime':
       case 'daytimePicker':
-      case 'daytimeDirective':
+      case 'daytimeDirective': {
         return [...DAY_TIME_CALENDAR_OPTION_KEYS].includes(key);
-      default:
+      }
+      default: {
         return true;
+      }
     }
   }
 
@@ -404,295 +415,295 @@ export class ConfigFormComponent implements OnInit {
 
   private initListeners(): void {
     /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment */
-    this.displayDate.valueChanges.subscribe((val) => {
-      this.onDisplayDateChange.emit(val);
+    this.displayDate.valueChanges.subscribe((value) => {
+      this.onDisplayDateChange.emit(value);
     });
 
-    this.material.valueChanges.subscribe((val) => {
-      this.onMaterialThemeChange.emit(val);
+    this.material.valueChanges.subscribe((value) => {
+      this.onMaterialThemeChange.emit(value);
     });
 
-    this.disabled.valueChanges.subscribe((val) => {
-      this.onDisabledChange.emit(val);
+    this.disabled.valueChanges.subscribe((value) => {
+      this.onDisabledChange.emit(value);
     });
 
-    this.requireValidation.valueChanges.subscribe((val) => {
-      this.onRequireValidationChange.emit(val);
+    this.requireValidation.valueChanges.subscribe((value) => {
+      this.onRequireValidationChange.emit(value);
     });
 
-    this.minValidation.valueChanges.subscribe((val) => {
-      this.onMinValidationChange.emit(val);
+    this.minValidation.valueChanges.subscribe((value) => {
+      this.onMinValidationChange.emit(value);
     });
 
-    this.maxValidation.valueChanges.subscribe((val) => {
-      this.onMaxValidationChange.emit(val);
+    this.maxValidation.valueChanges.subscribe((value) => {
+      this.onMaxValidationChange.emit(value);
     });
 
-    this.minTimeValidation.valueChanges.subscribe((val) => {
-      this.onMinTimeValidationChange.emit(val);
+    this.minTimeValidation.valueChanges.subscribe((value) => {
+      this.onMinTimeValidationChange.emit(value);
     });
 
-    this.maxTimeValidation.valueChanges.subscribe((val) => {
-      this.onMaxTimeValidationChange.emit(val);
+    this.maxTimeValidation.valueChanges.subscribe((value) => {
+      this.onMaxTimeValidationChange.emit(value);
     });
 
-    this.placeholder.valueChanges.subscribe((val) => {
-      this.onPlaceholderChange.emit(val);
+    this.placeholder.valueChanges.subscribe((value) => {
+      this.onPlaceholderChange.emit(value);
     });
 
     this.locale.valueChanges.subscribe((locale) => {
       this.onLocaleChange.emit(locale);
     });
 
-    this.format.valueChanges.subscribe((val) => {
+    this.format.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        format: val,
+        format: value,
       });
     });
 
-    this.firstDayOfWeek.valueChanges.subscribe((val) => {
+    this.firstDayOfWeek.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        firstDayOfWeek: val,
+        firstDayOfWeek: value,
       });
     });
 
-    this.monthFormat.valueChanges.subscribe((val) => {
+    this.monthFormat.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        monthFormat: val,
+        monthFormat: value,
       });
     });
 
-    this.min.valueChanges.subscribe((val) => {
+    this.min.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        min: val,
+        min: value,
       });
     });
 
-    this.max.valueChanges.subscribe((val) => {
+    this.max.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        max: val,
+        max: value,
       });
     });
 
-    this.minTime.valueChanges.subscribe((val) => {
+    this.minTime.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        minTime: val,
+        minTime: value,
       });
     });
 
-    this.maxTime.valueChanges.subscribe((val) => {
+    this.maxTime.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        maxTime: val,
+        maxTime: value,
       });
     });
 
-    this.allowMultiSelect.valueChanges.subscribe((val) => {
+    this.allowMultiSelect.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        allowMultiSelect: val,
+        allowMultiSelect: value,
       });
     });
 
-    this.closeOnSelect.valueChanges.subscribe((val) => {
+    this.closeOnSelect.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        closeOnSelect: val,
+        closeOnSelect: value,
       });
     });
 
-    this.closeOnSelectDelay.valueChanges.subscribe((val) => {
+    this.closeOnSelectDelay.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        closeOnSelectDelay: val,
+        closeOnSelectDelay: value,
       });
     });
 
-    this.openOnFocus.valueChanges.subscribe((val) => {
+    this.openOnFocus.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        openOnFocus: val,
+        openOnFocus: value,
       });
     });
 
-    this.openOnClick.valueChanges.subscribe((val) => {
+    this.openOnClick.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        openOnClick: val,
+        openOnClick: value,
       });
     });
 
-    this.onOpenDelay.valueChanges.subscribe((val) => {
+    this.onOpenDelay.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        onOpenDelay: val,
+        onOpenDelay: value,
       });
     });
 
-    this.weekDayFormat.valueChanges.subscribe((val) => {
+    this.weekDayFormat.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        weekDayFormat: val,
+        weekDayFormat: value,
       });
     });
 
-    this.disableKeypress.valueChanges.subscribe((val) => {
+    this.disableKeypress.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        disableKeypress: val,
+        disableKeypress: value,
       });
     });
 
-    this.drops.valueChanges.subscribe((val) => {
+    this.drops.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        drops: val,
+        drops: value,
       });
     });
 
-    this.opens.valueChanges.subscribe((val) => {
+    this.opens.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        opens: val,
+        opens: value,
       });
     });
 
-    this.hideInputContainer.valueChanges.subscribe((val) => {
+    this.hideInputContainer.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        hideInputContainer: val,
+        hideInputContainer: value,
       });
     });
 
-    this.showNearMonthDays.valueChanges.subscribe((val) => {
+    this.showNearMonthDays.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        showNearMonthDays: val,
+        showNearMonthDays: value,
       });
     });
 
-    this.showWeekNumbers.valueChanges.subscribe((val) => {
+    this.showWeekNumbers.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        showWeekNumbers: val,
+        showWeekNumbers: value,
       });
     });
 
-    this.enableMonthSelector.valueChanges.subscribe((val) => {
+    this.enableMonthSelector.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        enableMonthSelector: val,
+        enableMonthSelector: value,
       });
     });
 
-    this.yearFormat.valueChanges.subscribe((val) => {
+    this.yearFormat.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        yearFormat: val,
+        yearFormat: value,
       });
     });
 
-    this.showGoToCurrent.valueChanges.subscribe((val) => {
+    this.showGoToCurrent.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        showGoToCurrent: val,
+        showGoToCurrent: value,
       });
     });
 
-    this.hideOnOutsideClick.valueChanges.subscribe((val) => {
+    this.hideOnOutsideClick.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        hideOnOutsideClick: val,
+        hideOnOutsideClick: value,
       });
     });
 
-    this.unSelectOnClick.valueChanges.subscribe((val) => {
+    this.unSelectOnClick.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        unSelectOnClick: val,
+        unSelectOnClick: value,
       });
     });
 
-    this.dayBtnFormat.valueChanges.subscribe((val) => {
+    this.dayBtnFormat.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        dayBtnFormat: val,
+        dayBtnFormat: value,
       });
     });
 
-    this.monthBtnFormat.valueChanges.subscribe((val) => {
+    this.monthBtnFormat.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        monthBtnFormat: val,
+        monthBtnFormat: value,
       });
     });
 
-    this.hours12Format.valueChanges.subscribe((val) => {
+    this.hours12Format.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        hours12Format: val,
+        hours12Format: value,
       });
     });
 
-    this.hours24Format.valueChanges.subscribe((val) => {
+    this.hours24Format.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        hours24Format: val,
+        hours24Format: value,
       });
     });
 
-    this.meridiemFormat.valueChanges.subscribe((val) => {
+    this.meridiemFormat.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        meridiemFormat: val,
+        meridiemFormat: value,
       });
     });
 
-    this.minutesFormat.valueChanges.subscribe((val) => {
+    this.minutesFormat.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        minutesFormat: val,
+        minutesFormat: value,
       });
     });
 
-    this.minutesInterval.valueChanges.subscribe((val) => {
+    this.minutesInterval.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        minutesInterval: val,
+        minutesInterval: value,
       });
     });
 
-    this.secondsFormat.valueChanges.subscribe((val) => {
+    this.secondsFormat.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        secondsFormat: val,
+        secondsFormat: value,
       });
     });
 
-    this.secondsInterval.valueChanges.subscribe((val) => {
+    this.secondsInterval.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        secondsInterval: val,
+        secondsInterval: value,
       });
     });
 
-    this.showSeconds.valueChanges.subscribe((val) => {
+    this.showSeconds.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        showSeconds: val,
+        showSeconds: value,
       });
     });
 
-    this.showTwentyFourHours.valueChanges.subscribe((val) => {
+    this.showTwentyFourHours.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        showTwentyFourHours: val,
+        showTwentyFourHours: value,
       });
     });
 
-    this.timeSeparator.valueChanges.subscribe((val) => {
+    this.timeSeparator.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        timeSeparator: val,
+        timeSeparator: value,
       });
     });
 
-    this.showMultipleYearsNavigation.valueChanges.subscribe((val) => {
+    this.showMultipleYearsNavigation.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        showMultipleYearsNavigation: val,
+        showMultipleYearsNavigation: value,
       });
     });
 
-    this.multipleYearsNavigateBy.valueChanges.subscribe((val) => {
+    this.multipleYearsNavigateBy.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        multipleYearsNavigateBy: val,
+        multipleYearsNavigateBy: value,
       });
     });
 
-    this.returnedValueType.valueChanges.subscribe((val) => {
+    this.returnedValueType.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        returnedValueType: val,
+        returnedValueType: value,
       });
     });
 
-    this.closeOnEnter.valueChanges.subscribe((val) => {
+    this.closeOnEnter.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        closeOnEnter: val,
+        closeOnEnter: value,
       });
     });
 
-    this.numOfMonthRows.valueChanges.subscribe((val) => {
+    this.numOfMonthRows.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
-        numOfMonthRows: val,
+        numOfMonthRows: value,
       });
     });
 
@@ -703,22 +714,26 @@ export class ConfigFormComponent implements OnInit {
     switch (mode) {
       case 'daytimePicker':
       case 'daytimeInline':
-      case 'daytimeDirective':
+      case 'daytimeDirective': {
         return 'DD-MM-YYYY HH:mm:ss';
+      }
       case 'dayPicker':
       case 'dayInline':
-      case 'dayDirective':
+      case 'dayDirective': {
         return 'DD-MM-YYYY';
+      }
       case 'monthPicker':
       case 'monthInline':
-      case 'monthDirective':
+      case 'monthDirective': {
         return 'MMM, YYYY';
+      }
       case 'timePicker':
       case 'timeInline':
-      case 'timeDirective':
+      case 'timeDirective': {
         return 'HH:mm:ss';
+      }
     }
 
-    throw new Error();
+    throw new Error(`Wrong mode ${mode ?? '[NO MODE]'}`);
   }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-await */
+
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [

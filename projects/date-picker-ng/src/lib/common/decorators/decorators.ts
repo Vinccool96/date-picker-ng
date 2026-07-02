@@ -23,13 +23,15 @@ export function debounce(ms: number = DEFAULT_DEBOUNCE_MS): DebounceFunction {
       enumerable: descriptor.enumerable,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       get(): any {
+        /* eslint-disable unicorn/no-this-outside-of-class */
         Object.defineProperty(this, propertyKey, {
           configurable: true,
           enumerable: descriptor.enumerable,
-          value: UtilsService.debounce(descriptor.value as (arg: unknown) => void, ms),
+          value: UtilsService.debounce(descriptor.value as (argument: unknown) => void, ms),
         });
 
         return this[propertyKey as keyof typeof this];
+        /* eslint-enable unicorn/no-this-outside-of-class */
       },
     };
   };

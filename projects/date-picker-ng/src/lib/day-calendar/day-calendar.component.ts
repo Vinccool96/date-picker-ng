@@ -153,14 +153,14 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
   private init(): void {
     this.componentConfig = this.dayCalendarService.getConfig(this.config());
     this.currentDateView =
-      this.displayDate() !== null
-        ? this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format)
-        : this.utilsService.getDefaultDisplayDate(
+      this.displayDate() === null
+        ? this.utilsService.getDefaultDisplayDate(
             this.currentDateView,
             this.selected,
             this.componentConfig.allowMultiSelect,
             this.componentConfig.min,
-          );
+          )
+        : this.utilsService.convertToDayjs(this.displayDate(), this.componentConfig.format);
     this.weekdays = this.dayCalendarService.generateWeekdays(this.componentConfig.firstDayOfWeek as WeekDays);
     this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
     this.monthCalendarConfig = this.dayCalendarService.getMonthCalendarConfig(this.componentConfig);
@@ -168,16 +168,18 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
   }
 
   private onChanges(change: 'config' | 'date' | 'display', configChange?: ConfigChange): void {
-    if (this.isInited) {
-      if (change === 'config') {
-        this.handleConfigChange(configChange as ConfigChange);
-      }
+    if (!this.isInited) {
+      return;
+    }
 
-      this.init();
+    if (change === 'config') {
+      this.handleConfigChange(configChange as ConfigChange);
+    }
 
-      if (change === 'date') {
-        this.initValidators();
-      }
+    this.init();
+
+    if (change === 'date') {
+      this.initValidators();
     }
   }
 
@@ -200,8 +202,8 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     this.cd.markForCheck();
   }
 
-  public registerOnChange(fn: (arg: unknown) => void): void {
-    this.onChangeCallback = fn;
+  public registerOnChange(callback: (argument: unknown) => void): void {
+    this.onChangeCallback = callback;
   }
 
   private onChangeCallback(_: CalendarValue | undefined): void {
@@ -213,11 +215,9 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
   }
 
   public validate(formControl: UntypedFormControl): ValidationErrors | null {
-    if (this.minDate() !== undefined || this.maxDate() !== undefined) {
-      return this.validateFn(formControl.value as CalendarValue);
-    } else {
-      return () => null;
-    }
+    return this.minDate() !== undefined || this.maxDate() !== undefined
+      ? this.validateFn(formControl.value as CalendarValue)
+      : (): ValidationErrors | null => null;
   }
 
   private processOnChangeCallback(value: Dayjs[]): CalendarValue | undefined {
@@ -354,10 +354,10 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
   }
 
   private handleConfigChange(config: ConfigChange): void {
-    const prevConf: IDayCalendarConfigInternal = this.dayCalendarService.getConfig(config.previousValue);
-    const currentConf: IDayCalendarConfigInternal = this.dayCalendarService.getConfig(config.currentValue);
+    const previousConfig: IDayCalendarConfigInternal = this.dayCalendarService.getConfig(config.previousValue);
+    const currentConfig: IDayCalendarConfigInternal = this.dayCalendarService.getConfig(config.currentValue);
 
-    if (this.utilsService.shouldResetCurrentView(prevConf, currentConf)) {
+    if (this.utilsService.shouldResetCurrentView(previousConfig, currentConfig)) {
       this._currentDateView = null;
     }
   }

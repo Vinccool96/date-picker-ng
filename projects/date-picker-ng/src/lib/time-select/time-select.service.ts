@@ -73,12 +73,14 @@ export class TimeSelectService {
   public decrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
     let amount = 1;
     switch (unit) {
-      case 'minute':
+      case 'minute': {
         amount = config.minutesInterval as number;
         break;
-      case 'second':
+      }
+      case 'second': {
         amount = config.secondsInterval as number;
         break;
+      }
     }
     return time.subtract(amount, unit);
   }
@@ -86,22 +88,20 @@ export class TimeSelectService {
   public increase(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
     let amount = 1;
     switch (unit) {
-      case 'minute':
+      case 'minute': {
         amount = config.minutesInterval as number;
         break;
-      case 'second':
+      }
+      case 'second': {
         amount = config.secondsInterval as number;
         break;
+      }
     }
     return time.add(amount, unit);
   }
 
   public toggleMeridiem(time: Dayjs): Dayjs {
-    if (time.hour() < FIRST_PM_HOUR) {
-      return time.add(12, 'hour');
-    } else {
-      return time.subtract(12, 'hour');
-    }
+    return time.hour() < FIRST_PM_HOUR ? time.add(12, 'hour') : time.subtract(12, 'hour');
   }
 
   public shouldShowDecrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): boolean {

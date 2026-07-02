@@ -27,32 +27,30 @@ interface Validator {
   providedIn: 'root',
 })
 export class UtilsService {
-  public static debounce(func: (...arg: unknown[]) => void, wait: number): () => void {
+  public static debounce(debouncedFunction: (...argument: unknown[]) => void, wait: number): () => void {
     let timeout: NodeJS.Timeout | undefined;
-    return function (...args: unknown[]): void {
-      /* eslint-disable @typescript-eslint/no-this-alias, @typescript-eslint/no-unsafe-assignment */
+    return function (...arguments_: unknown[]): void {
+      /* eslint-disable @typescript-eslint/no-this-alias, @typescript-eslint/no-unsafe-assignment, unicorn/no-this-assignment, unicorn/no-this-outside-of-class */
       // @ts-expect-error What the hell?
       const context = this;
-      /* eslint-enable @typescript-eslint/no-this-alias, @typescript-eslint/no-unsafe-assignment */
+      /* eslint-enable @typescript-eslint/no-this-alias, @typescript-eslint/no-unsafe-assignment, unicorn/no-this-assignment, unicorn/no-this-outside-of-class */
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        func.apply(context, args);
+        debouncedFunction.apply(context, arguments_);
       }, wait);
     };
   }
 
   public createArray(size: number): number[] {
-    return new Array<number>(size).fill(1);
+    return Array.from({ length: size }, () => 1);
   }
 
   public convertToDayjs(date: SingleCalendarValue | null | undefined, format: string | undefined): Dayjs | null {
     if (date === null || date === undefined) {
       return null;
-    } else if (typeof date === 'string') {
-      return dayjsRef(date, format);
-    } else {
-      return dayjsRef(date.toDate());
     }
+
+    return typeof date === 'string' ? dayjsRef(date, format) : dayjsRef(date.toDate());
   }
 
   public isDateValid(date: string, format: string | undefined): boolean {
@@ -72,9 +70,13 @@ export class UtilsService {
   ): Dayjs {
     if (current !== null && current !== undefined) {
       return dayjsRef(current.toDate());
-    } else if (minDate?.isAfter(dayjsRef()) === true) {
+    }
+
+    if (minDate?.isAfter(dayjsRef()) === true) {
       return dayjsRef(minDate.toDate());
-    } else if (allowMultiSelect === true) {
+    }
+
+    if (allowMultiSelect === true) {
       if (selected?.at(selected.length) !== undefined) {
         return dayjsRef(selected[selected.length].toDate());
       }
@@ -88,17 +90,23 @@ export class UtilsService {
   // todo:: add unit test
   public getInputType(value: CalendarValue, allowMultiSelect: boolean | undefined): ECalendarValue {
     if (Array.isArray(value)) {
-      if (!value.length) {
+      if (value.length === 0) {
         return ECalendarValue.DayjsArr;
-      } else if (typeof value[0] === 'string') {
+      }
+
+      if (typeof value[0] === 'string') {
         return ECalendarValue.StringArr;
-      } else if (dayjsRef.isDayjs(value[0])) {
+      }
+
+      if (dayjsRef.isDayjs(value[0])) {
         return ECalendarValue.DayjsArr;
       }
     } else {
       if (typeof value === 'string') {
         return ECalendarValue.String;
-      } else if (dayjsRef.isDayjs(value)) {
+      }
+
+      if (dayjsRef.isDayjs(value)) {
         return ECalendarValue.Dayjs;
       }
     }
@@ -111,27 +119,32 @@ export class UtilsService {
     value: CalendarValue | undefined,
     config: { allowMultiSelect?: boolean; format?: string },
   ): Dayjs[] {
-    let retVal: Dayjs[];
+    let returnValue: Dayjs[];
     switch (this.getInputType(value as CalendarValue, config.allowMultiSelect)) {
-      case ECalendarValue.String:
-        retVal = value !== undefined && value !== '' ? [dayjsRef(value as string, config.format, true)] : [];
+      case ECalendarValue.String: {
+        returnValue = value !== undefined && value !== '' ? [dayjsRef(value as string, config.format, true)] : [];
         break;
-      case ECalendarValue.StringArr:
-        retVal = (value as string[])
-          .map((v) => (v !== '' ? dayjsRef(v, config.format, true) : null))
+      }
+      case ECalendarValue.StringArr: {
+        returnValue = (value as string[])
+          .map((v) => (v === '' ? null : dayjsRef(v, config.format, true)))
           .filter((value) => value !== null);
         break;
-      case ECalendarValue.Dayjs:
-        retVal = value !== undefined && value !== '' ? [dayjsRef((value as Dayjs).toDate())] : [];
+      }
+      case ECalendarValue.Dayjs: {
+        returnValue = value !== undefined && value !== '' ? [dayjsRef((value as Dayjs).toDate())] : [];
         break;
-      case ECalendarValue.DayjsArr:
-        retVal = ((value as Dayjs[] | undefined) ?? []).map((v) => dayjsRef(v.toDate()));
+      }
+      case ECalendarValue.DayjsArr: {
+        returnValue = ((value as Dayjs[] | undefined) ?? []).map((v) => dayjsRef(v.toDate()));
         break;
-      default:
-        retVal = [];
+      }
+      default: {
+        returnValue = [];
+      }
     }
 
-    return retVal;
+    return returnValue;
   }
 
   // todo:: add unit test
@@ -141,54 +154,60 @@ export class UtilsService {
     convertTo: ECalendarValue,
   ): CalendarValue | undefined {
     switch (convertTo) {
-      case ECalendarValue.String:
+      case ECalendarValue.String: {
         return value.at(0)?.format(format);
-      case ECalendarValue.StringArr:
+      }
+      case ECalendarValue.StringArr: {
         return value.filter((v) => v !== undefined).map((v) => v.format(format));
-      case ECalendarValue.Dayjs:
-        return value.at(0) !== undefined ? dayjsRef(value.at(0)?.toDate()) : value[0];
-      case ECalendarValue.DayjsArr:
-        return (value as (Dayjs | undefined)[] | undefined) !== undefined
-          ? value.map((v) => dayjsRef(v?.toDate()))
-          : undefined;
-      default:
+      }
+      case ECalendarValue.Dayjs: {
+        return value.at(0) === undefined ? value[0] : dayjsRef(value.at(0)?.toDate());
+      }
+      case ECalendarValue.DayjsArr: {
+        return (value as (Dayjs | undefined)[] | undefined) === undefined
+          ? undefined
+          : value.map((v) => dayjsRef(v?.toDate()));
+      }
+      default: {
         return value as unknown as CalendarValue;
+      }
     }
   }
 
   public convertToString(value: CalendarValue | null, format: string | undefined): string {
-    let tmpVal: string[];
+    let temporaryValue: string[];
 
     if (typeof value === 'string') {
-      tmpVal = [value];
+      temporaryValue = [value];
     } else if (Array.isArray(value)) {
-      if (value.length) {
-        tmpVal = (value as SingleCalendarValue[]).map((v) => {
-          return (this.convertToDayjs(v, format) as Dayjs).format(format);
-        });
-      } else {
-        tmpVal = value as string[];
-      }
+      temporaryValue =
+        value.length > 0
+          ? (value as SingleCalendarValue[]).map((v) => {
+              return (this.convertToDayjs(v, format) as Dayjs).format(format);
+            })
+          : (value as string[]);
     } else if (dayjsRef.isDayjs(value)) {
-      tmpVal = [value.format(format)];
+      temporaryValue = [value.format(format)];
     } else {
       return '';
     }
 
-    return tmpVal.filter(Boolean).join(' | ');
+    return temporaryValue.filter(Boolean).join(' | ');
   }
 
   // todo:: add unit test
-  public clearUndefined<T extends object>(obj: T | undefined): T {
-    if (obj === undefined) {
+  public clearUndefined<T extends object>(object: T | undefined): T {
+    if (object === undefined) {
       return {} as T;
     }
 
-    Object.keys(obj).forEach(
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      (key) => obj[key as keyof typeof obj] === undefined && delete obj[key as keyof typeof obj],
-    );
-    return obj;
+    for (const key of Object.keys(object)) {
+      if (object[key as keyof typeof object] === undefined) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete object[key as keyof typeof object];
+      }
+    }
+    return object;
   }
 
   public updateSelected(
@@ -198,12 +217,12 @@ export class UtilsService {
     granularity: UnitType = 'day',
   ): Dayjs[] {
     if (isMultiple === true) {
-      return !date.selected
-        ? currentlySelected.concat([date.date as Dayjs])
-        : currentlySelected.filter((d) => !d.isSame(date.date, granularity));
-    } else {
-      return !date.selected ? [date.date as Dayjs] : [];
+      return date.selected
+        ? currentlySelected.filter((day) => !day.isSame(date.date, granularity))
+        : [...currentlySelected, date.date as Dayjs];
     }
+
+    return date.selected ? [] : [date.date as Dayjs];
   }
 
   public closestParent(element: HTMLElement | null | undefined, selector: string): HTMLElement | undefined {
@@ -221,21 +240,20 @@ export class UtilsService {
   }
 
   public onlyTime(m: Dayjs | null | undefined): Dayjs {
-    if (dayjsRef.isDayjs(m)) {
-      return dayjsRef(m.format('HH:mm:ss'), 'HH:mm:ss');
-    } else {
-      return dayjsRef();
-    }
+    return dayjsRef.isDayjs(m) ? dayjsRef(m.format('HH:mm:ss'), 'HH:mm:ss') : dayjsRef();
   }
 
   private granularityFromType(calendarType: CalendarMode): UnitType {
     switch (calendarType) {
-      case 'time':
+      case 'time': {
         return 'second';
-      case 'daytime':
+      }
+      case 'daytime': {
         return 'second';
-      default:
+      }
+      default: {
         return calendarType;
+      }
     }
   }
 
@@ -254,7 +272,7 @@ export class UtilsService {
       validators.push({
         key: 'minDate',
         isValid: () => {
-          const _isValid = value.every((val) => val.isSameOrAfter(md, granularity));
+          const _isValid = value.every((day) => day.isSameOrAfter(md, granularity));
           isValid = isValid ? _isValid : false;
           return _isValid;
         },
@@ -266,7 +284,7 @@ export class UtilsService {
       validators.push({
         key: 'maxDate',
         isValid: () => {
-          const _isValid = value.every((val) => val.isSameOrBefore(md, granularity));
+          const _isValid = value.every((day) => day.isSameOrBefore(md, granularity));
           isValid = isValid ? _isValid : false;
           return _isValid;
         },
@@ -278,7 +296,7 @@ export class UtilsService {
       validators.push({
         key: 'minTime',
         isValid: () => {
-          const _isValid = value.every((val) => this.onlyTime(val).isSameOrAfter(md));
+          const _isValid = value.every((day) => this.onlyTime(day).isSameOrAfter(md));
           isValid = isValid ? _isValid : false;
           return _isValid;
         },
@@ -290,38 +308,38 @@ export class UtilsService {
       validators.push({
         key: 'maxTime',
         isValid: () => {
-          const _isValid = value.every((val) => this.onlyTime(val).isSameOrBefore(md));
+          const _isValid = value.every((day) => this.onlyTime(day).isSameOrBefore(md));
           isValid = isValid ? _isValid : false;
           return _isValid;
         },
       });
     }
 
-    return (inputVal: CalendarValue) => {
-      value = this.convertToDayjsArray(inputVal, {
+    return (inputValue: CalendarValue) => {
+      value = this.convertToDayjsArray(inputValue, {
         format,
         allowMultiSelect: true,
       }).filter(Boolean);
 
-      if (!value.every((val) => val.isValid())) {
+      if (value.some((day) => !day.isValid())) {
         return {
           format: {
-            given: inputVal,
+            given: inputValue,
           },
         };
       }
 
-      const errors = validators.reduce<ValidationErrors>((map, err) => {
-        if (!err.isValid()) {
-          map[err.key] = {
+      const errors: ValidationErrors = {};
+
+      for (const error of validators) {
+        if (!error.isValid()) {
+          errors[error.key] = {
             given: value,
           };
         }
+      }
 
-        return map;
-      }, {});
-
-      return !isValid ? errors : null;
+      return isValid ? null : errors;
     };
   }
 
@@ -372,52 +390,48 @@ export class UtilsService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public convertPropsToDayjs(obj: Record<string, any>, format: string | undefined, props: string[]): void {
-    props.forEach((prop) => {
-      if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-        obj[prop] = this.convertToDayjs(obj[prop] as SingleCalendarValue | null | undefined, format);
+  public convertPropsToDayjs(object: Record<string, any>, format: string | undefined, properties: string[]): void {
+    for (const property of properties) {
+      if (Object.prototype.hasOwnProperty.call(object, property)) {
+        object[property] = this.convertToDayjs(object[property] as SingleCalendarValue | null | undefined, format);
       }
-    });
+    }
   }
 
   public shouldResetCurrentView<T extends ICalendarInternal>(
-    prevConf: T | undefined | null,
-    currentConf: T | undefined | null,
+    previousConfig: T | undefined | null,
+    currentConfig: T | undefined | null,
   ): boolean {
-    if (prevConf !== undefined && prevConf !== null && currentConf !== null && currentConf !== undefined) {
-      if (prevConf.min === undefined && currentConf.min !== undefined) {
-        return true;
-      } else if (
-        prevConf.min !== undefined &&
-        currentConf.min !== undefined &&
-        !prevConf.min.isSame(currentConf.min, 'd')
-      ) {
-        return true;
-      } else if (prevConf.max === undefined && currentConf.max !== undefined) {
-        return true;
-      } else if (
-        prevConf.max !== undefined &&
-        currentConf.max !== undefined &&
-        !prevConf.max.isSame(currentConf.max, 'd')
-      ) {
-        return true;
-      }
-
+    if (
+      previousConfig === undefined ||
+      previousConfig === null ||
+      currentConfig === null ||
+      currentConfig === undefined
+    ) {
       return false;
     }
 
-    return false;
+    return (
+      (previousConfig.min === undefined && currentConfig.min !== undefined) ||
+      (previousConfig.min !== undefined &&
+        currentConfig.min !== undefined &&
+        !previousConfig.min.isSame(currentConfig.min, 'd')) ||
+      (previousConfig.max === undefined && currentConfig.max !== undefined) ||
+      (previousConfig.max !== undefined &&
+        currentConfig.max !== undefined &&
+        !previousConfig.max.isSame(currentConfig.max, 'd'))
+    );
   }
 
-  public getNativeElement(elem: HTMLElement | string | ElementRef<HTMLElement> | undefined): HTMLElement | null {
-    if (elem === undefined || elem === '') {
+  public getNativeElement(element: HTMLElement | string | ElementRef<HTMLElement> | undefined): HTMLElement | null {
+    if (element === undefined || element === '') {
       return null;
-    } else if (typeof elem === 'string') {
-      return document.querySelector(elem);
-    } else if (elem instanceof ElementRef) {
-      return elem.nativeElement;
-    } else {
-      return elem;
     }
+
+    if (typeof element === 'string') {
+      return document.querySelector(element);
+    }
+
+    return element instanceof ElementRef ? element.nativeElement : element;
   }
 }

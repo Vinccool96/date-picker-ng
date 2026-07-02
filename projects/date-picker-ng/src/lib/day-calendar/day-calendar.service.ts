@@ -41,12 +41,14 @@ export class DayCalendarService {
 
   public generateDaysMap(firstDayOfWeek: WeekDays): Record<string, number> {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
-    const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
-    return daysArr.reduce<Record<string, number>>((map, day, index) => {
-      map[day] = index;
+    const daysArray = [...this.DAYS.slice(firstDayIndex, 7), ...this.DAYS.slice(0, firstDayIndex)];
+    const map: Record<string, number> = {};
 
-      return map;
-    }, {});
+    for (const [index, day] of daysArray.entries()) {
+      map[day] = index;
+    }
+
+    return map;
   }
 
   public generateMonthArray(config: IDayCalendarConfigInternal, month: Dayjs, selected: Dayjs[]): IDay[][] {
@@ -60,26 +62,26 @@ export class DayCalendarService {
     }
 
     let current = dayjsRef(firstDayOfBoard.toDate());
-    const prevMonth = parsedMonth.subtract(1, 'month');
+    const previousMonth = parsedMonth.subtract(1, 'month');
     const nextMonth = parsedMonth.add(1, 'month');
     const today = dayjsRef();
 
-    const daysOfCalendar: IDay[] = this.utilsService.createArray(42).reduce((array: IDay[]) => {
-      array.push({
+    const daysOfCalendar: IDay[] = [];
+
+    for (let index = 0; index < 42; index++) {
+      daysOfCalendar.push({
         date: dayjsRef(current.toDate()),
-        selected: selected.find((selectedDay) => current.isSame(selectedDay, 'day')) !== undefined,
+        selected: selected.some((selectedDay) => current.isSame(selectedDay, 'day')),
         currentMonth: current.isSame(parsedMonth, 'month'),
-        prevMonth: current.isSame(prevMonth, 'month'),
+        prevMonth: current.isSame(previousMonth, 'month'),
         nextMonth: current.isSame(nextMonth, 'month'),
         currentDay: current.isSame(today, 'day'),
         disabled: this.isDateDisabled(current, config),
       });
       current = current.add(1, 'day');
+    }
 
-      return array;
-    }, []);
-
-    daysOfCalendar.forEach((day, index) => {
+    for (const [index, day] of daysOfCalendar.entries()) {
       const weekIndex = Math.floor(index / 7);
 
       if (monthArray.at(weekIndex) === undefined) {
@@ -87,7 +89,7 @@ export class DayCalendarService {
       }
 
       monthArray[weekIndex].push(day);
-    });
+    }
 
     if (config.showNearMonthDays !== true) {
       monthArray = this.removeNearMonthWeeks(parsedMonth, monthArray);
@@ -151,12 +153,8 @@ export class DayCalendarService {
 
   public generateDaysIndexMap(firstDayOfWeek: WeekDays): Record<number, string> {
     const firstDayIndex = this.DAYS.indexOf(firstDayOfWeek);
-    const daysArr = this.DAYS.slice(firstDayIndex, 7).concat(this.DAYS.slice(0, firstDayIndex));
-    return daysArr.reduce<Record<number, string>>((map, day, index) => {
-      map[index] = day;
-
-      return map;
-    }, {});
+    const daysArray = [...this.DAYS.slice(firstDayIndex, 7), ...this.DAYS.slice(0, firstDayIndex)];
+    return Object.fromEntries(daysArray.entries());
   }
 
   public getMonthCalendarConfig(componentConfig: IDayCalendarConfigInternal): IMonthCalendarConfig {
@@ -198,12 +196,8 @@ export class DayCalendarService {
   }
 
   private removeNearMonthWeeks(currentMonth: Dayjs, monthArray: IDay[][]): IDay[][] {
-    if (
-      monthArray[monthArray.length - 1].find((day) => day.date?.isSame(currentMonth, 'month') ?? false) !== undefined
-    ) {
-      return monthArray;
-    } else {
-      return monthArray.slice(0, -1);
-    }
+    return (monthArray.at(-1) as IDay[]).some((day) => day.date?.isSame(currentMonth, 'month') ?? false)
+      ? monthArray
+      : monthArray.slice(0, -1);
   }
 }

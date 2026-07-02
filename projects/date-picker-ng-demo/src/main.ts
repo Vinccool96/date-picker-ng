@@ -9,6 +9,8 @@ if (environment.production) {
   enableProdMode();
 }
 
-bootstrapApplication(App, appConfig).catch((err: unknown) => {
-  console.error(err);
-});
+try {
+  await bootstrapApplication(App, appConfig);
+} catch (error: unknown) {
+  console.error(error);
+}

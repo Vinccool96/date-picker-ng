@@ -101,17 +101,17 @@ export class DatePickerService {
   // todo:: add unit tests
   public isValidInputDateValue(value: string | null | undefined, config: IDatePickerConfig): boolean {
     const usedValue = value ?? '';
-    const datesStrArr: string[] = this.utilsService.datesStringToStringArray(usedValue);
+    const datesStringArray: string[] = this.utilsService.datesStringToStringArray(usedValue);
 
-    return datesStrArr.every((date) => this.utilsService.isDateValid(date, config.format));
+    return datesStringArray.every((date) => this.utilsService.isDateValid(date, config.format));
   }
 
   // todo:: add unit tests
   public convertInputValueToDayjsArray(value: string | null | undefined, config: IDatePickerConfig): Dayjs[] {
     const usedValue = value ?? '';
-    const datesStrArr = this.utilsService.datesStringToStringArray(usedValue);
+    const datesStringArray = this.utilsService.datesStringToStringArray(usedValue);
 
-    return this.utilsService.convertToDayjsArray(datesStrArr, config);
+    return this.utilsService.convertToDayjsArray(datesStringArray, config);
   }
 
   public getOverlayPosition({ drops, opens }: IDatePickerConfig): ConnectedPosition[] | undefined {
@@ -128,24 +128,28 @@ export class DatePickerService {
 
     return [
       {
-        originX: opens !== undefined ? (opens === 'left' ? 'start' : 'end') : 'start',
-        originY: drops !== undefined ? (drops === 'up' ? 'top' : 'bottom') : 'bottom',
-        overlayX: opens !== undefined ? (opens === 'left' ? 'start' : 'end') : 'start',
-        overlayY: drops !== undefined ? (drops === 'up' ? 'bottom' : 'top') : 'top',
+        originX: opens === undefined || opens === 'left' ? 'start' : 'end',
+        originY: drops !== undefined && drops === 'up' ? 'top' : 'bottom',
+        overlayX: opens === undefined || opens === 'left' ? 'start' : 'end',
+        overlayY: drops !== undefined && drops === 'up' ? 'bottom' : 'top',
       },
     ];
   }
 
   private static getDefaultFormatByMode(mode: CalendarMode): string {
     switch (mode) {
-      case 'day':
+      case 'day': {
         return 'DD-MM-YYYY';
-      case 'daytime':
+      }
+      case 'daytime': {
         return 'DD-MM-YYYY HH:mm:ss';
-      case 'time':
+      }
+      case 'time': {
         return 'HH:mm:ss';
-      case 'month':
+      }
+      case 'month': {
         return 'MMM, YYYY';
+      }
     }
   }
 }

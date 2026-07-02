@@ -33,21 +33,22 @@ export abstract class DateComponent {
     this.displayDate = displayDate;
   }
 
-  protected onMaterialThemeChange(material: boolean): void {
-    this.material = material;
+  protected onMaterialThemeChange(isUsingMaterial: boolean): void {
+    this.material = isUsingMaterial;
   }
 
-  protected onDisabledChange(disabled: boolean): void {
-    this.disabled = disabled;
-    if (disabled) {
+  protected onDisabledChange(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+
+    if (isDisabled) {
       this.control.disable();
     } else {
       this.control.enable();
     }
   }
 
-  protected onRequireValidationChange(required: boolean): void {
-    this.required = required;
+  protected onRequireValidationChange(isRequired: boolean): void {
+    this.required = isRequired;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
