@@ -1,7 +1,7 @@
 {
   "name": "date-picker-ng",
-  "version": "21.0.1",
-  "author": "Vlad Ioffe",
+  "version": "21.0.0",
+  "author": "Vincent Girard <vinccool96@gmail.com> (https://vinccool96.github.io/)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -20,9 +20,9 @@
     "date-picker-ng"
   ],
   "peerDependencies": {
-    "@angular/common": "^21.1.3",
-    "@angular/core": "^21.1.3",
-    "@angular/cdk": "^21.1.3",
+    "@angular/common": "^21.1.3 || >=22.0.0",
+    "@angular/core": "^21.1.3 || >=22.0.0",
+    "@angular/cdk": "^21.1.3 || >=22.0.0",
     "dayjs": "^1.11.13"
   },
   "dependencies": {
