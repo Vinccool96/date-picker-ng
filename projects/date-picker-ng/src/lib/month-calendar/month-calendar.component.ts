@@ -39,7 +39,7 @@ import { IMonth } from './month.model';
   selector: 'dp-month-calendar',
   imports: [NgClass, CalendarNavComponent],
   templateUrl: 'month-calendar.component.html',
-  styleUrls: ['month-calendar.component.less'],
+  styleUrls: ['month-calendar.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

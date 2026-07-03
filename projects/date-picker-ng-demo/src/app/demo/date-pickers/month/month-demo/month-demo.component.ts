@@ -10,7 +10,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   selector: 'dp-month-demo',
   imports: [ConfigFormComponent, ReactiveFormsModule, DatePickerComponent],
   templateUrl: './month-demo.component.html',
-  styleUrls: ['./month-demo.component.less'],
+  styleUrls: ['./month-demo.component.scss'],
 })
 export class MonthDemoComponent extends DateComponent {
   protected config: IDatePickerConfig = {

@@ -10,7 +10,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   selector: 'dp-time-directive-demo',
   imports: [ConfigFormComponent, ReactiveFormsModule, DatePickerDirective],
   templateUrl: './time-directive-demo.component.html',
-  styleUrls: ['./time-directive-demo.component.less'],
+  styleUrls: ['./time-directive-demo.component.scss'],
 })
 export class TimeDirectiveDemoComponent extends DateComponent {
   protected config: IDatePickerConfig = {

@@ -61,7 +61,7 @@ import { DatePickerService } from './date-picker.service';
     CdkConnectedOverlay,
   ],
   templateUrl: 'date-picker.component.html',
-  styleUrls: ['date-picker.component.less'],
+  styleUrls: ['date-picker.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

@@ -10,7 +10,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   selector: 'dp-time-inline-demo',
   imports: [ConfigFormComponent, TimeSelectComponent, ReactiveFormsModule],
   templateUrl: './time-inline-demo.component.html',
-  styleUrls: ['./time-inline-demo.component.less'],
+  styleUrls: ['./time-inline-demo.component.scss'],
 })
 export class TimeInlineDemoComponent extends DateComponent {
   protected config: IDatePickerConfig = {

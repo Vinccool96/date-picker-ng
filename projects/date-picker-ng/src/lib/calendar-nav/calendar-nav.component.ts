@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output, ViewEncapsulation } 
 @Component({
   selector: 'dp-calendar-nav',
   templateUrl: './calendar-nav.component.html',
-  styleUrls: ['./calendar-nav.component.less'],
+  styleUrls: ['./calendar-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {

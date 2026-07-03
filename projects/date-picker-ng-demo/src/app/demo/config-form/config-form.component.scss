@@ -1,4 +1,4 @@
-@import '../common/styles/variables';
+@use '../common/styles/variables' as variables;
 
 .dp-page-content {
   display: flex;
@@ -19,6 +19,6 @@
   padding: 10px;
 
   &:nth-child(odd) {
-    background: fade(@c-light-gray, 30);
+    background: fade(variables.$c-light-gray, 30);
   }
 }

@@ -45,7 +45,7 @@
       "schematics": {
         "@schematics/angular:component": {
           "prefix": "dp",
-          "style": "less"
+          "style": "scss"
         },
         "@schematics/angular:directive": {
           "prefix": "dp"
@@ -78,7 +78,7 @@
               }
             ],
             "styles": [
-              "projects/date-picker-ng-demo/src/styles.less",
+              "projects/date-picker-ng-demo/src/styles.scss",
               "node_modules/@angular/cdk/overlay-prebuilt.css"
             ],
             "scripts": [],
@@ -146,7 +146,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "dp",
-      "style": "less"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "dp"

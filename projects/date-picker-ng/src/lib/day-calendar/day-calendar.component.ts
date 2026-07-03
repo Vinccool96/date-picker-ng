@@ -45,7 +45,7 @@ import { IDay } from './day.model';
   selector: 'dp-day-calendar',
   imports: [MonthCalendarComponent, CalendarNavComponent, NgClass, FormsModule],
   templateUrl: 'day-calendar.component.html',
-  styleUrls: ['day-calendar.component.less'],
+  styleUrls: ['day-calendar.component.scss'],
   providers: [
     DayCalendarService,
     {

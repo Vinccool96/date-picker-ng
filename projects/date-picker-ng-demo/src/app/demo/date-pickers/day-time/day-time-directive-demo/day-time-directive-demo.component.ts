@@ -10,7 +10,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   selector: 'dp-day-time-directive-demo',
   imports: [ConfigFormComponent, ReactiveFormsModule, DatePickerDirective],
   templateUrl: './day-time-directive-demo.component.html',
-  styleUrls: ['./day-time-directive-demo.component.less'],
+  styleUrls: ['./day-time-directive-demo.component.scss'],
 })
 export class DayTimeDirectiveDemoComponent extends DateComponent {
   protected config: IDatePickerConfig = {

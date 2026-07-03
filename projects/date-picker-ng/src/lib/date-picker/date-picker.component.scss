@@ -1,0 +1,35 @@
+@use '../common/styles/variables' as variables;
+
+dp-date-picker {
+  display: inline-block;
+
+  &.dp-material {
+    .dp-picker-input {
+      box-sizing: border-box;
+      height: variables.$basic-height;
+      width: (variables.$basic-height * 7) + 3px;
+      font-size: 13px;
+      outline: none;
+    }
+  }
+
+  .dp-input-container {
+    position: relative;
+  }
+
+  .dp-selected {
+    background: variables.$c-primary;
+    color: variables.$c-white;
+  }
+}
+
+.dp-popup {
+  position: relative;
+  display: inline-block;
+  background: variables.$c-white;
+  box-shadow: 1px 1px 5px 0 fade(variables.$c-black, 10);
+  border-left: 1px solid fade(variables.$c-black, 10);
+  border-right: 1px solid fade(variables.$c-black, 10);
+  border-bottom: 1px solid fade(variables.$c-black, 10);
+  white-space: nowrap;
+}

@@ -1,0 +1,102 @@
+@use "sass:color";
+@use '../common/styles/variables' as variables;
+
+dp-day-calendar {
+  display: inline-block;
+
+  .dp-day-calendar-container {
+    background: variables.$c-white;
+  }
+
+  .dp-calendar-wrapper {
+    box-sizing: border-box;
+    border: 1px solid variables.$c-black;
+
+    .dp-calendar-weekday:first-child {
+      border-left: none;
+    }
+  }
+
+  .dp-weekdays {
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+
+  .dp-calendar-weekday {
+    box-sizing: border-box;
+    display: inline-block;
+    width: variables.$basic-height;
+    text-align: center;
+    border-left: 1px solid variables.$c-black;
+    border-bottom: 1px solid variables.$c-black;
+  }
+
+  .dp-calendar-day {
+    box-sizing: border-box;
+    width: variables.$basic-height;
+    height: variables.$basic-height;
+    cursor: pointer;
+  }
+
+  .dp-selected {
+    background: variables.$c-primary;
+    color: variables.$c-white;
+  }
+
+  .dp-prev-month,
+  .dp-next-month {
+    opacity: 0.5;
+  }
+
+  .dp-hide-near-month {
+    .dp-prev-month,
+    .dp-next-month {
+      visibility: hidden;
+    }
+  }
+
+  .dp-week-number {
+    position: absolute;
+    font-size: 9px;
+  }
+
+  &.dp-material {
+    .dp-calendar-weekday {
+      height: variables.$basic-height - 5px;
+      width: variables.$basic-height;
+      line-height: variables.$basic-height - 5px;
+      color: color.scale(variables.$c-light-gray, $lightness: -40%);
+      border: none;
+    }
+
+    .dp-calendar-wrapper {
+      border: 1px solid variables.$c-light-gray;
+    }
+
+    .dp-calendar-month,
+    .dp-calendar-day {
+      box-sizing: border-box;
+      background: variables.$c-white;
+      border-radius: 50%;
+      border: none;
+      outline: none;
+
+      &:hover {
+        background: variables.$c-light-gray;
+      }
+    }
+
+    .dp-selected {
+      background: variables.$c-primary;
+      color: variables.$c-white;
+
+      &:hover {
+        background: variables.$c-primary;
+      }
+    }
+
+    .dp-current-day {
+      border: 1px solid variables.$c-primary;
+    }
+  }
+}

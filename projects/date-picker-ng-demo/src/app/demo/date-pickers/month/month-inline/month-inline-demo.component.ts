@@ -10,7 +10,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   selector: 'dp-month-inline',
   imports: [ConfigFormComponent, ReactiveFormsModule, MonthCalendarComponent],
   templateUrl: './month-inline-demo.component.html',
-  styleUrls: ['./month-inline-demo.component.less'],
+  styleUrls: ['./month-inline-demo.component.scss'],
 })
 export class MonthInlineDemoComponent extends DateComponent {
   protected config: IDatePickerConfig = {

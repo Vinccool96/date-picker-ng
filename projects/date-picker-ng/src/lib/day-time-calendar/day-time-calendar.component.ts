@@ -40,7 +40,7 @@ import { DayTimeCalendarService } from './day-time-calendar.service';
   selector: 'dp-day-time-calendar',
   imports: [DayCalendarComponent, TimeSelectComponent, FormsModule],
   templateUrl: 'day-time-calendar.component.html',
-  styleUrls: ['day-time-calendar.component.less'],
+  styleUrls: ['day-time-calendar.component.scss'],
   providers: [
     DayTimeCalendarService,
     DayCalendarService,

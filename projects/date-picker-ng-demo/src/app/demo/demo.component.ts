@@ -16,7 +16,7 @@ import dayjs, { Dayjs } from 'dayjs';
   selector: 'dp-demo',
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './demo.component.html',
-  styleUrls: ['./demo.component.less'],
+  styleUrls: ['./demo.component.scss'],
   host: {
     '(document:scroll)': 'updateIsAtTop()',
   },

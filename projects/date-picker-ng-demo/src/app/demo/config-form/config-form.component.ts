@@ -97,7 +97,7 @@ const DAY_TIME_CALENDAR_OPTION_KEYS = [
   selector: 'dp-config-form',
   imports: [ReactiveFormsModule, DatePickerComponent],
   templateUrl: './config-form.component.html',
-  styleUrls: ['./config-form.component.less'],
+  styleUrls: ['./config-form.component.scss'],
 })
 export class ConfigFormComponent implements OnInit {
   /*

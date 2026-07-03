@@ -33,7 +33,7 @@ import { TimeSelectService, TimeUnit } from './time-select.service';
 @Component({
   selector: 'dp-time-select',
   templateUrl: 'time-select.component.html',
-  styleUrls: ['time-select.component.less'],
+  styleUrls: ['time-select.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

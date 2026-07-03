@@ -10,7 +10,7 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   selector: 'dp-day-demo',
   imports: [ConfigFormComponent, ReactiveFormsModule, DatePickerComponent],
   templateUrl: './day-demo.component.html',
-  styleUrls: ['./day-demo.component.less'],
+  styleUrls: ['./day-demo.component.scss'],
 })
 export class DayDemoComponent extends DateComponent {
   protected config: IDatePickerConfig = {
