@@ -12,6 +12,12 @@ import { dayjsRef } from '../common/dayjs/dayjs.ref';
   providedIn: 'root',
 })
 export class DayCalendarService {
+  /*
+   *****************************************************************************************************************
+   * defaults
+   *****************************************************************************************************************
+   */
+
   private readonly DEFAULT_CONFIG: IDayCalendarConfig = {
     showNearMonthDays: true,
     showWeekNumbers: false,
@@ -25,6 +31,12 @@ export class DayCalendarService {
     unSelectOnClick: true,
   };
   private readonly DAYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
 
   private readonly utilsService = inject(UtilsService);
 

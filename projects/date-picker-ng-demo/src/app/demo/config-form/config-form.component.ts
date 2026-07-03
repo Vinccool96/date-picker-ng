@@ -100,6 +100,12 @@ const DAY_TIME_CALENDAR_OPTION_KEYS = [
   imports: [ReactiveFormsModule, DatePickerComponent],
 })
 export class ConfigFormComponent implements OnInit {
+  /*
+   *****************************************************************************************************************
+   * defaults/values
+   *****************************************************************************************************************
+   */
+
   protected readonly DAYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
   protected readonly LANGS = [
     'en',
@@ -242,11 +248,21 @@ export class ConfigFormComponent implements OnInit {
     },
   ];
 
-  protected localFormat = '';
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
 
   public readonly pickerMode = input<string>();
   public readonly config = input<IDatePickerConfig>({});
   public readonly localeVal = input('en');
+
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
 
   @Output() public onDisplayDateChange = new EventEmitter<Dayjs | string>();
   @Output() public onMaterialThemeChange = new EventEmitter<boolean>();
@@ -263,6 +279,12 @@ export class ConfigFormComponent implements OnInit {
   @Output() public openCalendar = new EventEmitter<void>();
   @Output() public closeCalendar = new EventEmitter<void>();
   @Output() public moveCalendarTo = new EventEmitter<Dayjs>();
+
+  /*
+   *****************************************************************************************************************
+   * forms
+   *****************************************************************************************************************
+   */
 
   protected displayDate = new UntypedFormControl(null);
   protected material = new UntypedFormControl(true);
@@ -317,6 +339,14 @@ export class ConfigFormComponent implements OnInit {
   protected returnedValueType!: UntypedFormControl;
   protected closeOnEnter!: UntypedFormControl;
   protected numOfMonthRows!: UntypedFormControl;
+
+  /*
+   *****************************************************************************************************************
+   * others
+   *****************************************************************************************************************
+   */
+
+  protected localFormat = '';
 
   public ngOnInit(): void {
     this.localFormat = ConfigFormComponent.getDefaultFormatByMode(this.pickerMode());

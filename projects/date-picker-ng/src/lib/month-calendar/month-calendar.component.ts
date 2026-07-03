@@ -61,11 +61,24 @@ import { ConfigChange } from '../common/models/config-change';
   imports: [NgClass, CalendarNavComponent],
 })
 export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Validator {
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
+
   public readonly config = input<IMonthCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
   public readonly minDate = input<Dayjs>();
   public readonly maxDate = input<Dayjs>();
   public readonly theme = input<string>('');
+
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
+
   @Output() public onSelect = new EventEmitter<IMonth>();
   @Output() public onNavHeaderBtnClick = new EventEmitter<null>();
   @Output() public onGoToCurrent = new EventEmitter<void>();
@@ -73,6 +86,23 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
   @Output() public onRightNav = new EventEmitter<INavEvent>();
   @Output() public onLeftSecondaryNav = new EventEmitter<INavEvent>();
   @Output() public onRightSecondaryNav = new EventEmitter<INavEvent>();
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
+
+  public readonly monthCalendarService = inject(MonthCalendarService);
+  private readonly utilsService = inject(UtilsService);
+  private readonly cd = inject(ChangeDetectorRef);
+
+  /*
+   *****************************************************************************************************************
+   * other
+   *****************************************************************************************************************
+   */
+
   private isInited = false;
   public componentConfig: IMonthCalendarConfigInternal = {};
   protected yearMonths: IMonth[][] = [];
@@ -89,10 +119,6 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     toggleCalendar: this.toggleCalendarMode.bind(this),
     moveCalendarTo: this.moveCalendarTo.bind(this),
   };
-
-  public readonly monthCalendarService = inject(MonthCalendarService);
-  private readonly utilsService = inject(UtilsService);
-  private readonly cd = inject(ChangeDetectorRef);
 
   public constructor() {
     toObservable(this.config)

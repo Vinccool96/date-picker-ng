@@ -12,6 +12,12 @@ export const FIRST_PM_HOUR = 12;
   providedIn: 'root',
 })
 export class TimeSelectService {
+  /*
+   *****************************************************************************************************************
+   * defaults
+   *****************************************************************************************************************
+   */
+
   private readonly DEFAULT_CONFIG: ITimeSelectConfigInternal = {
     hours12Format: 'hh',
     hours24Format: 'HH',
@@ -24,6 +30,12 @@ export class TimeSelectService {
     showTwentyFourHours: false,
     timeSeparator: ':',
   };
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
 
   private readonly utilsService = inject(UtilsService);
 

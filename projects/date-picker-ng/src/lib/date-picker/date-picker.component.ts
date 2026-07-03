@@ -90,6 +90,12 @@ import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
   ],
 })
 export class DatePickerComponent implements OnInit, OnChanges, ControlValueAccessor, Validator, OnDestroy {
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
+
   private isInitialized = false;
   public readonly config = model<IDatePickerConfig>({});
   public readonly mode = model<CalendarMode>('day');
@@ -101,6 +107,13 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
   public readonly maxDate = model<SingleCalendarValue>();
   public readonly minTime = model<SingleCalendarValue>();
   public readonly maxTime = model<SingleCalendarValue>();
+
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
+
   @Output() public open = new EventEmitter<void>();
   @Output() public close = new EventEmitter<void>();
   @Output() public onChange = new EventEmitter<CalendarValue>();
@@ -108,12 +121,37 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
   @Output() public onLeftNav = new EventEmitter<INavEvent>();
   @Output() public onRightNav = new EventEmitter<INavEvent>();
   @Output() public onSelect = new EventEmitter<ISelectionEvent>();
+
+  /*
+   *****************************************************************************************************************
+   * viewChildren
+   *****************************************************************************************************************
+   */
+
   public readonly calendarContainer = viewChild<ElementRef>('container');
   public readonly dayCalendarRef = viewChild<DayCalendarComponent>('dayCalendar');
   public readonly monthCalendarRef = viewChild<MonthCalendarComponent>('monthCalendar');
   public readonly dayTimeCalendarRef = viewChild<DayTimeCalendarComponent>('daytimeCalendar');
   private readonly timeSelectRef = viewChild<TimeSelectComponent>('timeSelect');
   private readonly inputElement = viewChild.required<ElementRef<HTMLInputElement>>('inputElement');
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
+
+  private readonly dayPickerService = inject(DatePickerService);
+  private readonly renderer = inject(Renderer2);
+  private readonly utilsService = inject(UtilsService);
+  public readonly cd = inject(ChangeDetectorRef);
+
+  /*
+   *****************************************************************************************************************
+   * other
+   *****************************************************************************************************************
+   */
+
   public componentConfig: IDatePickerConfigInternal = {};
   protected dayCalendarConfig: IDayCalendarConfig = {};
   protected dayTimeCalendarConfig: IDayTimeCalendarConfig = {};
@@ -134,11 +172,6 @@ export class DatePickerComponent implements OnInit, OnChanges, ControlValueAcces
   protected selectEvent = SelectEvent;
   protected origin: ElementRef | HTMLElement | null = null;
   private onOpenDelayTimeoutHandler?: NodeJS.Timeout;
-
-  private readonly dayPickerService = inject(DatePickerService);
-  private readonly renderer = inject(Renderer2);
-  private readonly utilsService = inject(UtilsService);
-  public readonly cd = inject(ChangeDetectorRef);
 
   private get openOnFocus(): boolean {
     return this.componentConfig.openOnFocus ?? false;

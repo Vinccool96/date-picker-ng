@@ -6,8 +6,20 @@ import { IDatePickerConfig } from 'date-picker-ng';
 
 @Directive()
 export abstract class DateComponent {
+  /*
+   *****************************************************************************************************************
+   * viewChildren
+   *****************************************************************************************************************
+   */
+
   private readonly dateComponent = viewChild<DatePickerComponent>('dateComponent');
   private readonly dateDirective = viewChild(DatePickerDirective);
+
+  /*
+   *****************************************************************************************************************
+   * others
+   *****************************************************************************************************************
+   */
 
   protected ready = true;
   protected control: UntypedFormControl = this.buildForm();

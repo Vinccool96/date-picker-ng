@@ -10,6 +10,12 @@ import { dayjsRef } from '../common/dayjs/dayjs.ref';
   providedIn: 'root',
 })
 export class MonthCalendarService {
+  /*
+   *****************************************************************************************************************
+   * defaults
+   *****************************************************************************************************************
+   */
+
   private readonly DEFAULT_CONFIG: IMonthCalendarConfigInternal = {
     allowMultiSelect: false,
     yearFormat: 'YYYY',
@@ -21,6 +27,12 @@ export class MonthCalendarService {
     unSelectOnClick: true,
     numOfMonthRows: 3,
   };
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
 
   private readonly utilsService = inject(UtilsService);
 

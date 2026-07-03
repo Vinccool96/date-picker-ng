@@ -63,16 +63,53 @@ import { toObservable } from '@angular/core/rxjs-interop';
   imports: [DayCalendarComponent, TimeSelectComponent, FormsModule],
 })
 export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, Validator {
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
+
   public readonly config = input<IDayTimeCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
   public readonly minDate = input<SingleCalendarValue>();
   public readonly maxDate = input<SingleCalendarValue>();
   public readonly theme = input<string>('');
+
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
+
   @Output() public onChange = new EventEmitter<IDate>();
   @Output() public onGoToCurrent = new EventEmitter<void>();
   @Output() public onLeftNav = new EventEmitter<INavEvent>();
   @Output() public onRightNav = new EventEmitter<INavEvent>();
+
+  /*
+   *****************************************************************************************************************
+   * viewChildren
+   *****************************************************************************************************************
+   */
+
   public readonly dayCalendarRef = viewChild.required<DayCalendarComponent>('dayCalendar');
+
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
+
+  public readonly dayTimeCalendarService = inject(DayTimeCalendarService);
+  private readonly utilsService = inject(UtilsService);
+  private readonly cd = inject(ChangeDetectorRef);
+
+  /*
+   *****************************************************************************************************************
+   * other
+   *****************************************************************************************************************
+   */
+
   private isInited = false;
   protected componentConfig: IDayTimeCalendarConfigInternal = {};
   private inputValue: CalendarValue = '';
@@ -81,10 +118,6 @@ export class DayTimeCalendarComponent implements OnInit, ControlValueAccessor, V
   public api = {
     moveCalendarTo: this.moveCalendarTo.bind(this),
   };
-
-  public readonly dayTimeCalendarService = inject(DayTimeCalendarService);
-  private readonly utilsService = inject(UtilsService);
-  private readonly cd = inject(ChangeDetectorRef);
 
   public constructor() {
     toObservable(this.config).subscribe(() => {

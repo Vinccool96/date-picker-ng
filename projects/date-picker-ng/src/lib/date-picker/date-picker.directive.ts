@@ -32,15 +32,12 @@ import { IDpDayPickerApi } from './date-picker.api';
   },
 })
 export class DatePickerDirective implements OnInit {
-  @Output() public open = new EventEmitter<void>();
-  @Output() public close = new EventEmitter<void>();
-  @Output() public onChange = new EventEmitter<CalendarValue>();
-  @Output() public onGoToCurrent = new EventEmitter<void>();
-  @Output() public onLeftNav = new EventEmitter<INavEvent>();
-  @Output() public onRightNav = new EventEmitter<INavEvent>();
-  @Output() public onSelect = new EventEmitter<ISelectionEvent>();
-  private datePicker!: DatePickerComponent;
-  public api!: IDpDayPickerApi;
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
+
   public readonly theme = input.required<string>();
   public readonly dpDayPicker = input.required<IDatePickerDirectiveConfig>();
   private readonly config = signal<IDatePickerDirectiveConfig>({});
@@ -50,10 +47,40 @@ export class DatePickerDirective implements OnInit {
   public readonly minTime = input<SingleCalendarValue>();
   public readonly maxTime = input<SingleCalendarValue>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
+
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
+
+  @Output() public open = new EventEmitter<void>();
+  @Output() public close = new EventEmitter<void>();
+  @Output() public onChange = new EventEmitter<CalendarValue>();
+  @Output() public onGoToCurrent = new EventEmitter<void>();
+  @Output() public onLeftNav = new EventEmitter<INavEvent>();
+  @Output() public onRightNav = new EventEmitter<INavEvent>();
+  @Output() public onSelect = new EventEmitter<ISelectionEvent>();
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
+
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly elemRef = inject<ElementRef<HTMLElement>>(ElementRef);
   public readonly formControl = inject(NgControl, { optional: true });
   public readonly utilsService = inject(UtilsService);
+
+  /*
+   *****************************************************************************************************************
+   * other
+   *****************************************************************************************************************
+   */
+
+  private datePicker!: DatePickerComponent;
+  public api!: IDpDayPickerApi;
 
   public constructor() {
     toObservable(this.theme).subscribe((theme) => {

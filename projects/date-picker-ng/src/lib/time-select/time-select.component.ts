@@ -55,6 +55,12 @@ import { toObservable } from '@angular/core/rxjs-interop';
   ],
 })
 export class TimeSelectComponent implements OnInit, ControlValueAccessor, Validator {
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
+
   public readonly config = input<ITimeSelectConfig>();
   public readonly displayDate = input<SingleCalendarValue>();
   public readonly minDate = input<SingleCalendarValue>();
@@ -62,7 +68,31 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
   public readonly minTime = input<SingleCalendarValue>();
   public readonly maxTime = input<SingleCalendarValue>();
   public readonly theme = input<string>('');
+
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
+
   @Output() public onChange = new EventEmitter<IDate>();
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
+
+  private readonly timeSelectService = inject(TimeSelectService);
+  private readonly utilsService = inject(UtilsService);
+  private readonly cd = inject(ChangeDetectorRef);
+
+  /*
+   *****************************************************************************************************************
+   * others
+   *****************************************************************************************************************
+   */
+
   private isInited = false;
   protected componentConfig: ITimeSelectConfigInternal = {};
   private inputValue: CalendarValue = '';
@@ -82,10 +112,6 @@ export class TimeSelectComponent implements OnInit, ControlValueAccessor, Valida
   public api = {
     triggerChange: this.emitChange.bind(this),
   };
-
-  private readonly timeSelectService = inject(TimeSelectService);
-  private readonly utilsService = inject(UtilsService);
-  private readonly cd = inject(ChangeDetectorRef);
 
   public constructor() {
     toObservable(this.config).subscribe((): void => {

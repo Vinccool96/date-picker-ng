@@ -67,17 +67,47 @@ import { pairwise } from 'rxjs/internal/operators';
   imports: [MonthCalendarComponent, CalendarNavComponent, NgClass, FormsModule],
 })
 export class DayCalendarComponent implements OnInit, ControlValueAccessor, Validator {
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
+
   public readonly config = input<IDayCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
   public readonly minDate = input<Dayjs>();
   public readonly maxDate = input<Dayjs>();
   public readonly theme = input<string>('');
+
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
+
   @Output() public onSelect = new EventEmitter<IDay>();
   @Output() public onMonthSelect = new EventEmitter<IMonth>();
   @Output() public onNavHeaderBtnClick = new EventEmitter<ECalendarMode>();
   @Output() public onGoToCurrent = new EventEmitter<void>();
   @Output() public onLeftNav = new EventEmitter<INavEvent>();
   @Output() public onRightNav = new EventEmitter<INavEvent>();
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
+
+  public readonly dayCalendarService = inject(DayCalendarService);
+  private readonly utilsService = inject(UtilsService);
+  private readonly cd = inject(ChangeDetectorRef);
+
+  /*
+   *****************************************************************************************************************
+   * others
+   *****************************************************************************************************************
+   */
+
   protected readonly CalendarMode = ECalendarMode;
   private isInited = false;
   public componentConfig: IDayCalendarConfigInternal = {};
@@ -97,10 +127,6 @@ export class DayCalendarComponent implements OnInit, ControlValueAccessor, Valid
     moveCalendarTo: this.moveCalendarTo.bind(this),
     toggleCalendarMode: this.toggleCalendarMode.bind(this),
   };
-
-  public readonly dayCalendarService = inject(DayCalendarService);
-  private readonly utilsService = inject(UtilsService);
-  private readonly cd = inject(ChangeDetectorRef);
 
   public constructor() {
     toObservable(this.config)

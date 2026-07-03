@@ -22,8 +22,21 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   },
 })
 export class DemoComponent implements OnInit {
+  /*
+   *****************************************************************************************************************
+   * viewChildren
+   *****************************************************************************************************************
+   */
+
   private readonly dateComponent = viewChild<DatePickerComponent>('dateComponent');
   private readonly datePickerDirective = viewChild<DatePickerDirective>('dateDirectivePicker');
+
+  /*
+   *****************************************************************************************************************
+   * others
+   *****************************************************************************************************************
+   */
+
   private demoFormat = 'DD-MM-YYYY';
   private pickerMode = 'daytimePicker';
 

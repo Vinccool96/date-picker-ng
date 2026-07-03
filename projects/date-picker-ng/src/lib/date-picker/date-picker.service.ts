@@ -15,7 +15,20 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
   providedIn: 'root',
 })
 export class DatePickerService {
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
+
   public readonly onPickerClosed = new EventEmitter<null>();
+
+  /*
+   *****************************************************************************************************************
+   * globals
+   *****************************************************************************************************************
+   */
+
   private readonly defaultConfig: IDatePickerConfigInternal = {
     closeOnSelect: true,
     closeOnSelectDelay: 100,
@@ -31,6 +44,12 @@ export class DatePickerService {
     showGoToCurrent: true,
     hideOnOutsideClick: true,
   };
+
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
 
   private readonly utilsService = inject(UtilsService);
   private readonly timeSelectService = inject(TimeSelectService);

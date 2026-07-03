@@ -11,6 +11,12 @@ import { ChangeDetectionStrategy, Component, EventEmitter, input, Output, ViewEn
   },
 })
 export class CalendarNavComponent {
+  /*
+   *****************************************************************************************************************
+   * inputs
+   *****************************************************************************************************************
+   */
+
   public readonly label = input.required<string>();
   public readonly isLabelClickable = input(false);
   public readonly showLeftNav = input(true);
@@ -23,6 +29,12 @@ export class CalendarNavComponent {
   public readonly rightSecondaryNavDisabled = input(false);
   public readonly showGoToCurrent = input(true);
   public readonly theme = input('');
+
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
 
   @Output() public onLeftNav = new EventEmitter<null>();
   @Output() public onLeftSecondaryNav = new EventEmitter<null>();
