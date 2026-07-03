@@ -3,12 +3,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   forwardRef,
   inject,
   input,
   OnInit,
-  Output,
+  output,
   ViewEncapsulation,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -78,13 +77,13 @@ export class MonthCalendarComponent implements ControlValueAccessor, OnInit, Val
    *****************************************************************************************************************
    */
 
-  @Output() public onGoToCurrent = new EventEmitter<void>();
-  @Output() public onLeftNav = new EventEmitter<INavEvent>();
-  @Output() public onLeftSecondaryNav = new EventEmitter<INavEvent>();
-  @Output() public onNavHeaderBtnClick = new EventEmitter<null>();
-  @Output() public onRightNav = new EventEmitter<INavEvent>();
-  @Output() public onRightSecondaryNav = new EventEmitter<INavEvent>();
-  @Output() public onSelect = new EventEmitter<IMonth>();
+  public readonly onGoToCurrent = output();
+  public readonly onLeftNav = output<INavEvent>();
+  public readonly onLeftSecondaryNav = output<INavEvent>();
+  public readonly onNavHeaderBtnClick = output();
+  public readonly onRightNav = output<INavEvent>();
+  public readonly onRightSecondaryNav = output<INavEvent>();
+  public readonly onSelect = output<IMonth>();
 
   /*
    *****************************************************************************************************************

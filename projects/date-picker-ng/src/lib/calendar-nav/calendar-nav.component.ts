@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, input, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'dp-calendar-nav',
@@ -36,12 +36,12 @@ export class CalendarNavComponent {
    *****************************************************************************************************************
    */
 
-  @Output() public onGoToCurrent = new EventEmitter<null>();
-  @Output() public onLabelClick = new EventEmitter<null>();
-  @Output() public onLeftNav = new EventEmitter<null>();
-  @Output() public onLeftSecondaryNav = new EventEmitter<null>();
-  @Output() public onRightNav = new EventEmitter<null>();
-  @Output() public onRightSecondaryNav = new EventEmitter<null>();
+  public readonly onGoToCurrent = output();
+  public readonly onLabelClick = output();
+  public readonly onLeftNav = output();
+  public readonly onLeftSecondaryNav = output();
+  public readonly onRightNav = output();
+  public readonly onRightSecondaryNav = output();
 
   protected labelClicked(): void {
     this.onLabelClick.emit();

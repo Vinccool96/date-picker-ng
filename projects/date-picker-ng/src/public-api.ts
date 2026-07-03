@@ -20,5 +20,6 @@ export { IDayEvent } from './lib/day-calendar/day.model';
 export { IDayTimeCalendarConfig } from './lib/day-time-calendar/day-time-calendar-config.model';
 export { DayTimeCalendarComponent } from './lib/day-time-calendar/day-time-calendar.component';
 export { IMonthCalendarConfig } from './lib/month-calendar/month-calendar-config';
+export { MonthCalendarComponent } from './lib/month-calendar/month-calendar.component';
 export { IMonth } from './lib/month-calendar/month.model';
 export { TimeSelectComponent } from './lib/time-select/time-select.component';

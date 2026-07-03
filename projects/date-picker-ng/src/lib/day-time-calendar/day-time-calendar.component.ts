@@ -2,12 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   forwardRef,
   inject,
   input,
   OnInit,
-  Output,
+  output,
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -82,10 +81,10 @@ export class DayTimeCalendarComponent implements ControlValueAccessor, OnInit, V
    *****************************************************************************************************************
    */
 
-  @Output() public onChange = new EventEmitter<IDate>();
-  @Output() public onGoToCurrent = new EventEmitter<void>();
-  @Output() public onLeftNav = new EventEmitter<INavEvent>();
-  @Output() public onRightNav = new EventEmitter<INavEvent>();
+  public readonly onChange = output<IDate>();
+  public readonly onGoToCurrent = output();
+  public readonly onLeftNav = output<INavEvent>();
+  public readonly onRightNav = output<INavEvent>();
 
   /*
    *****************************************************************************************************************
@@ -198,7 +197,7 @@ export class DayTimeCalendarComponent implements ControlValueAccessor, OnInit, V
   }
 
   private emitChange(): void {
-    this.onChange.emit({ date: this.selected as Dayjs, selected: false });
+    this.onChange.emit({ date: this.selected, selected: false });
   }
 
   private init(): void {

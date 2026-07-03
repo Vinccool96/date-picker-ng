@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   forwardRef,
   inject,
   input,
@@ -12,7 +11,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
+  output,
   Renderer2,
   viewChild,
   ViewEncapsulation,
@@ -107,13 +106,13 @@ export class DatePickerComponent implements ControlValueAccessor, OnChanges, OnD
    *****************************************************************************************************************
    */
 
-  @Output() public close = new EventEmitter<void>();
-  @Output() public onChange = new EventEmitter<CalendarValue>();
-  @Output() public onGoToCurrent = new EventEmitter<void>();
-  @Output() public onLeftNav = new EventEmitter<INavEvent>();
-  @Output() public onRightNav = new EventEmitter<INavEvent>();
-  @Output() public onSelect = new EventEmitter<ISelectionEvent>();
-  @Output() public open = new EventEmitter<void>();
+  public readonly close = output();
+  public readonly onChange = output<CalendarValue>();
+  public readonly onGoToCurrent = output();
+  public readonly onLeftNav = output<INavEvent>();
+  public readonly onRightNav = output<INavEvent>();
+  public readonly onSelect = output<ISelectionEvent>();
+  public readonly open = output();
 
   /*
    *****************************************************************************************************************
@@ -474,7 +473,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnChanges, OnD
         ECalendarValue.StringArr,
       ) as string[]
     ).join(' | ');
-    const value = this.processOnChangeCallback(selected);
+    const value = this.processOnChangeCallback(selected) as CalendarValue;
     this.onChangeCallback(value, false);
     this.onChange.emit(value);
   }

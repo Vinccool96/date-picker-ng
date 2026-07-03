@@ -1,14 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  inject,
-  input,
-  OnInit,
-  Output,
-  signal,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, ElementRef, inject, input, OnInit, output, signal, ViewContainerRef } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { AbstractControl, NgControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -55,13 +45,13 @@ export class DatePickerDirective implements OnInit {
    *****************************************************************************************************************
    */
 
-  @Output() public close = new EventEmitter<void>();
-  @Output() public onChange = new EventEmitter<CalendarValue>();
-  @Output() public onGoToCurrent = new EventEmitter<void>();
-  @Output() public onLeftNav = new EventEmitter<INavEvent>();
-  @Output() public onRightNav = new EventEmitter<INavEvent>();
-  @Output() public onSelect = new EventEmitter<ISelectionEvent>();
-  @Output() public open = new EventEmitter<void>();
+  public readonly close = output();
+  public readonly onChange = output<CalendarValue>();
+  public readonly onGoToCurrent = output();
+  public readonly onLeftNav = output<INavEvent>();
+  public readonly onRightNav = output<INavEvent>();
+  public readonly onSelect = output<ISelectionEvent>();
+  public readonly open = output();
 
   /*
    *****************************************************************************************************************
@@ -130,6 +120,7 @@ export class DatePickerDirective implements OnInit {
   public ngOnInit(): void {
     this.datePicker = this.createDatePicker();
     this.api = this.datePicker.api;
+    this.initializeDatePicker();
     this.updateDatepickerConfig();
     this.attachModelToDatePicker();
     this.datePicker.theme.set(this.theme());
@@ -207,6 +198,30 @@ export class DatePickerDirective implements OnInit {
     return this.viewContainerRef.createComponent(DatePickerComponent).instance;
   }
 
+  private initializeDatePicker(): void {
+    this.open.subscribe(() => {
+      this.datePicker.open.emit();
+    });
+    this.close.subscribe(() => {
+      this.datePicker.close.emit();
+    });
+    this.onChange.subscribe((value) => {
+      this.datePicker.onChange.emit(value);
+    });
+    this.onGoToCurrent.subscribe(() => {
+      this.datePicker.onGoToCurrent.emit();
+    });
+    this.onLeftNav.subscribe((value) => {
+      this.datePicker.onLeftNav.emit(value);
+    });
+    this.onRightNav.subscribe((value) => {
+      this.datePicker.onRightNav.emit(value);
+    });
+    this.onSelect.subscribe((value) => {
+      this.datePicker.onSelect.emit(value);
+    });
+  }
+
   private markForCheck(): void {
     if ((this.datePicker as DatePickerComponent | undefined) !== undefined) {
       this.datePicker.cd.markForCheck();
@@ -221,13 +236,6 @@ export class DatePickerDirective implements OnInit {
     this.datePicker.mode.set(this.mode());
     this.datePicker.displayDate.set(this.displayDate());
     this.datePicker.config.set(this.dpDayPicker());
-    this.datePicker.open = this.open;
-    this.datePicker.close = this.close;
-    this.datePicker.onChange = this.onChange;
-    this.datePicker.onGoToCurrent = this.onGoToCurrent;
-    this.datePicker.onLeftNav = this.onLeftNav;
-    this.datePicker.onRightNav = this.onRightNav;
-    this.datePicker.onSelect = this.onSelect;
 
     this.datePicker.init();
 

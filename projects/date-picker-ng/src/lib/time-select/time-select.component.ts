@@ -2,12 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   forwardRef,
   inject,
   input,
   OnInit,
-  Output,
+  output,
   ViewEncapsulation,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -74,7 +73,7 @@ export class TimeSelectComponent implements ControlValueAccessor, OnInit, Valida
    *****************************************************************************************************************
    */
 
-  @Output() public onChange = new EventEmitter<IDate>();
+  public readonly onChange = output<IDate>();
 
   /*
    *****************************************************************************************************************
@@ -165,10 +164,10 @@ export class TimeSelectComponent implements ControlValueAccessor, OnInit, Valida
       : (): ValidationErrors | null => null;
   }
 
-  public writeValue(value: CalendarValue | null): void {
+  public writeValue(value: CalendarValue | null | undefined): void {
     this.inputValue = value ?? '';
 
-    if (value !== null && value !== '') {
+    if (value !== null && value !== undefined && value !== '') {
       const dayjsValue = this.utilsService.convertToDayjsArray(value, {
         allowMultiSelect: false,
         format: this.timeSelectService.getTimeFormat(this.componentConfig),
@@ -199,7 +198,7 @@ export class TimeSelectComponent implements ControlValueAccessor, OnInit, Valida
   }
 
   private emitChange(): void {
-    this.onChange.emit({ date: this.selected as Dayjs, selected: false });
+    this.onChange.emit({ date: this.selected, selected: false });
     this.cd.markForCheck();
   }
 

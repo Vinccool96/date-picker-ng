@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, OnInit, Output } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { DatePickerComponent, ECalendarValue, IDatePickerConfig } from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
@@ -264,20 +264,20 @@ export class ConfigFormComponent implements OnInit {
    *****************************************************************************************************************
    */
 
-  @Output() public closeCalendar = new EventEmitter<void>();
-  @Output() public moveCalendarTo = new EventEmitter<Dayjs>();
-  @Output() public onConfigChange = new EventEmitter<Partial<IDatePickerConfig>>();
-  @Output() public onDisabledChange = new EventEmitter<boolean>();
-  @Output() public onDisplayDateChange = new EventEmitter<string | Dayjs>();
-  @Output() public onLocaleChange = new EventEmitter<string>();
-  @Output() public onMaterialThemeChange = new EventEmitter<boolean>();
-  @Output() public onMaxTimeValidationChange = new EventEmitter<Dayjs>();
-  @Output() public onMaxValidationChange = new EventEmitter<Dayjs>();
-  @Output() public onMinTimeValidationChange = new EventEmitter<Dayjs>();
-  @Output() public onMinValidationChange = new EventEmitter<Dayjs>();
-  @Output() public onPlaceholderChange = new EventEmitter<string>();
-  @Output() public onRequireValidationChange = new EventEmitter<boolean>();
-  @Output() public openCalendar = new EventEmitter<void>();
+  public readonly closeCalendar = output();
+  public readonly moveCalendarTo = output<Dayjs>();
+  public readonly onConfigChange = output<Partial<IDatePickerConfig>>();
+  public readonly onDisabledChange = output<boolean>();
+  public readonly onDisplayDateChange = output<string | Dayjs>();
+  public readonly onLocaleChange = output<string>();
+  public readonly onMaterialThemeChange = output<boolean>();
+  public readonly onMaxTimeValidationChange = output<Dayjs>();
+  public readonly onMaxValidationChange = output<Dayjs>();
+  public readonly onMinTimeValidationChange = output<Dayjs>();
+  public readonly onMinValidationChange = output<Dayjs>();
+  public readonly onPlaceholderChange = output<string>();
+  public readonly onRequireValidationChange = output<boolean>();
+  public readonly openCalendar = output();
 
   /*
    *****************************************************************************************************************
