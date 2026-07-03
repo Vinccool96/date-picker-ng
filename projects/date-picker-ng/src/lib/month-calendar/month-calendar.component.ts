@@ -1,4 +1,4 @@
-import { ECalendarValue } from '../common/types/calendar-value-enum';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,10 +11,7 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { IMonth } from './month.model';
-import { MonthCalendarService } from './month-calendar.service';
-
-import { IMonthCalendarConfig, IMonthCalendarConfigInternal } from './month-calendar-config';
+import { toObservable } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -23,44 +20,46 @@ import {
   ValidationErrors,
   Validator,
 } from '@angular/forms';
-import { CalendarValue } from '../common/types/calendar-value';
-import { UtilsService } from '../common/services/utils/utils.service';
-import { DateValidator } from '../common/types/validator.type';
-import { SingleCalendarValue } from '../common/types/single-calendar-value';
-import { INavEvent } from '../common/models/navigation-event.model';
 import { Dayjs } from 'dayjs';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
-import { NgClass } from '@angular/common';
-import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { pairwise } from 'rxjs/internal/operators';
+
+import { CalendarNavComponent } from '../calendar-nav/calendar-nav.component';
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { ConfigChange } from '../common/models/config-change';
+import { INavEvent } from '../common/models/navigation-event.model';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { CalendarValue } from '../common/types/calendar-value';
+import { ECalendarValue } from '../common/types/calendar-value-enum';
+import { SingleCalendarValue } from '../common/types/single-calendar-value';
+import { DateValidator } from '../common/types/validator.type';
+import { IMonthCalendarConfig, IMonthCalendarConfigInternal } from './month-calendar-config';
+import { MonthCalendarService } from './month-calendar.service';
+import { IMonth } from './month.model';
 
 @Component({
   selector: 'dp-month-calendar',
+  imports: [NgClass, CalendarNavComponent],
   templateUrl: 'month-calendar.component.html',
   styleUrls: ['month-calendar.component.less'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class]': 'theme()',
-  },
   providers: [
-    MonthCalendarService,
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => MonthCalendarComponent),
       multi: true,
+      useExisting: forwardRef(() => MonthCalendarComponent),
     },
     {
       provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => MonthCalendarComponent),
       multi: true,
+      useExisting: forwardRef(() => MonthCalendarComponent),
     },
   ],
-  imports: [NgClass, CalendarNavComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    '[class]': 'theme()',
+  },
 })
-export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Validator {
+export class MonthCalendarComponent implements ControlValueAccessor, OnInit, Validator {
   /*
    *****************************************************************************************************************
    * inputs
@@ -69,8 +68,8 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
 
   public readonly config = input<IMonthCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
-  public readonly minDate = input<Dayjs>();
   public readonly maxDate = input<Dayjs>();
+  public readonly minDate = input<Dayjs>();
   public readonly theme = input<string>('');
 
   /*
@@ -79,13 +78,13 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
    *****************************************************************************************************************
    */
 
-  @Output() public onSelect = new EventEmitter<IMonth>();
-  @Output() public onNavHeaderBtnClick = new EventEmitter<null>();
   @Output() public onGoToCurrent = new EventEmitter<void>();
   @Output() public onLeftNav = new EventEmitter<INavEvent>();
-  @Output() public onRightNav = new EventEmitter<INavEvent>();
   @Output() public onLeftSecondaryNav = new EventEmitter<INavEvent>();
+  @Output() public onNavHeaderBtnClick = new EventEmitter<null>();
+  @Output() public onRightNav = new EventEmitter<INavEvent>();
   @Output() public onRightSecondaryNav = new EventEmitter<INavEvent>();
+  @Output() public onSelect = new EventEmitter<IMonth>();
 
   /*
    *****************************************************************************************************************
@@ -94,8 +93,8 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
    */
 
   public readonly monthCalendarService = inject(MonthCalendarService);
-  private readonly utilsService = inject(UtilsService);
   private readonly cd = inject(ChangeDetectorRef);
+  private readonly utilsService = inject(UtilsService);
 
   /*
    *****************************************************************************************************************
@@ -103,22 +102,26 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
    *****************************************************************************************************************
    */
 
-  private isInited = false;
+  public api = {
+    moveCalendarTo: this.moveCalendarTo.bind(this),
+    toggleCalendar: this.toggleCalendarMode.bind(this),
+  };
   public componentConfig: IMonthCalendarConfigInternal = {};
-  protected yearMonths: IMonth[][] = [];
-  private inputValue: CalendarValue = '';
-  private inputValueType!: ECalendarValue;
-  private validateFn!: DateValidator;
   protected _shouldShowCurrent = true;
   protected navLabel = '';
   protected showLeftNav = false;
   protected showRightNav = false;
   protected showSecondaryLeftNav = false;
   protected showSecondaryRightNav = false;
-  public api = {
-    toggleCalendar: this.toggleCalendarMode.bind(this),
-    moveCalendarTo: this.moveCalendarTo.bind(this),
-  };
+  protected yearMonths: IMonth[][] = [];
+  private _currentDateView: Dayjs | null = null;
+  private _selected: Dayjs[] = [];
+  private inputValue: CalendarValue = '';
+  private inputValueType!: ECalendarValue;
+
+  private isInited = false;
+
+  private validateFn!: DateValidator;
 
   public constructor() {
     toObservable(this.config)
@@ -137,76 +140,55 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     });
   }
 
-  private _selected: Dayjs[] = [];
-
-  private get selected(): Dayjs[] {
-    return this._selected;
-  }
-
-  private set selected(selected: Dayjs[]) {
-    this._selected = selected;
-    this.onChangeCallback(this.processOnChangeCallback(selected));
-  }
-
-  private _currentDateView: Dayjs | null = null;
-
-  private get currentDateView(): Dayjs | null {
-    return this._currentDateView;
-  }
-
-  private set currentDateView(current: Dayjs | null) {
-    this._currentDateView = dayjsRef(current?.toDate());
-    this.yearMonths = this.monthCalendarService.generateYear(
-      this.componentConfig,
-      this._currentDateView,
-      this.selected,
-    );
-    this.navLabel = this.monthCalendarService.getHeaderLabel(this.componentConfig, this.currentDateView as Dayjs);
-    this.showLeftNav = this.monthCalendarService.shouldShowLeft(this.componentConfig.min, this._currentDateView);
-    this.showRightNav = this.monthCalendarService.shouldShowRight(
-      this.componentConfig.max,
-      this.currentDateView as Dayjs,
-    );
-    this.showSecondaryLeftNav = this.componentConfig.showMultipleYearsNavigation === true && this.showLeftNav;
-    this.showSecondaryRightNav = this.componentConfig.showMultipleYearsNavigation === true && this.showRightNav;
-  }
-
   public ngOnInit(): void {
     this.isInited = true;
     this.init();
     this.initValidators();
   }
 
-  private onChanges(change: 'config' | 'date' | 'display', configChange?: ConfigChange): void {
-    if (!this.isInited) {
+  public getMonthBtnCssClass(month: IMonth): Record<string, boolean> {
+    const cssClass: Record<string, boolean> = {
+      'dp-current-month': month.currentMonth,
+      'dp-selected': month.selected,
+    };
+    const customCssClass: string = this.monthCalendarService.getMonthBtnCssClass(
+      this.componentConfig,
+      month.date as Dayjs,
+    );
+
+    if (customCssClass !== '') {
+      cssClass[customCssClass] = true;
+    }
+
+    return cssClass;
+  }
+
+  public goToCurrent(): void {
+    this.currentDateView = dayjsRef();
+    this.onGoToCurrent.emit();
+  }
+
+  public moveCalendarTo(to: SingleCalendarValue | null): void {
+    if (to === null) {
       return;
     }
 
-    if (change === 'config') {
-      this.handleConfigChange(configChange as ConfigChange);
-    }
-
-    this.init();
-
-    if (change === 'date') {
-      this.initValidators();
-    }
-
+    this.currentDateView = this.utilsService.convertToDayjs(to, this.componentConfig.format);
     this.cd.markForCheck();
   }
 
-  private init(): void {
-    this.componentConfig = this.monthCalendarService.getConfig(this.config());
-    this.currentDateView =
-      (this.displayDate() as Dayjs | undefined) ??
-      this.utilsService.getDefaultDisplayDate(
-        this.currentDateView,
-        this.selected,
-        this.componentConfig.allowMultiSelect,
-        this.componentConfig.min,
-      );
-    this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
-    this._shouldShowCurrent = this.shouldShowCurrent();
+  public registerOnChange(onChange: (argument: unknown) => void): void {
+    this.onChangeCallback = onChange;
+  }
+
+  public registerOnTouched(_: unknown): void {
+    // No op
+  }
+
+  public validate(formControl: AbstractControl): ValidationErrors | null {
+    return this.minDate() !== undefined || this.maxDate() !== undefined
+      ? this.validateFn(formControl.value as CalendarValue)
+      : (): ValidationErrors | null => null;
   }
 
   public writeValue(value: CalendarValue | null): void {
@@ -230,42 +212,6 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     }
 
     this.cd.markForCheck();
-  }
-
-  public registerOnChange(onChange: (argument: unknown) => void): void {
-    this.onChangeCallback = onChange;
-  }
-
-  private onChangeCallback(_: CalendarValue | undefined): void {
-    // No op
-  }
-
-  public registerOnTouched(_: unknown): void {
-    // No op
-  }
-
-  public validate(formControl: AbstractControl): ValidationErrors | null {
-    return this.minDate() !== undefined || this.maxDate() !== undefined
-      ? this.validateFn(formControl.value as CalendarValue)
-      : (): ValidationErrors | null => null;
-  }
-
-  private processOnChangeCallback(value: Dayjs[]): CalendarValue | undefined {
-    return this.utilsService.convertFromDayjsArray(
-      this.componentConfig.format,
-      value,
-      this.componentConfig.returnedValueType ?? this.inputValueType,
-    );
-  }
-
-  private initValidators(): void {
-    this.validateFn = this.utilsService.createValidator(
-      { minDate: this.minDate(), maxDate: this.maxDate() },
-      this.componentConfig.format,
-      'month',
-    );
-
-    this.onChangeCallback(this.processOnChangeCallback(this.selected));
   }
 
   protected monthClicked(month: IMonth): void {
@@ -338,27 +284,6 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     this.onRightSecondaryNav.emit({ from, to });
   }
 
-  protected toggleCalendarMode(): void {
-    this.onNavHeaderBtnClick.emit();
-  }
-
-  public getMonthBtnCssClass(month: IMonth): Record<string, boolean> {
-    const cssClass: Record<string, boolean> = {
-      'dp-selected': month.selected,
-      'dp-current-month': month.currentMonth,
-    };
-    const customCssClass: string = this.monthCalendarService.getMonthBtnCssClass(
-      this.componentConfig,
-      month.date as Dayjs,
-    );
-
-    if (customCssClass !== '') {
-      cssClass[customCssClass] = true;
-    }
-
-    return cssClass;
-  }
-
   protected shouldShowCurrent(): boolean {
     return this.utilsService.shouldShowCurrent(
       this.componentConfig.showGoToCurrent,
@@ -368,18 +293,8 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     );
   }
 
-  public goToCurrent(): void {
-    this.currentDateView = dayjsRef();
-    this.onGoToCurrent.emit();
-  }
-
-  public moveCalendarTo(to: SingleCalendarValue | null): void {
-    if (to === null) {
-      return;
-    }
-
-    this.currentDateView = this.utilsService.convertToDayjs(to, this.componentConfig.format);
-    this.cd.markForCheck();
+  protected toggleCalendarMode(): void {
+    this.onNavHeaderBtnClick.emit();
   }
 
   private handleConfigChange(config: ConfigChange): void {
@@ -389,5 +304,89 @@ export class MonthCalendarComponent implements OnInit, ControlValueAccessor, Val
     if (this.utilsService.shouldResetCurrentView(previousConfig, currentConfig)) {
       this._currentDateView = null;
     }
+  }
+
+  private init(): void {
+    this.componentConfig = this.monthCalendarService.getConfig(this.config());
+    this.currentDateView =
+      (this.displayDate() as Dayjs | undefined) ??
+      this.utilsService.getDefaultDisplayDate(
+        this.currentDateView,
+        this.selected,
+        this.componentConfig.allowMultiSelect,
+        this.componentConfig.min,
+      );
+    this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
+    this._shouldShowCurrent = this.shouldShowCurrent();
+  }
+
+  private initValidators(): void {
+    this.validateFn = this.utilsService.createValidator(
+      { maxDate: this.maxDate(), minDate: this.minDate() },
+      this.componentConfig.format,
+      'month',
+    );
+
+    this.onChangeCallback(this.processOnChangeCallback(this.selected));
+  }
+
+  private onChangeCallback(_: CalendarValue | undefined): void {
+    // No op
+  }
+
+  private onChanges(change: 'config' | 'date' | 'display', configChange?: ConfigChange): void {
+    if (!this.isInited) {
+      return;
+    }
+
+    if (change === 'config') {
+      this.handleConfigChange(configChange as ConfigChange);
+    }
+
+    this.init();
+
+    if (change === 'date') {
+      this.initValidators();
+    }
+
+    this.cd.markForCheck();
+  }
+
+  private processOnChangeCallback(value: Dayjs[]): CalendarValue | undefined {
+    return this.utilsService.convertFromDayjsArray(
+      this.componentConfig.format,
+      value,
+      this.componentConfig.returnedValueType ?? this.inputValueType,
+    );
+  }
+
+  private get currentDateView(): Dayjs | null {
+    return this._currentDateView;
+  }
+
+  private set currentDateView(current: Dayjs | null) {
+    this._currentDateView = dayjsRef(current?.toDate());
+    this.yearMonths = this.monthCalendarService.generateYear(
+      this.componentConfig,
+      this._currentDateView,
+      this.selected,
+    );
+    this.navLabel = this.monthCalendarService.getHeaderLabel(this.componentConfig, this.currentDateView as Dayjs);
+    this.showLeftNav = this.monthCalendarService.shouldShowLeft(this.componentConfig.min, this._currentDateView);
+    this.showRightNav = this.monthCalendarService.shouldShowRight(
+      this.componentConfig.max,
+      this.currentDateView as Dayjs,
+    );
+    this.showSecondaryLeftNav = this.componentConfig.showMultipleYearsNavigation === true && this.showLeftNav;
+    this.showSecondaryRightNav = this.componentConfig.showMultipleYearsNavigation === true && this.showRightNav;
+  }
+
+  private get selected(): Dayjs[] {
+    return this._selected;
+  }
+
+  private set selected(selected: Dayjs[]) {
+    this._selected = selected;
+    this.onChangeCallback(this.processOnChangeCallback(selected));
   }
 }

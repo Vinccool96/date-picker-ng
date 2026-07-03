@@ -1,1 +1,1 @@
-export type WeekDays = 'su' | 'mo' | 'tu' | 'we' | 'th' | 'fr' | 'sa';
+export type WeekDays = 'fr' | 'mo' | 'sa' | 'su' | 'th' | 'tu' | 'we';

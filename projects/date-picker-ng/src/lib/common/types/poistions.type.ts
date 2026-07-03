@@ -1,2 +1,2 @@
-export type TOpens = 'right' | 'left';
-export type TDrops = 'up' | 'down';
+export type TDrops = 'down' | 'up';
+export type TOpens = 'left' | 'right';

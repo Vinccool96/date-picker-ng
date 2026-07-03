@@ -4,8 +4,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, input, Output, ViewEn
   selector: 'dp-calendar-nav',
   templateUrl: './calendar-nav.component.html',
   styleUrls: ['./calendar-nav.component.less'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {
     '[class]': 'theme()',
   },
@@ -17,17 +17,17 @@ export class CalendarNavComponent {
    *****************************************************************************************************************
    */
 
-  public readonly label = input.required<string>();
   public readonly isLabelClickable = input(false);
-  public readonly showLeftNav = input(true);
-  public readonly showLeftSecondaryNav = input(false);
-  public readonly showRightNav = input(true);
-  public readonly showRightSecondaryNav = input(false);
+  public readonly label = input.required<string>();
   public readonly leftNavDisabled = input(false);
   public readonly leftSecondaryNavDisabled = input(false);
   public readonly rightNavDisabled = input(false);
   public readonly rightSecondaryNavDisabled = input(false);
   public readonly showGoToCurrent = input(true);
+  public readonly showLeftNav = input(true);
+  public readonly showLeftSecondaryNav = input(false);
+  public readonly showRightNav = input(true);
+  public readonly showRightSecondaryNav = input(false);
   public readonly theme = input('');
 
   /*
@@ -36,12 +36,16 @@ export class CalendarNavComponent {
    *****************************************************************************************************************
    */
 
+  @Output() public onGoToCurrent = new EventEmitter<null>();
+  @Output() public onLabelClick = new EventEmitter<null>();
   @Output() public onLeftNav = new EventEmitter<null>();
   @Output() public onLeftSecondaryNav = new EventEmitter<null>();
   @Output() public onRightNav = new EventEmitter<null>();
   @Output() public onRightSecondaryNav = new EventEmitter<null>();
-  @Output() public onLabelClick = new EventEmitter<null>();
-  @Output() public onGoToCurrent = new EventEmitter<null>();
+
+  protected labelClicked(): void {
+    this.onLabelClick.emit();
+  }
 
   protected leftNavClicked(): void {
     this.onLeftNav.emit();
@@ -57,9 +61,5 @@ export class CalendarNavComponent {
 
   protected rightSecondaryNavClicked(): void {
     this.onRightSecondaryNav.emit();
-  }
-
-  protected labelClicked(): void {
-    this.onLabelClick.emit();
   }
 }

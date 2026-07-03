@@ -1,8 +1,9 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { TimeSelectService } from './time-select.service';
+
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { UtilsService } from '../common/services/utils/utils.service';
 import { ITimeSelectConfigInternal } from './time-select-config.model';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { TimeSelectService } from './time-select.service';
 
 describe('Service: TimeSelectService', () => {
   beforeEach(() => {
@@ -14,41 +15,41 @@ describe('Service: TimeSelectService', () => {
   const configBase: ITimeSelectConfigInternal = {
     hours12Format: 'h',
     hours24Format: 'H',
-    minutesFormat: 'm',
-    secondsFormat: 's',
     meridiemFormat: 'a',
-    timeSeparator: '-',
+    minutesFormat: 'm',
     minutesInterval: 3,
+    secondsFormat: 's',
     secondsInterval: 4,
+    timeSeparator: '-',
   };
 
   it('should check the getTimeFormat method', inject([TimeSelectService], (service: TimeSelectService) => {
     expect(
       service.getTimeFormat({
         ...configBase,
-        showTwentyFourHours: false,
         showSeconds: false,
+        showTwentyFourHours: false,
       }),
     ).toEqual('h-m a');
     expect(
       service.getTimeFormat({
         ...configBase,
-        showTwentyFourHours: true,
         showSeconds: false,
+        showTwentyFourHours: true,
       }),
     ).toEqual('H-m');
     expect(
       service.getTimeFormat({
         ...configBase,
-        showTwentyFourHours: false,
         showSeconds: true,
+        showTwentyFourHours: false,
       }),
     ).toEqual('h-m-s a');
     expect(
       service.getTimeFormat({
         ...configBase,
-        showTwentyFourHours: true,
         showSeconds: true,
+        showTwentyFourHours: true,
       }),
     ).toEqual('H-m-s');
   }));
@@ -224,8 +225,8 @@ describe('Service: TimeSelectService', () => {
     };
     const minMaxConfig = {
       ...configBase,
-      min: dayjsRef('11:12:11', 'HH:mm:ss'),
       max: dayjsRef('15:12:11', 'HH:mm:ss'),
+      min: dayjsRef('11:12:11', 'HH:mm:ss'),
     };
     expect(service.shouldShowToggleMeridiem(configBase, morningTime)).toEqual(true);
     expect(service.shouldShowToggleMeridiem(configBase, afternoonTime)).toEqual(true);

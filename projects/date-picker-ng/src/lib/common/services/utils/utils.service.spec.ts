@@ -1,8 +1,9 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { UtilsService } from './utils.service';
-import { IDate } from '../../models/date.model';
-import { dayjsRef } from '../../dayjs/dayjs.ref';
 import { Dayjs } from 'dayjs';
+
+import { dayjsRef } from '../../dayjs/dayjs.ref';
+import { IDate } from '../../models/date.model';
+import { UtilsService } from './utils.service';
 
 describe('UtilsService', () => {
   beforeEach(() => {
@@ -99,7 +100,7 @@ describe('UtilsService', () => {
   }));
 
   it('should convertPropsToDayjs method', inject([UtilsService], (service: UtilsService) => {
-    const object = { min: '14-01-1987', max: '14-01-1987' };
+    const object = { max: '14-01-1987', min: '14-01-1987' };
     service.convertPropsToDayjs(object, 'DD-MM-YYYY', ['min', 'max']);
     expect(dayjsRef.isDayjs(object.min)).toBeTruthy();
     expect(dayjsRef.isDayjs(object.max)).toBeTruthy();

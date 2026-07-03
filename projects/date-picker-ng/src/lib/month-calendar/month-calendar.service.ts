@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-
-import { UtilsService } from '../common/services/utils/utils.service';
-import { IMonth } from './month.model';
-import { IMonthCalendarConfig, IMonthCalendarConfigInternal } from './month-calendar-config';
 import { Dayjs } from 'dayjs';
+
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { UtilsService } from '../common/services/utils/utils.service';
+import { IMonthCalendarConfig, IMonthCalendarConfigInternal } from './month-calendar-config';
+import { IMonth } from './month.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,14 +18,14 @@ export class MonthCalendarService {
 
   private readonly DEFAULT_CONFIG: IMonthCalendarConfigInternal = {
     allowMultiSelect: false,
-    yearFormat: 'YYYY',
     format: 'MM-YYYY',
     isNavHeaderBtnClickable: false,
     monthBtnFormat: 'MMM',
     multipleYearsNavigateBy: 10,
+    numOfMonthRows: 3,
     showMultipleYearsNavigation: false,
     unSelectOnClick: true,
-    numOfMonthRows: 3,
+    yearFormat: 'YYYY',
   };
 
   /*
@@ -35,6 +35,28 @@ export class MonthCalendarService {
    */
 
   private readonly utilsService = inject(UtilsService);
+
+  public generateYear(config: IMonthCalendarConfig, year: Dayjs, selected: Dayjs[] | null = null): IMonth[][] {
+    let index = year.startOf('year');
+    const numberOfMonthRows = config.numOfMonthRows as number;
+
+    return this.utilsService.createArray(numberOfMonthRows).map(() => {
+      return this.utilsService.createArray(12 / numberOfMonthRows).map(() => {
+        const date = dayjsRef(index);
+        const month = {
+          currentMonth: index.isSame(dayjsRef(), 'month'),
+          date,
+          disabled: this.isMonthDisabled(date, config),
+          selected: selected?.find((s): boolean => index.isSame(s, 'month')) !== undefined,
+          text: this.getMonthBtnText(config, date),
+        };
+
+        index = index.add(1, 'month');
+
+        return month;
+      });
+    });
+  }
 
   public getConfig(config: IMonthCalendarConfig | undefined): IMonthCalendarConfigInternal {
     const _config = {
@@ -48,26 +70,28 @@ export class MonthCalendarService {
     return _config;
   }
 
-  public generateYear(config: IMonthCalendarConfig, year: Dayjs, selected: Dayjs[] | null = null): IMonth[][] {
-    let index = year.startOf('year');
-    const numberOfMonthRows = config.numOfMonthRows as number;
+  public getHeaderLabel(config: IMonthCalendarConfig, year: Dayjs): string {
+    if (config.yearFormatter !== undefined) {
+      return config.yearFormatter(year);
+    }
 
-    return this.utilsService.createArray(numberOfMonthRows).map(() => {
-      return this.utilsService.createArray(12 / numberOfMonthRows).map(() => {
-        const date = dayjsRef(index);
-        const month = {
-          date,
-          selected: selected?.find((s): boolean => index.isSame(s, 'month')) !== undefined,
-          currentMonth: index.isSame(dayjsRef(), 'month'),
-          disabled: this.isMonthDisabled(date, config),
-          text: this.getMonthBtnText(config, date),
-        };
+    return year.format(config.yearFormat);
+  }
 
-        index = index.add(1, 'month');
+  public getMonthBtnCssClass(config: IMonthCalendarConfig, month: Dayjs): string {
+    if (config.monthBtnCssClassCallback !== undefined) {
+      return config.monthBtnCssClassCallback(month);
+    }
 
-        return month;
-      });
-    });
+    return '';
+  }
+
+  public getMonthBtnText(config: IMonthCalendarConfig, month: Dayjs): string {
+    if (config.monthBtnFormatter !== undefined) {
+      return config.monthBtnFormatter(month);
+    }
+
+    return month.format(config.monthBtnFormat);
   }
 
   public isMonthDisabled(date: Dayjs, config: IMonthCalendarConfig): boolean {
@@ -88,30 +112,6 @@ export class MonthCalendarService {
 
   public shouldShowRight(max: Dayjs | undefined, currentMonthView: Dayjs): boolean {
     return max === undefined ? true : max.isAfter(currentMonthView, 'year');
-  }
-
-  public getHeaderLabel(config: IMonthCalendarConfig, year: Dayjs): string {
-    if (config.yearFormatter !== undefined) {
-      return config.yearFormatter(year);
-    }
-
-    return year.format(config.yearFormat);
-  }
-
-  public getMonthBtnText(config: IMonthCalendarConfig, month: Dayjs): string {
-    if (config.monthBtnFormatter !== undefined) {
-      return config.monthBtnFormatter(month);
-    }
-
-    return month.format(config.monthBtnFormat);
-  }
-
-  public getMonthBtnCssClass(config: IMonthCalendarConfig, month: Dayjs): string {
-    if (config.monthBtnCssClassCallback !== undefined) {
-      return config.monthBtnCssClassCallback(month);
-    }
-
-    return '';
   }
 
   private static validateConfig(config: IMonthCalendarConfigInternal): void {

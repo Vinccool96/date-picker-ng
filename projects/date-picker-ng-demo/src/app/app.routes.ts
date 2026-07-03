@@ -5,8 +5,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'daytimePicker',
     pathMatch: 'full',
+    redirectTo: 'daytimePicker',
   },
   {
     path: 'daytimePicker',

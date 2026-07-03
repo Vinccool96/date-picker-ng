@@ -1,10 +1,11 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { DayTimeCalendarService } from './day-time-calendar.service';
+
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { UtilsService } from '../common/services/utils/utils.service';
+import { IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
 import { DayCalendarService } from '../day-calendar/day-calendar.service';
 import { TimeSelectService } from '../time-select/time-select.service';
-import { IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { DayTimeCalendarService } from './day-time-calendar.service';
 
 const DAY_FORMAT = 'YYYYMMDD';
 const TIME_FORMAT = 'HH:mm:ss';
@@ -28,8 +29,8 @@ describe('DayTimeCalendarService', () => {
     (service: DayTimeCalendarService) => {
       const daytime = dayjsRef('2011091313:12:11', COMBINED_FORMAT);
       const config: IDayCalendarConfigInternal = {
-        min: daytime.add(10, 'm'),
         max: daytime.add(50, 'm'),
+        min: daytime.add(10, 'm'),
       };
 
       const time = daytime.clone();
@@ -46,8 +47,8 @@ describe('DayTimeCalendarService', () => {
     (service: DayTimeCalendarService) => {
       const daytime = dayjsRef('2011091313:12:11', COMBINED_FORMAT);
       const config: IDayCalendarConfigInternal = {
-        min: daytime.subtract(50, 'm'),
         max: daytime.subtract(10, 'm'),
+        min: daytime.subtract(50, 'm'),
       };
 
       const time = daytime.clone();

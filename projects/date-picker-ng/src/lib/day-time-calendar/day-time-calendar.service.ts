@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
+import { Dayjs } from 'dayjs';
 
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { UtilsService } from '../common/services/utils/utils.service';
+import { IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
 import { DayCalendarService } from '../day-calendar/day-calendar.service';
 import { TimeSelectService } from '../time-select/time-select.service';
 import { IDayTimeCalendarConfig, IDayTimeCalendarConfigInternal } from './day-time-calendar-config.model';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
-import { Dayjs } from 'dayjs';
-import { IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
 
 const DAY_FORMAT = 'YYYYMMDD';
 const TIME_FORMAT = 'HH:mm:ss';
@@ -30,9 +30,9 @@ export class DayTimeCalendarService {
    *****************************************************************************************************************
    */
 
-  private readonly utilsService = inject(UtilsService);
   private readonly dayCalendarService = inject(DayCalendarService);
   private readonly timeSelectService = inject(TimeSelectService);
+  private readonly utilsService = inject(UtilsService);
 
   public getConfig(config: IDayTimeCalendarConfig | undefined): IDayTimeCalendarConfigInternal {
     const _config = {

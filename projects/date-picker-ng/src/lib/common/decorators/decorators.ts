@@ -2,14 +2,14 @@ import { UtilsService } from '../services/utils/utils.service';
 
 export const DEFAULT_DEBOUNCE_MS = 500;
 
+type DebounceFunction = (_target: unknown, propertyKey: string, descriptor: PropertyDescriptor) => DebounceResult;
+
 interface DebounceResult {
   configurable: boolean;
   enumerable: false | true | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(): any;
 }
-
-type DebounceFunction = (_target: unknown, propertyKey: string, descriptor: PropertyDescriptor) => DebounceResult;
 
 /**
  * Debounce the function so it gets executed a bit later

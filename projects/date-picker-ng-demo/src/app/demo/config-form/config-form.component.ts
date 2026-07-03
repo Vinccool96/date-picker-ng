@@ -50,21 +50,21 @@ const MONTH_CALENDAR_OPTION_KEYS = [
   ...GLOBAL_OPTION_KEYS,
 ];
 const DAY_CALENDAR_OPTION_KEYS = new Set([
+  'dayBtnFormat',
+  'enableMonthSelector',
   'firstDayOfWeek',
   'max',
   'maxValidation',
   'min',
   'minValidation',
   'monthFormat',
-  'weekdayNames',
+  'moveCalendarTo',
+  'showGoToCurrent',
   'showNearMonthDays',
   'showWeekNumbers',
-  'enableMonthSelector',
-  'dayBtnFormat',
-  'weekdayFormat',
-  'showGoToCurrent',
   'unSelectOnClick',
-  'moveCalendarTo',
+  'weekdayFormat',
+  'weekdayNames',
   ...MONTH_CALENDAR_OPTION_KEYS,
 ]);
 const TIME_SELECT_SHARED_OPTION_KEYS = [
@@ -95,9 +95,9 @@ const DAY_TIME_CALENDAR_OPTION_KEYS = [
 
 @Component({
   selector: 'dp-config-form',
+  imports: [ReactiveFormsModule, DatePickerComponent],
   templateUrl: './config-form.component.html',
   styleUrls: ['./config-form.component.less'],
-  imports: [ReactiveFormsModule, DatePickerComponent],
 })
 export class ConfigFormComponent implements OnInit {
   /*
@@ -106,6 +106,28 @@ export class ConfigFormComponent implements OnInit {
    *****************************************************************************************************************
    */
 
+  protected readonly dateTypes: { name: string; value: ECalendarValue | null }[] = [
+    {
+      name: 'Guess',
+      value: null,
+    },
+    {
+      name: ECalendarValue[ECalendarValue.Dayjs],
+      value: ECalendarValue.Dayjs,
+    },
+    {
+      name: ECalendarValue[ECalendarValue.DayjsArr],
+      value: ECalendarValue.DayjsArr,
+    },
+    {
+      name: ECalendarValue[ECalendarValue.String],
+      value: ECalendarValue.String,
+    },
+    {
+      name: ECalendarValue[ECalendarValue.StringArr],
+      value: ECalendarValue.StringArr,
+    },
+  ];
   protected readonly DAYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
   protected readonly LANGS = [
     'en',
@@ -225,28 +247,6 @@ export class ConfigFormComponent implements OnInit {
     'zh-hk',
     'zh-tw',
   ];
-  protected readonly dateTypes: { name: string; value: ECalendarValue | null }[] = [
-    {
-      name: 'Guess',
-      value: null,
-    },
-    {
-      name: ECalendarValue[ECalendarValue.Dayjs],
-      value: ECalendarValue.Dayjs,
-    },
-    {
-      name: ECalendarValue[ECalendarValue.DayjsArr],
-      value: ECalendarValue.DayjsArr,
-    },
-    {
-      name: ECalendarValue[ECalendarValue.String],
-      value: ECalendarValue.String,
-    },
-    {
-      name: ECalendarValue[ECalendarValue.StringArr],
-      value: ECalendarValue.StringArr,
-    },
-  ];
 
   /*
    *****************************************************************************************************************
@@ -254,9 +254,9 @@ export class ConfigFormComponent implements OnInit {
    *****************************************************************************************************************
    */
 
-  public readonly pickerMode = input<string>();
   public readonly config = input<IDatePickerConfig>({});
   public readonly localeVal = input('en');
+  public readonly pickerMode = input<string>();
 
   /*
    *****************************************************************************************************************
@@ -264,21 +264,20 @@ export class ConfigFormComponent implements OnInit {
    *****************************************************************************************************************
    */
 
-  @Output() public onDisplayDateChange = new EventEmitter<Dayjs | string>();
-  @Output() public onMaterialThemeChange = new EventEmitter<boolean>();
-  @Output() public onDisabledChange = new EventEmitter<boolean>();
-  @Output() public onRequireValidationChange = new EventEmitter<boolean>();
-  @Output() public onMinValidationChange = new EventEmitter<Dayjs>();
-  @Output() public onMaxValidationChange = new EventEmitter<Dayjs>();
-  @Output() public onMinTimeValidationChange = new EventEmitter<Dayjs>();
-  @Output() public onMaxTimeValidationChange = new EventEmitter<Dayjs>();
-  @Output() public onPlaceholderChange = new EventEmitter<string>();
-  @Output() public onConfigChange = new EventEmitter<Partial<IDatePickerConfig>>();
-  @Output() public onLocaleChange = new EventEmitter<string>();
-
-  @Output() public openCalendar = new EventEmitter<void>();
   @Output() public closeCalendar = new EventEmitter<void>();
   @Output() public moveCalendarTo = new EventEmitter<Dayjs>();
+  @Output() public onConfigChange = new EventEmitter<Partial<IDatePickerConfig>>();
+  @Output() public onDisabledChange = new EventEmitter<boolean>();
+  @Output() public onDisplayDateChange = new EventEmitter<string | Dayjs>();
+  @Output() public onLocaleChange = new EventEmitter<string>();
+  @Output() public onMaterialThemeChange = new EventEmitter<boolean>();
+  @Output() public onMaxTimeValidationChange = new EventEmitter<Dayjs>();
+  @Output() public onMaxValidationChange = new EventEmitter<Dayjs>();
+  @Output() public onMinTimeValidationChange = new EventEmitter<Dayjs>();
+  @Output() public onMinValidationChange = new EventEmitter<Dayjs>();
+  @Output() public onPlaceholderChange = new EventEmitter<string>();
+  @Output() public onRequireValidationChange = new EventEmitter<boolean>();
+  @Output() public openCalendar = new EventEmitter<void>();
 
   /*
    *****************************************************************************************************************
@@ -286,59 +285,58 @@ export class ConfigFormComponent implements OnInit {
    *****************************************************************************************************************
    */
 
-  protected displayDate = new UntypedFormControl(null);
-  protected material = new UntypedFormControl(true);
-  protected disabled = new UntypedFormControl(false);
-  protected requireValidation = new UntypedFormControl(false);
-  protected minValidation = new UntypedFormControl();
-  protected maxValidation = new UntypedFormControl();
-  protected minTimeValidation = new UntypedFormControl();
-  protected maxTimeValidation = new UntypedFormControl();
-  protected placeholder = new UntypedFormControl('Select...');
-
-  protected format!: UntypedFormControl;
-  protected locale!: UntypedFormControl;
-  protected firstDayOfWeek!: UntypedFormControl;
-  protected monthFormat!: UntypedFormControl;
-  protected min!: UntypedFormControl;
-  protected max!: UntypedFormControl;
-  protected minTime!: UntypedFormControl;
-  protected maxTime!: UntypedFormControl;
   protected allowMultiSelect!: UntypedFormControl;
+  protected closeOnEnter!: UntypedFormControl;
   protected closeOnSelect!: UntypedFormControl;
   protected closeOnSelectDelay!: UntypedFormControl;
-  protected openOnFocus!: UntypedFormControl;
-  protected openOnClick!: UntypedFormControl;
-  protected onOpenDelay!: UntypedFormControl;
-  protected weekDayFormat!: UntypedFormControl;
-  protected disableKeypress!: UntypedFormControl;
-  protected drops!: UntypedFormControl;
-  protected opens!: UntypedFormControl;
-  protected hideInputContainer!: UntypedFormControl;
-  protected showNearMonthDays!: UntypedFormControl;
-  protected showWeekNumbers!: UntypedFormControl;
-  protected enableMonthSelector!: UntypedFormControl;
-  protected yearFormat!: UntypedFormControl;
-  protected showGoToCurrent!: UntypedFormControl;
-  protected hideOnOutsideClick!: UntypedFormControl;
-  protected unSelectOnClick!: UntypedFormControl;
   protected dayBtnFormat!: UntypedFormControl;
-  protected monthBtnFormat!: UntypedFormControl;
+  protected disabled = new UntypedFormControl(false);
+  protected disableKeypress!: UntypedFormControl;
+  protected displayDate = new UntypedFormControl(null);
+  protected drops!: UntypedFormControl;
+  protected enableMonthSelector!: UntypedFormControl;
+  protected firstDayOfWeek!: UntypedFormControl;
+  protected format!: UntypedFormControl;
+  protected hideInputContainer!: UntypedFormControl;
+  protected hideOnOutsideClick!: UntypedFormControl;
   protected hours12Format!: UntypedFormControl;
   protected hours24Format!: UntypedFormControl;
+  protected locale!: UntypedFormControl;
+  protected material = new UntypedFormControl(true);
+  protected max!: UntypedFormControl;
+  protected maxTime!: UntypedFormControl;
+  protected maxTimeValidation = new UntypedFormControl();
+  protected maxValidation = new UntypedFormControl();
   protected meridiemFormat!: UntypedFormControl;
+  protected min!: UntypedFormControl;
+  protected minTime!: UntypedFormControl;
+  protected minTimeValidation = new UntypedFormControl();
   protected minutesFormat!: UntypedFormControl;
   protected minutesInterval!: UntypedFormControl;
+  protected minValidation = new UntypedFormControl();
+  protected monthBtnFormat!: UntypedFormControl;
+  protected monthFormat!: UntypedFormControl;
+  protected multipleYearsNavigateBy!: UntypedFormControl;
+  protected numOfMonthRows!: UntypedFormControl;
+  protected onOpenDelay!: UntypedFormControl;
+  protected openOnClick!: UntypedFormControl;
+  protected openOnFocus!: UntypedFormControl;
+  protected opens!: UntypedFormControl;
+  protected placeholder = new UntypedFormControl('Select...');
+  protected requireValidation = new UntypedFormControl(false);
+  protected returnedValueType!: UntypedFormControl;
   protected secondsFormat!: UntypedFormControl;
   protected secondsInterval!: UntypedFormControl;
+  protected showGoToCurrent!: UntypedFormControl;
+  protected showMultipleYearsNavigation!: UntypedFormControl;
+  protected showNearMonthDays!: UntypedFormControl;
   protected showSeconds!: UntypedFormControl;
   protected showTwentyFourHours!: UntypedFormControl;
+  protected showWeekNumbers!: UntypedFormControl;
   protected timeSeparator!: UntypedFormControl;
-  protected showMultipleYearsNavigation!: UntypedFormControl;
-  protected multipleYearsNavigateBy!: UntypedFormControl;
-  protected returnedValueType!: UntypedFormControl;
-  protected closeOnEnter!: UntypedFormControl;
-  protected numOfMonthRows!: UntypedFormControl;
+  protected unSelectOnClick!: UntypedFormControl;
+  protected weekDayFormat!: UntypedFormControl;
+  protected yearFormat!: UntypedFormControl;
 
   /*
    *****************************************************************************************************************
@@ -399,39 +397,39 @@ export class ConfigFormComponent implements OnInit {
 
   protected isValidConfig(key: string): boolean {
     switch (this.pickerMode()) {
-      case 'dayInline': {
-        return [...DAY_CALENDAR_OPTION_KEYS].includes(key);
-      }
-      case 'monthInline': {
-        return [...MONTH_CALENDAR_OPTION_KEYS].includes(key);
-      }
-      case 'timeInline': {
-        return [...TIME_SELECT_OPTION_KEYS].includes(key);
-      }
-      case 'daytimeInline': {
-        return [...DAY_TIME_CALENDAR_OPTION_KEYS].includes(key);
-      }
-      case 'dayPicker': {
-        return [...DAY_PICKER_OPTION_KEYS, ...DAY_CALENDAR_OPTION_KEYS].includes(key);
-      }
       case 'dayDirective':
       case 'dayDirectiveReactiveMenu': {
         return [...DAY_PICKER_DIRECTIVE_OPTION_KEYS, ...DAY_CALENDAR_OPTION_KEYS].includes(key);
       }
-      case 'monthPicker': {
-        return [...DAY_PICKER_OPTION_KEYS, ...MONTH_CALENDAR_OPTION_KEYS].includes(key);
+      case 'dayInline': {
+        return [...DAY_CALENDAR_OPTION_KEYS].includes(key);
+      }
+      case 'dayPicker': {
+        return [...DAY_PICKER_OPTION_KEYS, ...DAY_CALENDAR_OPTION_KEYS].includes(key);
+      }
+      case 'daytime':
+      case 'daytimeDirective':
+      case 'daytimePicker': {
+        return [...DAY_TIME_CALENDAR_OPTION_KEYS].includes(key);
+      }
+      case 'daytimeInline': {
+        return [...DAY_TIME_CALENDAR_OPTION_KEYS].includes(key);
       }
       case 'monthDirective': {
         return [...DAY_PICKER_DIRECTIVE_OPTION_KEYS, ...MONTH_CALENDAR_OPTION_KEYS].includes(key);
       }
-      case 'timePicker':
-      case 'timeDirective': {
+      case 'monthInline': {
+        return [...MONTH_CALENDAR_OPTION_KEYS].includes(key);
+      }
+      case 'monthPicker': {
+        return [...DAY_PICKER_OPTION_KEYS, ...MONTH_CALENDAR_OPTION_KEYS].includes(key);
+      }
+      case 'timeDirective':
+      case 'timePicker': {
         return [...TIME_PICKER_OPTION_KEYS, ...TIME_SELECT_OPTION_KEYS].includes(key);
       }
-      case 'daytime':
-      case 'daytimePicker':
-      case 'daytimeDirective': {
-        return [...DAY_TIME_CALENDAR_OPTION_KEYS].includes(key);
+      case 'timeInline': {
+        return [...TIME_SELECT_OPTION_KEYS].includes(key);
       }
       default: {
         return true;
@@ -742,24 +740,24 @@ export class ConfigFormComponent implements OnInit {
 
   private static getDefaultFormatByMode(mode: string | undefined): string {
     switch (mode) {
-      case 'daytimePicker':
-      case 'daytimeInline':
-      case 'daytimeDirective': {
-        return 'DD-MM-YYYY HH:mm:ss';
-      }
-      case 'dayPicker':
+      case 'dayDirective':
       case 'dayInline':
-      case 'dayDirective': {
+      case 'dayPicker': {
         return 'DD-MM-YYYY';
       }
-      case 'monthPicker':
+      case 'daytimeDirective':
+      case 'daytimeInline':
+      case 'daytimePicker': {
+        return 'DD-MM-YYYY HH:mm:ss';
+      }
+      case 'monthDirective':
       case 'monthInline':
-      case 'monthDirective': {
+      case 'monthPicker': {
         return 'MMM, YYYY';
       }
-      case 'timePicker':
+      case 'timeDirective':
       case 'timeInline':
-      case 'timeDirective': {
+      case 'timePicker': {
         return 'HH:mm:ss';
       }
     }

@@ -1,7 +1,8 @@
-import { MonthCalendarComponent } from './month-calendar.component';
-import { Dayjs } from 'dayjs';
-import { IMonth } from './month.model';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
+import { Dayjs } from 'dayjs';
+
+import { MonthCalendarComponent } from './month-calendar.component';
+import { IMonth } from './month.model';
 
 describe('Component: MonthCalendarComponent', () => {
   let spectator: Spectator<MonthCalendarComponent>;
@@ -23,15 +24,15 @@ describe('Component: MonthCalendarComponent', () => {
 
   describe('should have the right CSS classes for', () => {
     const defaultMonth: IMonth = {
-      date: undefined,
-      selected: false,
       currentMonth: false,
+      date: undefined,
       disabled: false,
+      selected: false,
       text: '',
     };
     const defaultCssClasses: Record<string, boolean> = {
-      'dp-selected': false,
       'dp-current-month': false,
+      'dp-selected': false,
     };
 
     it('the selected month', () => {

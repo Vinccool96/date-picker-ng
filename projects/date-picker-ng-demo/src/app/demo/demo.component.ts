@@ -1,6 +1,6 @@
 import { Component, OnInit, viewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
-import dayjs, { Dayjs } from 'dayjs';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
   DatePickerComponent,
   DatePickerDirective,
@@ -10,13 +10,13 @@ import {
   INavEvent,
   ISelectionEvent,
 } from 'date-picker-ng';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import dayjs, { Dayjs } from 'dayjs';
 
 @Component({
   selector: 'dp-demo',
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.less'],
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   host: {
     '(document:scroll)': 'updateIsAtTop()',
   },
@@ -37,17 +37,46 @@ export class DemoComponent implements OnInit {
    *****************************************************************************************************************
    */
 
-  private demoFormat = 'DD-MM-YYYY';
-  private pickerMode = 'daytimePicker';
+  public displayDate!: string | Dayjs;
+  protected config: IDatePickerConfig = {
+    allowMultiSelect: false,
+    closeOnSelect: undefined,
+    closeOnSelectDelay: 100,
+    dayBtnFormat: 'DD',
+    disableKeypress: false,
+    enableMonthSelector: true,
+    firstDayOfWeek: 'su',
+    hideInputContainer: false,
+    hideOnOutsideClick: true,
+    hours12Format: 'hh',
+    hours24Format: 'HH',
+    meridiemFormat: 'A',
+    minutesFormat: 'mm',
+    minutesInterval: 1,
+    monthBtnFormat: 'MMM',
+    monthFormat: 'MMM, YYYY',
+    multipleYearsNavigateBy: 10,
+    onOpenDelay: 0,
+    openOnClick: true,
+    openOnFocus: true,
+    returnedValueType: ECalendarValue.String,
+    secondsFormat: 'ss',
+    secondsInterval: 1,
+    showGoToCurrent: true,
+    showMultipleYearsNavigation: false,
+    showNearMonthDays: true,
+    showSeconds: false,
+    showTwentyFourHours: false,
+    showWeekNumbers: false,
+    timeSeparator: ':',
+    unSelectOnClick: true,
+    weekDayFormat: 'ddd',
+    yearFormat: 'YYYY',
+  };
 
+  protected formGroup!: UntypedFormGroup;
+  protected isAtTop = true;
   private date: Dayjs | null = null;
-  private material = true;
-  private required = false;
-  private disabled = false;
-  private validationMinDate: Dayjs | null = null;
-  private validationMaxDate: Dayjs | null = null;
-  private placeholder = 'Choose a date...';
-  public displayDate!: Dayjs | string;
   private dateTypes: { name: string; value: ECalendarValue | null }[] = [
     {
       name: 'Guess',
@@ -70,47 +99,62 @@ export class DemoComponent implements OnInit {
       value: ECalendarValue.StringArr,
     },
   ];
-  protected config: IDatePickerConfig = {
-    firstDayOfWeek: 'su',
-    monthFormat: 'MMM, YYYY',
-    disableKeypress: false,
-    allowMultiSelect: false,
-    closeOnSelect: undefined,
-    closeOnSelectDelay: 100,
-    openOnFocus: true,
-    openOnClick: true,
-    onOpenDelay: 0,
-    weekDayFormat: 'ddd',
-    showNearMonthDays: true,
-    showWeekNumbers: false,
-    enableMonthSelector: true,
-    yearFormat: 'YYYY',
-    showGoToCurrent: true,
-    dayBtnFormat: 'DD',
-    monthBtnFormat: 'MMM',
-    hours12Format: 'hh',
-    hours24Format: 'HH',
-    meridiemFormat: 'A',
-    minutesFormat: 'mm',
-    minutesInterval: 1,
-    secondsFormat: 'ss',
-    secondsInterval: 1,
-    showSeconds: false,
-    showTwentyFourHours: false,
-    timeSeparator: ':',
-    multipleYearsNavigateBy: 10,
-    showMultipleYearsNavigation: false,
-    hideInputContainer: false,
-    returnedValueType: ECalendarValue.String,
-    unSelectOnClick: true,
-    hideOnOutsideClick: true,
-  };
+  private demoFormat = 'DD-MM-YYYY';
+  private disabled = false;
+  private material = true;
+  private pickerMode = 'daytimePicker';
+  private placeholder = 'Choose a date...';
+  private required = false;
 
-  protected formGroup!: UntypedFormGroup;
-  protected isAtTop = true;
+  private validationMaxDate: Dayjs | null = null;
+  private validationMinDate: Dayjs | null = null;
 
   public ngOnInit(): void {
     this.formGroup = this.buildForm();
+  }
+
+  protected closeCalendar(): void {
+    if (this.dateComponent() !== undefined) {
+      this.dateComponent()?.api.close();
+    } else if (this.datePickerDirective() !== undefined) {
+      this.datePickerDirective()?.api.close();
+    }
+  }
+
+  protected closed(): void {
+    console.info('closed');
+  }
+
+  protected log(item: unknown): void {
+    console.info(item);
+  }
+
+  protected moveCalendarTo(): void {
+    this.dateComponent()?.api.moveCalendarTo(dayjs('14-01-1987', this.demoFormat));
+  }
+
+  protected onLeftNav(change: INavEvent): void {
+    console.info('left nav', change);
+  }
+
+  protected onRightNav(change: INavEvent): void {
+    console.info('right nav', change);
+  }
+
+  protected onSelect(data: ISelectionEvent): void {
+    console.info(data);
+  }
+
+  protected openCalendar(): void {
+    if (this.dateComponent() !== undefined) {
+      this.dateComponent()?.api.open();
+    } else if (this.datePickerDirective() !== undefined) {
+      this.datePickerDirective()?.api.open();
+    }
+  }
+
+  protected opened(): void {
+    console.info('opened');
   }
 
   @debounce(100)
@@ -122,53 +166,9 @@ export class DemoComponent implements OnInit {
     this.formGroup.get('datePicker')?.updateValueAndValidity();
   }
 
-  protected openCalendar(): void {
-    if (this.dateComponent() !== undefined) {
-      this.dateComponent()?.api.open();
-    } else if (this.datePickerDirective() !== undefined) {
-      this.datePickerDirective()?.api.open();
-    }
-  }
-
-  protected closeCalendar(): void {
-    if (this.dateComponent() !== undefined) {
-      this.dateComponent()?.api.close();
-    } else if (this.datePickerDirective() !== undefined) {
-      this.datePickerDirective()?.api.close();
-    }
-  }
-
-  protected opened(): void {
-    console.info('opened');
-  }
-
-  protected closed(): void {
-    console.info('closed');
-  }
-
-  protected log(item: unknown): void {
-    console.info(item);
-  }
-
-  protected onLeftNav(change: INavEvent): void {
-    console.info('left nav', change);
-  }
-
-  protected onRightNav(change: INavEvent): void {
-    console.info('right nav', change);
-  }
-
-  protected moveCalendarTo(): void {
-    this.dateComponent()?.api.moveCalendarTo(dayjs('14-01-1987', this.demoFormat));
-  }
-
-  protected onSelect(data: ISelectionEvent): void {
-    console.info(data);
-  }
-
   private buildForm(): UntypedFormGroup {
     return new UntypedFormGroup({
-      datePicker: new UntypedFormControl({ value: this.date, disabled: this.disabled }, [
+      datePicker: new UntypedFormControl({ disabled: this.disabled, value: this.date }, [
         this.required ? Validators.required : (): ValidationErrors | null => null,
         (control): ValidationErrors | null => {
           return this.validationMinDate !== null &&
@@ -193,25 +193,25 @@ export class DemoComponent implements OnInit {
 
   private static getDefaultFormatByMode(mode: string): string {
     switch (mode) {
-      case 'daytimePicker':
-      case 'daytimeInline':
-      case 'daytimeDirective': {
-        return 'DD-MM-YYYY HH:mm:ss';
-      }
-      case 'dayPicker':
-      case 'dayInline':
       case 'dayDirective':
-      case 'dayDirectiveReactiveMenu': {
+      case 'dayDirectiveReactiveMenu':
+      case 'dayInline':
+      case 'dayPicker': {
         return 'DD-MM-YYYY';
       }
-      case 'monthPicker':
+      case 'daytimeDirective':
+      case 'daytimeInline':
+      case 'daytimePicker': {
+        return 'DD-MM-YYYY HH:mm:ss';
+      }
+      case 'monthDirective':
       case 'monthInline':
-      case 'monthDirective': {
+      case 'monthPicker': {
         return 'MMM, YYYY';
       }
-      case 'timePicker':
+      case 'timeDirective':
       case 'timeInline':
-      case 'timeDirective': {
+      case 'timePicker': {
         return 'HH:mm:ss';
       }
     }

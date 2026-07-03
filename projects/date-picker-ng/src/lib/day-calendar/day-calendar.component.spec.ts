@@ -1,7 +1,8 @@
+import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
+
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { DayCalendarComponent } from './day-calendar.component';
 import { IDay } from './day.model';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
-import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
 
 describe('DayCalendarComponent', () => {
   let spectator: Spectator<DayCalendarComponent>;
@@ -31,19 +32,19 @@ describe('DayCalendarComponent', () => {
 
   describe('should have the right CSS classes for', () => {
     const defaultDay: IDay = {
-      date: undefined,
-      selected: false,
-      currentMonth: false,
-      prevMonth: false,
-      nextMonth: false,
       currentDay: false,
+      currentMonth: false,
+      date: undefined,
+      nextMonth: false,
+      prevMonth: false,
+      selected: false,
     };
     const defaultCssClasses: Record<string, boolean> = {
-      'dp-selected': false,
-      'dp-current-month': false,
-      'dp-prev-month': false,
-      'dp-next-month': false,
       'dp-current-day': false,
+      'dp-current-month': false,
+      'dp-next-month': false,
+      'dp-prev-month': false,
+      'dp-selected': false,
     };
 
     it('the selected day', () => {

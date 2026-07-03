@@ -1,10 +1,10 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { DayCalendarService } from './day-calendar.service';
+import { Dayjs } from 'dayjs';
 
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { UtilsService } from '../common/services/utils/utils.service';
 import { IDayCalendarConfigInternal } from './day-calendar-config.model';
-import { Dayjs } from 'dayjs';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { DayCalendarService } from './day-calendar.service';
 
 describe('DayCalendarService', () => {
   beforeEach(() => {
@@ -44,9 +44,9 @@ describe('DayCalendarService', () => {
   }));
 
   it('should check the generateDaysMap method', inject([DayCalendarService], (service: DayCalendarService) => {
-    expect(service.generateDaysMap('su')).toEqual({ su: 0, mo: 1, tu: 2, we: 3, th: 4, fr: 5, sa: 6 });
-    expect(service.generateDaysMap('mo')).toEqual({ mo: 0, tu: 1, we: 2, th: 3, fr: 4, sa: 5, su: 6 });
-    expect(service.generateDaysMap('we')).toEqual({ we: 0, th: 1, fr: 2, sa: 3, su: 4, mo: 5, tu: 6 });
+    expect(service.generateDaysMap('su')).toEqual({ fr: 5, mo: 1, sa: 6, su: 0, th: 4, tu: 2, we: 3 });
+    expect(service.generateDaysMap('mo')).toEqual({ fr: 4, mo: 0, sa: 5, su: 6, th: 3, tu: 1, we: 2 });
+    expect(service.generateDaysMap('we')).toEqual({ fr: 2, mo: 5, sa: 3, su: 4, th: 1, tu: 6, we: 0 });
   }));
 
   it('should check the generateMonthArray method', inject([DayCalendarService], (service: DayCalendarService) => {
@@ -157,8 +157,8 @@ describe('DayCalendarService', () => {
   it('should check isDateDisabled method', inject([DayCalendarService], (service: DayCalendarService) => {
     const config: IDayCalendarConfigInternal = {
       firstDayOfWeek: 'su',
-      min: dayjsRef('13-10-2016', 'DD-MM-YYYY').subtract(1, 'day'),
       max: dayjsRef('13-10-2016', 'DD-MM-YYYY').add(1, 'day'),
+      min: dayjsRef('13-10-2016', 'DD-MM-YYYY').subtract(1, 'day'),
     };
 
     expect(service.isDateDisabled(dayjsRef('11-10-2016', 'DD-MM-YYYY'), config)).toBe(true);

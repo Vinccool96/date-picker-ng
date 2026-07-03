@@ -1,6 +1,3 @@
-import { CalendarMode } from '../common/types/calendar-mode';
-import { IDatePickerDirectiveConfig } from './date-picker-directive-config.model';
-import { DatePickerComponent } from './date-picker.component';
 import {
   Directive,
   ElementRef,
@@ -12,24 +9,28 @@ import {
   signal,
   ViewContainerRef,
 } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { AbstractControl, NgControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+
 import { INavEvent } from '../common/models/navigation-event.model';
 import { UtilsService } from '../common/services/utils/utils.service';
+import { CalendarMode } from '../common/types/calendar-mode';
 import { CalendarValue } from '../common/types/calendar-value';
 import { ISelectionEvent } from '../common/types/selection-event.model';
 import { SingleCalendarValue } from '../common/types/single-calendar-value';
-import { Observable } from 'rxjs';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { IDatePickerDirectiveConfig } from './date-picker-directive-config.model';
 import { IDpDayPickerApi } from './date-picker.api';
+import { DatePickerComponent } from './date-picker.component';
 
 @Directive({
-  exportAs: 'dpDayPicker',
   selector: '[dpDayPicker]',
   host: {
     '(click)': 'onClick()',
     '(focus)': 'onFocus()',
     '(keydown.enter)': 'onEnter()',
   },
+  exportAs: 'dpDayPicker',
 })
 export class DatePickerDirective implements OnInit {
   /*
@@ -38,15 +39,15 @@ export class DatePickerDirective implements OnInit {
    *****************************************************************************************************************
    */
 
-  public readonly theme = input.required<string>();
-  public readonly dpDayPicker = input.required<IDatePickerDirectiveConfig>();
-  private readonly config = signal<IDatePickerDirectiveConfig>({});
-  public readonly mode = input<CalendarMode>('day');
-  public readonly minDate = input<SingleCalendarValue>();
-  public readonly maxDate = input<SingleCalendarValue>();
-  public readonly minTime = input<SingleCalendarValue>();
-  public readonly maxTime = input<SingleCalendarValue>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
+  public readonly dpDayPicker = input.required<IDatePickerDirectiveConfig>();
+  public readonly maxDate = input<SingleCalendarValue>();
+  public readonly maxTime = input<SingleCalendarValue>();
+  public readonly minDate = input<SingleCalendarValue>();
+  public readonly minTime = input<SingleCalendarValue>();
+  public readonly mode = input<CalendarMode>('day');
+  public readonly theme = input.required<string>();
+  private readonly config = signal<IDatePickerDirectiveConfig>({});
 
   /*
    *****************************************************************************************************************
@@ -54,13 +55,13 @@ export class DatePickerDirective implements OnInit {
    *****************************************************************************************************************
    */
 
-  @Output() public open = new EventEmitter<void>();
   @Output() public close = new EventEmitter<void>();
   @Output() public onChange = new EventEmitter<CalendarValue>();
   @Output() public onGoToCurrent = new EventEmitter<void>();
   @Output() public onLeftNav = new EventEmitter<INavEvent>();
   @Output() public onRightNav = new EventEmitter<INavEvent>();
   @Output() public onSelect = new EventEmitter<ISelectionEvent>();
+  @Output() public open = new EventEmitter<void>();
 
   /*
    *****************************************************************************************************************
@@ -68,10 +69,10 @@ export class DatePickerDirective implements OnInit {
    *****************************************************************************************************************
    */
 
-  private readonly viewContainerRef = inject(ViewContainerRef);
-  private readonly elemRef = inject<ElementRef<HTMLElement>>(ElementRef);
   public readonly formControl = inject(NgControl, { optional: true });
   public readonly utilsService = inject(UtilsService);
+  private readonly elemRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly viewContainerRef = inject(ViewContainerRef);
 
   /*
    *****************************************************************************************************************
@@ -79,8 +80,8 @@ export class DatePickerDirective implements OnInit {
    *****************************************************************************************************************
    */
 
-  private datePicker!: DatePickerComponent;
   public api!: IDpDayPickerApi;
+  private datePicker!: DatePickerComponent;
 
   public constructor() {
     toObservable(this.theme).subscribe((theme) => {
@@ -134,8 +135,18 @@ export class DatePickerDirective implements OnInit {
     this.datePicker.theme.set(this.theme());
   }
 
-  private createDatePicker(): DatePickerComponent {
-    return this.viewContainerRef.createComponent(DatePickerComponent).instance;
+  protected onClick(): void {
+    this.datePicker.onClick();
+  }
+
+  protected onEnter(): void {
+    if (this.datePicker.componentConfig.closeOnEnter === true) {
+      this.datePicker.hideCalendar();
+    }
+  }
+
+  protected onFocus(): void {
+    this.datePicker.inputFocused();
   }
 
   private attachModelToDatePicker(): void {
@@ -192,18 +203,8 @@ export class DatePickerDirective implements OnInit {
     });
   }
 
-  protected onClick(): void {
-    this.datePicker.onClick();
-  }
-
-  protected onFocus(): void {
-    this.datePicker.inputFocused();
-  }
-
-  protected onEnter(): void {
-    if (this.datePicker.componentConfig.closeOnEnter === true) {
-      this.datePicker.hideCalendar();
-    }
+  private createDatePicker(): DatePickerComponent {
+    return this.viewContainerRef.createComponent(DatePickerComponent).instance;
   }
 
   private markForCheck(): void {

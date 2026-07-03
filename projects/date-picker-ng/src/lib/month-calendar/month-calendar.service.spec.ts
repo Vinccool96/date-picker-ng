@@ -1,11 +1,11 @@
 import { inject, TestBed } from '@angular/core/testing';
+import { Dayjs } from 'dayjs';
 
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { UtilsService } from '../common/services/utils/utils.service';
+import { IMonthCalendarConfig } from './month-calendar-config';
 import { MonthCalendarService } from './month-calendar.service';
 import { IMonth } from './month.model';
-import { Dayjs } from 'dayjs';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
-import { IMonthCalendarConfig } from './month-calendar-config';
 
 describe('Service: MonthCalendarService', () => {
   beforeEach(() => {
@@ -49,15 +49,15 @@ describe('Service: MonthCalendarService', () => {
 
   it('should check the isDateDisabled method', inject([MonthCalendarService], (service: MonthCalendarService) => {
     const month: IMonth = {
-      date: dayjsRef('09-04-2017', 'DD-MM-YYYY'),
-      selected: false,
       currentMonth: false,
+      date: dayjsRef('09-04-2017', 'DD-MM-YYYY'),
       disabled: false,
+      selected: false,
       text: dayjsRef('09-04-2017', 'DD-MM-YYYY').format('MMM'),
     };
     const config1: IMonthCalendarConfig = {
-      min: month.date?.subtract(1, 'month'),
       max: month.date?.add(1, 'month'),
+      min: month.date?.subtract(1, 'month'),
     };
 
     expect(service.isMonthDisabled(month.date as Dayjs, config1)).toBe(false);
@@ -75,10 +75,10 @@ describe('Service: MonthCalendarService', () => {
     [MonthCalendarService],
     (service: MonthCalendarService) => {
       const month: IMonth = {
-        date: dayjsRef('01`-01-2017', 'DD-MM-YYYY'),
-        selected: false,
         currentMonth: false,
+        date: dayjsRef('01`-01-2017', 'DD-MM-YYYY'),
         disabled: false,
+        selected: false,
         text: dayjsRef('01-01-2017', 'DD-MM-YYYY').format('MMM'),
       };
       const config1: IMonthCalendarConfig = {

@@ -4,7 +4,7 @@ import { includeIgnoreFile } from '@eslint/config-helpers';
 import vitest from '@vitest/eslint-plugin';
 import angular from 'angular-eslint';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
-// import perfectionist from 'eslint-plugin-perfectionist';
+import perfectionist from 'eslint-plugin-perfectionist';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import { fileURLToPath } from 'node:url';
@@ -24,7 +24,7 @@ export default tseslint.config(
       ...angular.configs.tsRecommended,
       eslintPluginPrettierRecommended,
       eslintPluginUnicorn.configs.recommended,
-      // perfectionist.configs['recommended-natural'],
+      perfectionist.configs['recommended-natural'],
       jsdocPlugin.configs['flat/recommended-typescript-error'],
     ],
     settings: {
@@ -106,33 +106,254 @@ export default tseslint.config(
        *****************************************************************************************************************
        */
 
-      // 'perfectionist/sort-classes': [
-      //   'error',
-      //   {
-      //     groups: [
-      //       'index-signature',
-      //       ['property', 'accessor-property'],
-      //       ['protected-property', 'protected-accessor-property'],
-      //       ['private-property', 'private-accessor-property'],
-      //       'constructor',
-      //       'method',
-      //       'protected-method',
-      //       'private-method',
-      //       ['get-method', 'set-method'],
-      //       'static-property',
-      //       'static-block',
-      //       'static-method',
-      //       'unknown',
-      //     ],
-      //   },
-      // ],
-      // 'perfectionist/sort-union-types': [
-      //   'error',
-      //   {
-      //     groups: ['keyword', 'unknown', 'nullish'],
-      //     type: 'natural',
-      //   },
-      // ],
+      'perfectionist/sort-classes': [
+        'error',
+        {
+          customGroups: [
+            {
+              elementNamePattern: '^ngOnChanges$',
+              groupName: 'ngOnChanges',
+              selector: 'method',
+            },
+            {
+              elementNamePattern: '^ngOnInit$',
+              groupName: 'ngOnInit',
+              selector: 'method',
+            },
+            {
+              elementNamePattern: '^ngDoCheck$',
+              groupName: 'ngDoCheck',
+              selector: 'method',
+            },
+            {
+              elementNamePattern: '^ngAfterContentInit$',
+              groupName: 'ngAfterContentInit',
+              selector: 'method',
+            },
+            {
+              elementNamePattern: '^ngAfterContentChecked$',
+              groupName: 'ngAfterContentChecked',
+              selector: 'method',
+            },
+            {
+              elementNamePattern: '^ngAfterViewInit$',
+              groupName: 'ngAfterViewInit',
+              selector: 'method',
+            },
+            {
+              elementNamePattern: '^ngAfterViewChecked$',
+              groupName: 'ngAfterViewChecked',
+              selector: 'method',
+            },
+            {
+              elementNamePattern: '^ngOnDestroy$',
+              groupName: 'ngOnDestroy',
+              selector: 'method',
+            },
+          ],
+          groups: [
+            'index-signature',
+            ['property', 'accessor-property'],
+            ['protected-property', 'protected-accessor-property'],
+            ['private-property', 'private-accessor-property'],
+            'constructor',
+            'ngOnChanges',
+            'ngOnInit',
+            'ngDoCheck',
+            'ngAfterContentInit',
+            'ngAfterContentChecked',
+            'ngAfterViewInit',
+            'ngAfterViewChecked',
+            'ngOnDestroy',
+            'method',
+            'protected-method',
+            'private-method',
+            ['get-method', 'set-method'],
+            'static-property',
+            'static-block',
+            'static-method',
+            'unknown',
+          ],
+        },
+      ],
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          customGroups: [
+            {
+              elementNamePattern: '^id',
+              groupName: 'id',
+            },
+            {
+              elementNamePattern: '^key',
+              groupName: 'key',
+            },
+            {
+              elementNamePattern: '^name',
+              groupName: 'name',
+            },
+            {
+              elementNamePattern: '^selector',
+              groupName: 'selector',
+            },
+            {
+              elementNamePattern: '^imports',
+              groupName: 'imports',
+            },
+            {
+              elementNamePattern: '^declarations',
+              groupName: 'declarations',
+            },
+            {
+              elementNamePattern: '^standalone',
+              groupName: 'standalone',
+            },
+            {
+              elementNamePattern: '^templateUrl',
+              groupName: 'templateUrl',
+            },
+            {
+              elementNamePattern: '^template',
+              groupName: 'template',
+            },
+            {
+              elementNamePattern: '^styleUrl',
+              groupName: 'styleUrl',
+            },
+            {
+              elementNamePattern: '^styleUrls',
+              groupName: 'styleUrls',
+            },
+            {
+              elementNamePattern: '^styles',
+              groupName: 'styles',
+            },
+            {
+              elementNamePattern: '^provide(rs)?',
+              groupName: 'providers',
+            },
+            {
+              elementNamePattern: '^exports',
+              groupName: 'exports',
+            },
+            {
+              elementNamePattern: '^bootstrap',
+              groupName: 'bootstrap',
+            },
+            {
+              elementNamePattern: '^changeDetection',
+              groupName: 'changeDetection',
+            },
+            {
+              elementNamePattern: '^encapsulation',
+              groupName: 'encapsulation',
+            },
+            {
+              elementNamePattern: '^viewProviders',
+              groupName: 'viewProviders',
+            },
+            {
+              elementNamePattern: '^host',
+              groupName: 'host',
+            },
+            {
+              elementNamePattern: '^hostDirectives',
+              groupName: 'hostDirectives',
+            },
+            {
+              elementNamePattern: '^inputs',
+              groupName: 'inputs',
+            },
+            {
+              elementNamePattern: '^outputs',
+              groupName: 'outputs',
+            },
+            {
+              elementNamePattern: '^animations',
+              groupName: 'animations',
+            },
+            {
+              elementNamePattern: '^schemas',
+              groupName: 'schemas',
+            },
+            {
+              elementNamePattern: '^exportAs',
+              groupName: 'exportAs',
+            },
+            {
+              elementNamePattern: '^queries',
+              groupName: 'queries',
+            },
+            {
+              elementNamePattern: '^preserveWhitespaces',
+              groupName: 'preserveWhitespaces',
+            },
+            {
+              elementNamePattern: '^jit',
+              groupName: 'jit',
+            },
+            {
+              elementNamePattern: '^moduleId',
+              groupName: 'moduleId',
+            },
+            {
+              elementNamePattern: '^interpolation',
+              groupName: 'interpolation',
+            },
+            {
+              elementNamePattern: '^pure',
+              groupName: 'pure',
+            },
+            {
+              elementNamePattern: '^path',
+              groupName: 'path',
+            },
+          ],
+          groups: [
+            'id',
+            'key',
+            'name',
+            'selector',
+            'imports',
+            'declarations',
+            'standalone',
+            'templateUrl',
+            'template',
+            'styleUrl',
+            'styleUrls',
+            'styles',
+            'providers',
+            'exports',
+            'bootstrap',
+            'changeDetection',
+            'encapsulation',
+            'viewProviders',
+            'host',
+            'hostDirectives',
+            'inputs',
+            'outputs',
+            'animations',
+            'schemas',
+            'exportAs',
+            'queries',
+            'preserveWhitespaces',
+            'jit',
+            'moduleId',
+            'interpolation',
+            'pure',
+            'path',
+            'unknown',
+          ],
+          type: 'natural',
+        },
+      ],
+      'perfectionist/sort-union-types': [
+        'error',
+        {
+          groups: ['keyword', 'unknown', 'nullish'],
+          type: 'natural',
+        },
+      ],
 
       /*
        *****************************************************************************************************************
@@ -169,25 +390,25 @@ export default tseslint.config(
   {
     files: ['**/*.ts'],
     rules: {
-      // 'perfectionist/sort-interfaces': [
-      //   'error',
-      //   {
-      //     customGroups: [
-      //       {
-      //         elementNamePattern: '^id$',
-      //         groupName: 'first',
-      //       },
-      //     ],
-      //     groups: ['first', 'unknown'],
-      //     type: 'natural',
-      //     useConfigurationIf: {
-      //       declarationMatchesPattern: 'Form$',
-      //     },
-      //   },
-      //   {
-      //     type: 'natural',
-      //   },
-      // ],
+      'perfectionist/sort-interfaces': [
+        'error',
+        {
+          customGroups: [
+            {
+              elementNamePattern: '^id$',
+              groupName: 'first',
+            },
+          ],
+          groups: ['first', 'unknown'],
+          type: 'natural',
+          useConfigurationIf: {
+            declarationMatchesPattern: 'Form$',
+          },
+        },
+        {
+          type: 'natural',
+        },
+      ],
     },
   },
   {
