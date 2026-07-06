@@ -31,9 +31,9 @@ export class DatePickerDirective implements OnInit {
 
   public readonly displayDate = input<SingleCalendarValue | null>(null);
   public readonly dpDayPicker = input.required<IDatePickerDirectiveConfig>();
-  public readonly maxDate = input<SingleCalendarValue>();
+  public readonly maxDate = input<SingleCalendarValue | null>(null);
   public readonly maxTime = input<SingleCalendarValue>();
-  public readonly minDate = input<SingleCalendarValue>();
+  public readonly minDate = input<SingleCalendarValue | null>(null);
   public readonly minTime = input<SingleCalendarValue>();
   public readonly mode = input<CalendarMode>('day');
   public readonly theme = input.required<string>();

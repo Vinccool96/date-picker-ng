@@ -8,7 +8,7 @@
           (onLeftNav)="onLeftNav($event)"
           (onRightNav)="onRightNav($event)"
           (onSelect)="onSelect($event)"
-          [config]="config"
+          [config]="config()"
           [displayDate]="displayDate"
           [formControl]="control"
           [maxDate]="validationMaxDate"
@@ -52,7 +52,7 @@
     (onRequireValidationChange)="onRequireValidationChange($event)"
     (openCalendar)="openCalendar()"
     (onLocaleChange)="onLocaleChange($event)"
-    [config]="config"
+    [config]="config()"
     [localeVal]="locale"
     pickerMode="dayInline"
   >

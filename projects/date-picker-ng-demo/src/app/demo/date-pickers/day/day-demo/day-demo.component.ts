@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DatePickerComponent, IDatePickerConfig } from 'date-picker-ng';
 
@@ -13,8 +13,9 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   styleUrls: ['./day-demo.component.scss'],
 })
 export class DayDemoComponent extends DateComponent {
-  protected config: IDatePickerConfig = {
+  protected override readonly config = signal<IDatePickerConfig>({
     ...DEF_CONF,
     format: 'DD-MM-YYYY',
-  };
+  });
+  protected override readonly control = this.buildForm();
 }

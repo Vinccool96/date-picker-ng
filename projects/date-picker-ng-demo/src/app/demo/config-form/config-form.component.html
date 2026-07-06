@@ -1,5 +1,5 @@
-<div class="dp-page-content">
-  <div class="dp-attributes">
+<div class="dp-page-content" [formGroup]="configForm">
+  <div class="dp-attributes" formGroupName="attributes">
     <h3 class="dp-options-section">Attribute options</h3>
 
     @if (isValidConfig('theme')) {
@@ -8,11 +8,11 @@
         <div class="dp-option-playground">
           <label
             >Material Theme
-            <input [formControl]="material" [value]="true" id="themeOn" name="style" type="radio" />
+            <input formControlName="material" [value]="true" id="themeOn" name="material" type="radio" />
           </label>
           <label
             >No Theme
-            <input [formControl]="material" [value]="false" id="themeOff" name="style" type="radio" />
+            <input formControlName="material" [value]="false" id="themeOff" name="material" type="radio" />
           </label>
         </div>
       </div>
@@ -24,11 +24,11 @@
         <div class="dp-option-playground">
           <label
             >Enabled
-            <input [formControl]="disabled" [value]="false" id="inputEnabledRadio" name="disabled" type="radio" />
+            <input formControlName="disabled" [value]="false" id="inputEnabledRadio" name="disabled" type="radio" />
           </label>
           <label
             >Disabled
-            <input [formControl]="disabled" [value]="true" id="inputDisabledRadio" name="disabled" type="radio" />
+            <input formControlName="disabled" [value]="true" id="inputDisabledRadio" name="disabled" type="radio" />
           </label>
         </div>
       </div>
@@ -41,20 +41,20 @@
           <label
             >Required
             <input
-              [formControl]="requireValidation"
+              formControlName="requireValidation"
               [value]="true"
               id="enableRequiredRadio"
-              name="required"
+              name="requireValidation"
               type="radio"
             />
           </label>
           <label
             >Not Required
             <input
-              [formControl]="requireValidation"
+              formControlName="requireValidation"
               [value]="false"
               id="disableRequiredRadio"
-              name="required"
+              name="requireValidation"
               type="radio"
             />
           </label>
@@ -69,7 +69,7 @@
           {{ pickerMode() }}
           <dp-date-picker
             [config]="{ format: localFormat }"
-            [formControl]="minValidation"
+            formControlName="minValidation"
             [mode]="pickerMode()?.startsWith('daytime') ? 'daytime' : 'day'"
             id="minDatePicker"
             placeholder="Select a min date"
@@ -86,7 +86,7 @@
         <div class="dp-option-playground">
           <dp-date-picker
             [config]="{ format: localFormat }"
-            [formControl]="maxValidation"
+            formControlName="maxValidation"
             [mode]="pickerMode()?.startsWith('daytime') ? 'daytime' : 'day'"
             id="maxDatePicker"
             placeholder="Select a max date"
@@ -102,7 +102,7 @@
         <span class="dp-option-header"> Display Date (displayDate): </span>
         <div class="dp-option-playground">
           <dp-date-picker
-            [formControl]="displayDate"
+            formControlName="displayDate"
             id="displayDate"
             mode="day"
             placeholder="Select a display date"
@@ -119,7 +119,7 @@
         <div class="dp-option-playground">
           <dp-date-picker
             [config]="{ format: 'HH:mm:ss' }"
-            [formControl]="minTimeValidation"
+            formControlName="minTimeValidation"
             id="minTimeValidation"
             mode="time"
             placeholder="Select a min time"
@@ -136,7 +136,7 @@
         <div class="dp-option-playground">
           <dp-date-picker
             [config]="{ format: 'HH:mm:ss' }"
-            [formControl]="maxTimeValidation"
+            formControlName="maxTimeValidation"
             id="maxTimeValidation"
             mode="time"
             placeholder="Select a max time"
@@ -151,20 +151,20 @@
       <div class="dp-option">
         <span class="dp-option-header"> Placeholder (placeholder): </span>
         <div class="dp-option-playground">
-          <input [formControl]="placeholder" id="placeholderInput" placeholder="Put a placeholder" type="text" />
+          <input formControlName="placeholder" id="placeholderInput" placeholder="Put a placeholder" type="text" />
         </div>
       </div>
     }
   </div>
 
-  <div class="dp-configs">
+  <div class="dp-configs" formGroupName="configs">
     <h3 class="dp-options-section">Config options</h3>
 
     @if (isValidConfig('locale')) {
       <div class="dp-option">
         <span class="dp-option-header"> Locale (locale): </span>
         <div class="dp-option-playground">
-          <select [formControl]="locale" id="locale">
+          <select formControlName="locale" id="locale">
             @for (lang of LANGS; track lang) {
               <option [value]="lang">{{ lang }}</option>
             }

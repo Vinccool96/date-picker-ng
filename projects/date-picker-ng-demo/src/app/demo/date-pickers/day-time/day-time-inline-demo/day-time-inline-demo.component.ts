@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DayTimeCalendarComponent, IDatePickerConfig } from 'date-picker-ng';
 
@@ -13,8 +13,9 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   styleUrls: ['./day-time-inline-demo.component.scss'],
 })
 export class DayTimeInlineDemoComponent extends DateComponent {
-  protected config: IDatePickerConfig = {
+  protected override readonly config = signal<IDatePickerConfig>({
     ...DEF_CONF,
     format: 'DD-MM-YYYY HH:mm:ss',
-  };
+  });
+  protected override readonly control = this.buildForm();
 }

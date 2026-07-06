@@ -71,8 +71,8 @@ export class DayTimeCalendarComponent implements ControlValueAccessor, OnInit, V
 
   public readonly config = input<IDayTimeCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
-  public readonly maxDate = input<SingleCalendarValue>();
-  public readonly minDate = input<SingleCalendarValue>();
+  public readonly maxDate = input<Dayjs | null>(null);
+  public readonly minDate = input<Dayjs | null>(null);
   public readonly theme = input<string>('');
 
   /*
@@ -156,8 +156,8 @@ export class DayTimeCalendarComponent implements ControlValueAccessor, OnInit, V
     // No op
   }
 
-  public validate(formControl: AbstractControl): ValidationErrors | null {
-    return this.minDate() !== undefined || this.maxDate() !== undefined
+  public validate(formControl: AbstractControl<CalendarValue | null>): ValidationErrors | null {
+    return this.minDate() !== null || this.maxDate() !== null
       ? this.validateFn(formControl.value as CalendarValue)
       : (): ValidationErrors | null => null;
   }

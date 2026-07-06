@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IDatePickerConfig, TimeSelectComponent } from 'date-picker-ng';
 
@@ -13,8 +13,9 @@ import { ConfigFormComponent } from '../../../config-form/config-form.component'
   styleUrls: ['./time-inline-demo.component.scss'],
 })
 export class TimeInlineDemoComponent extends DateComponent {
-  protected config: IDatePickerConfig = {
+  protected override readonly config = signal<IDatePickerConfig>({
     ...DEF_CONF,
     format: 'HH:mm:ss',
-  };
+  });
+  protected override readonly control = this.buildForm();
 }

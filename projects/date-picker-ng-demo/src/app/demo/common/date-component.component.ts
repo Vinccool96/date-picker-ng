@@ -1,6 +1,12 @@
-import { Directive, viewChild } from '@angular/core';
+import { Directive, viewChild, WritableSignal } from '@angular/core';
 import { AbstractControl, UntypedFormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { DatePickerComponent, DatePickerDirective, IDatePickerConfig, INavEvent } from 'date-picker-ng';
+import {
+  DatePickerComponent,
+  DatePickerDirective,
+  IDatePickerConfig,
+  INavEvent,
+  SingleCalendarValue,
+} from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
 
 @Directive()
@@ -20,8 +26,8 @@ export abstract class DateComponent {
    *****************************************************************************************************************
    */
 
-  protected abstract config: IDatePickerConfig;
-  protected control: UntypedFormControl = this.buildForm();
+  protected abstract readonly config: WritableSignal<IDatePickerConfig>;
+  protected abstract control: UntypedFormControl;
 
   protected displayDate: string | Dayjs = '';
   protected locale: string = dayjs.locale();
@@ -29,12 +35,12 @@ export abstract class DateComponent {
   protected placeholder = 'Choose a date...';
   protected ready = true;
   protected required = false;
-  protected validationMaxDate?: Dayjs;
-  protected validationMinDate?: Dayjs;
+  protected validationMaxDate: Dayjs | null = null;
+  protected validationMinDate: Dayjs | null = null;
   private date = dayjs();
   private disabled = false;
-  private validationMaxTime?: Dayjs;
-  private validationMinTime?: Dayjs;
+  private validationMaxTime: Dayjs | null = null;
+  private validationMinTime: Dayjs | null = null;
 
   protected buildForm(): UntypedFormControl {
     return new UntypedFormControl({ disabled: this.disabled, value: this.date }, this.getValidations());
@@ -61,10 +67,10 @@ export abstract class DateComponent {
   }
 
   protected onConfigChange($event: IDatePickerConfig): void {
-    this.config = {
-      ...this.config,
+    this.config.set({
+      ...this.config(),
       ...$event,
-    };
+    });
   }
 
   protected onDisabledChange(isDisabled: boolean): void {
@@ -77,8 +83,8 @@ export abstract class DateComponent {
     }
   }
 
-  protected onDisplayDateChange(displayDate: string | Dayjs): void {
-    this.displayDate = displayDate;
+  protected onDisplayDateChange(displayDate: SingleCalendarValue | null): void {
+    this.displayDate = displayDate ?? '';
   }
 
   protected onLeftNav(change: INavEvent): void {
@@ -96,25 +102,25 @@ export abstract class DateComponent {
     this.material = isUsingMaterial;
   }
 
-  protected onMaxTimeValidationChange($event: Dayjs): void {
+  protected onMaxTimeValidationChange($event: Dayjs | null): void {
     this.validationMaxTime = $event;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
 
-  protected onMaxValidationChange($event: Dayjs): void {
+  protected onMaxValidationChange($event: Dayjs | null): void {
     this.validationMaxDate = $event;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
 
-  protected onMinTimeValidationChange($event: Dayjs): void {
+  protected onMinTimeValidationChange($event: Dayjs | null): void {
     this.validationMinTime = $event;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
   }
 
-  protected onMinValidationChange($event: Dayjs): void {
+  protected onMinValidationChange($event: Dayjs | null): void {
     this.validationMinDate = $event;
     this.control.setValidators(this.getValidations());
     this.control.updateValueAndValidity();
@@ -150,26 +156,26 @@ export abstract class DateComponent {
     return [
       this.required ? Validators.required : (): ValidationErrors | null => null,
       (control: AbstractControl): ValidationErrors | null => {
-        return this.validationMinDate !== undefined &&
-          dayjs(control.value as dayjs.ConfigType, this.config.format).isBefore(this.validationMinDate)
+        return this.validationMinDate !== null &&
+          dayjs(control.value as dayjs.ConfigType, this.config().format).isBefore(this.validationMinDate)
           ? { minDate: 'minDate Invalid' }
           : null;
       },
       (control: AbstractControl): ValidationErrors | null => {
-        return this.validationMaxDate !== undefined &&
-          dayjs(control.value as dayjs.ConfigType, this.config.format).isAfter(this.validationMaxDate)
+        return this.validationMaxDate !== null &&
+          dayjs(control.value as dayjs.ConfigType, this.config().format).isAfter(this.validationMaxDate)
           ? { maxDate: 'maxDate Invalid' }
           : null;
       },
       (control: AbstractControl): ValidationErrors | null => {
-        return this.validationMinTime !== undefined &&
-          dayjs(control.value as dayjs.ConfigType, this.config.format).isBefore(this.validationMinTime)
+        return this.validationMinTime !== null &&
+          dayjs(control.value as dayjs.ConfigType, this.config().format).isBefore(this.validationMinTime)
           ? { minDate: 'minDate Invalid' }
           : null;
       },
       (control: AbstractControl): ValidationErrors | null => {
-        return this.validationMaxTime !== undefined &&
-          dayjs(control.value as dayjs.ConfigType, this.config.format).isAfter(this.validationMaxTime)
+        return this.validationMaxTime !== null &&
+          dayjs(control.value as dayjs.ConfigType, this.config().format).isAfter(this.validationMaxTime)
           ? { maxDate: 'maxDate Invalid' }
           : null;
       },

@@ -1,6 +1,6 @@
-import { Component, input, OnInit, output } from '@angular/core';
-import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
-import { DatePickerComponent, ECalendarValue, IDatePickerConfig } from 'date-picker-ng';
+import { Component, inject, input, OnInit, output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import { DatePickerComponent, ECalendarValue, IDatePickerConfig, SingleCalendarValue } from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
@@ -12,6 +12,31 @@ import {
   TIME_PICKER_OPTION_KEYS,
   TIME_SELECT_OPTION_KEYS,
 } from './keys';
+
+interface AttributesForm {
+  disabled: FormControl<boolean>;
+  displayDate: FormControl<SingleCalendarValue | null>;
+  material: FormControl<boolean>;
+  maxTimeValidation: FormControl<SingleCalendarValue | null>;
+  maxValidation: FormControl<SingleCalendarValue | null>;
+  minTimeValidation: FormControl<SingleCalendarValue | null>;
+  minValidation: FormControl<SingleCalendarValue | null>;
+  placeholder: FormControl<string>;
+  requireValidation: FormControl<boolean>;
+}
+
+type AttributesFormValue = FormGroup<AttributesForm>['value'];
+
+interface ConfigForm {
+  attributes: FormGroup<AttributesForm>;
+  configs: FormGroup<ConfigsForm>;
+}
+
+interface ConfigsForm {
+  locale: FormControl<string>;
+}
+
+type ConfigsFormValue = FormGroup<ConfigsForm>['value'];
 
 @Component({
   selector: 'dp-config-form',
@@ -188,16 +213,24 @@ export class ConfigFormComponent implements OnInit {
   public readonly moveCalendarTo = output<Dayjs>();
   public readonly onConfigChange = output<Partial<IDatePickerConfig>>();
   public readonly onDisabledChange = output<boolean>();
-  public readonly onDisplayDateChange = output<string | Dayjs>();
+  public readonly onDisplayDateChange = output<SingleCalendarValue | null>();
   public readonly onLocaleChange = output<string>();
   public readonly onMaterialThemeChange = output<boolean>();
-  public readonly onMaxTimeValidationChange = output<Dayjs>();
-  public readonly onMaxValidationChange = output<Dayjs>();
-  public readonly onMinTimeValidationChange = output<Dayjs>();
-  public readonly onMinValidationChange = output<Dayjs>();
+  public readonly onMaxTimeValidationChange = output<Dayjs | null>();
+  public readonly onMaxValidationChange = output<Dayjs | null>();
+  public readonly onMinTimeValidationChange = output<Dayjs | null>();
+  public readonly onMinValidationChange = output<Dayjs | null>();
   public readonly onPlaceholderChange = output<string>();
   public readonly onRequireValidationChange = output<boolean>();
   public readonly openCalendar = output();
+
+  /*
+   *****************************************************************************************************************
+   * form
+   *****************************************************************************************************************
+   */
+
+  protected readonly configForm = this.createForm();
 
   /*
    *****************************************************************************************************************
@@ -210,9 +243,7 @@ export class ConfigFormComponent implements OnInit {
   protected closeOnSelect!: UntypedFormControl;
   protected closeOnSelectDelay!: UntypedFormControl;
   protected dayBtnFormat!: UntypedFormControl;
-  protected disabled = new UntypedFormControl(false);
   protected disableKeypress!: UntypedFormControl;
-  protected displayDate = new UntypedFormControl(null);
   protected drops!: UntypedFormControl;
   protected enableMonthSelector!: UntypedFormControl;
   protected firstDayOfWeek!: UntypedFormControl;
@@ -221,19 +252,13 @@ export class ConfigFormComponent implements OnInit {
   protected hideOnOutsideClick!: UntypedFormControl;
   protected hours12Format!: UntypedFormControl;
   protected hours24Format!: UntypedFormControl;
-  protected locale!: UntypedFormControl;
-  protected material = new UntypedFormControl(true);
   protected max!: UntypedFormControl;
   protected maxTime!: UntypedFormControl;
-  protected maxTimeValidation = new UntypedFormControl();
-  protected maxValidation = new UntypedFormControl();
   protected meridiemFormat!: UntypedFormControl;
   protected min!: UntypedFormControl;
   protected minTime!: UntypedFormControl;
-  protected minTimeValidation = new UntypedFormControl();
   protected minutesFormat!: UntypedFormControl;
   protected minutesInterval!: UntypedFormControl;
-  protected minValidation = new UntypedFormControl();
   protected monthBtnFormat!: UntypedFormControl;
   protected monthFormat!: UntypedFormControl;
   protected multipleYearsNavigateBy!: UntypedFormControl;
@@ -242,8 +267,6 @@ export class ConfigFormComponent implements OnInit {
   protected openOnClick!: UntypedFormControl;
   protected openOnFocus!: UntypedFormControl;
   protected opens!: UntypedFormControl;
-  protected placeholder = new UntypedFormControl('Select...');
-  protected requireValidation = new UntypedFormControl(false);
   protected returnedValueType!: UntypedFormControl;
   protected secondsFormat!: UntypedFormControl;
   protected secondsInterval!: UntypedFormControl;
@@ -269,8 +292,12 @@ export class ConfigFormComponent implements OnInit {
   public ngOnInit(): void {
     this.localFormat = ConfigFormComponent.getDefaultFormatByMode(this.pickerMode());
 
+    this.configForm.patchValue({
+      configs: {
+        locale: this.localeVal(),
+      },
+    });
     this.format = new UntypedFormControl(ConfigFormComponent.getDefaultFormatByMode(this.pickerMode()));
-    this.locale = new UntypedFormControl(this.localeVal());
     this.firstDayOfWeek = new UntypedFormControl(this.config().firstDayOfWeek);
     this.monthFormat = new UntypedFormControl(this.config().monthFormat);
     this.min = new UntypedFormControl(this.config().min);
@@ -361,48 +388,87 @@ export class ConfigFormComponent implements OnInit {
     this.moveCalendarTo.emit(dayjs('14-01-1987', 'DD-MM-YYYY'));
   }
 
+  private createForm(): FormGroup<ConfigForm> {
+    const formBuilder = inject(FormBuilder);
+
+    const attributeForm = formBuilder.group<AttributesForm>({
+      disabled: formBuilder.control(false, { nonNullable: true }),
+      displayDate: formBuilder.control(null),
+      material: formBuilder.control(true, { nonNullable: true }),
+      maxTimeValidation: formBuilder.control(null),
+      maxValidation: formBuilder.control(null),
+      minTimeValidation: formBuilder.control(null),
+      minValidation: formBuilder.control(null),
+      placeholder: formBuilder.control('Select...', { nonNullable: true }),
+      requireValidation: formBuilder.control(false, { nonNullable: true }),
+    });
+
+    const configsForm = formBuilder.group<ConfigsForm>({
+      locale: formBuilder.control('en', { nonNullable: true }),
+    });
+
+    return formBuilder.group<ConfigForm>({
+      attributes: attributeForm,
+      configs: configsForm,
+    });
+  }
+
+  private initializeAttributeListeners(attributes: AttributesFormValue): void {
+    if (attributes.displayDate !== undefined) {
+      this.onDisplayDateChange.emit(attributes.displayDate);
+    }
+
+    if (attributes.disabled !== undefined) {
+      this.onDisabledChange.emit(attributes.disabled);
+    }
+
+    if (attributes.material !== undefined) {
+      this.onMaterialThemeChange.emit(attributes.material);
+    }
+
+    if (attributes.requireValidation !== undefined) {
+      this.onRequireValidationChange.emit(attributes.requireValidation);
+    }
+
+    if (attributes.minValidation !== undefined) {
+      this.onMinValidationChange.emit(attributes.minValidation as Dayjs | null);
+    }
+
+    if (attributes.maxValidation !== undefined) {
+      this.onMaxValidationChange.emit(attributes.maxValidation as Dayjs | null);
+    }
+
+    if (attributes.minTimeValidation !== undefined) {
+      this.onMinTimeValidationChange.emit(attributes.minTimeValidation as Dayjs | null);
+    }
+
+    if (attributes.maxTimeValidation !== undefined) {
+      this.onMaxTimeValidationChange.emit(attributes.maxTimeValidation as Dayjs | null);
+    }
+
+    if (attributes.placeholder !== undefined) {
+      this.onPlaceholderChange.emit(attributes.placeholder);
+    }
+  }
+
+  private initializeConfigsListeners(configs: ConfigsFormValue): void {
+    if (configs.locale !== undefined) {
+      this.onLocaleChange.emit(configs.locale);
+    }
+  }
+
   private initListeners(): void {
+    this.configForm.valueChanges.subscribe((value) => {
+      if (value.attributes !== undefined) {
+        this.initializeAttributeListeners(value.attributes);
+      }
+
+      if (value.configs !== undefined) {
+        this.initializeConfigsListeners(value.configs);
+      }
+    });
+
     /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment */
-    this.displayDate.valueChanges.subscribe((value) => {
-      this.onDisplayDateChange.emit(value);
-    });
-
-    this.material.valueChanges.subscribe((value) => {
-      this.onMaterialThemeChange.emit(value);
-    });
-
-    this.disabled.valueChanges.subscribe((value) => {
-      this.onDisabledChange.emit(value);
-    });
-
-    this.requireValidation.valueChanges.subscribe((value) => {
-      this.onRequireValidationChange.emit(value);
-    });
-
-    this.minValidation.valueChanges.subscribe((value) => {
-      this.onMinValidationChange.emit(value);
-    });
-
-    this.maxValidation.valueChanges.subscribe((value) => {
-      this.onMaxValidationChange.emit(value);
-    });
-
-    this.minTimeValidation.valueChanges.subscribe((value) => {
-      this.onMinTimeValidationChange.emit(value);
-    });
-
-    this.maxTimeValidation.valueChanges.subscribe((value) => {
-      this.onMaxTimeValidationChange.emit(value);
-    });
-
-    this.placeholder.valueChanges.subscribe((value) => {
-      this.onPlaceholderChange.emit(value);
-    });
-
-    this.locale.valueChanges.subscribe((locale) => {
-      this.onLocaleChange.emit(locale);
-    });
-
     this.format.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
         format: value,

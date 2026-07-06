@@ -12,9 +12,9 @@ import { SingleCalendarValue } from '../../types/single-calendar-value';
 import { DateValidator } from '../../types/validator.type';
 
 export interface DateLimits {
-  maxDate?: SingleCalendarValue;
+  maxDate?: SingleCalendarValue | null;
   maxTime?: SingleCalendarValue;
-  minDate?: SingleCalendarValue;
+  minDate?: SingleCalendarValue | null;
   minTime?: SingleCalendarValue;
 }
 
@@ -168,7 +168,7 @@ export class UtilsService {
     const validators: Validator[] = [];
     const granularity = this.granularityFromType(calendarType);
 
-    if (minDate !== undefined && minDate !== '') {
+    if (minDate !== null && minDate !== undefined && minDate !== '') {
       const md = this.convertToDayjs(minDate, format);
       validators.push({
         key: 'minDate',
@@ -180,7 +180,7 @@ export class UtilsService {
       });
     }
 
-    if (maxDate !== undefined && maxDate !== '') {
+    if (maxDate !== null && maxDate !== undefined && maxDate !== '') {
       const md = this.convertToDayjs(maxDate, format);
       validators.push({
         key: 'maxDate',

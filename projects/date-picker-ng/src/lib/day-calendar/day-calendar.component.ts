@@ -12,11 +12,11 @@ import {
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
+  AbstractControl,
   ControlValueAccessor,
   FormsModule,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  UntypedFormControl,
   ValidationErrors,
   Validator,
 } from '@angular/forms';
@@ -74,8 +74,8 @@ export class DayCalendarComponent implements ControlValueAccessor, OnInit, Valid
 
   public readonly config = input<IDayCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
-  public readonly maxDate = input<Dayjs>();
-  public readonly minDate = input<Dayjs>();
+  public readonly maxDate = input<Dayjs | null>(null);
+  public readonly minDate = input<Dayjs | null>(null);
   public readonly theme = input<string>('');
 
   /*
@@ -204,8 +204,8 @@ export class DayCalendarComponent implements ControlValueAccessor, OnInit, Valid
     // No op
   }
 
-  public validate(formControl: UntypedFormControl): ValidationErrors | null {
-    return this.minDate() !== undefined || this.maxDate() !== undefined
+  public validate(formControl: AbstractControl<CalendarValue | null>): ValidationErrors | null {
+    return this.minDate() !== null || this.maxDate() !== null
       ? this.validateFn(formControl.value as CalendarValue)
       : (): ValidationErrors | null => null;
   }

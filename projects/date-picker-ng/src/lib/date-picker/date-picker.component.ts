@@ -91,9 +91,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnChanges, OnD
   public readonly config = model<IDatePickerConfig>({});
   public readonly disabled = model(false);
   public readonly displayDate = model<SingleCalendarValue | null>(null);
-  public readonly maxDate = model<SingleCalendarValue>();
+  public readonly maxDate = model<SingleCalendarValue | null>(null);
   public readonly maxTime = model<SingleCalendarValue>();
-  public readonly minDate = model<SingleCalendarValue>();
+  public readonly minDate = model<SingleCalendarValue | null>(null);
   public readonly minTime = model<SingleCalendarValue>();
   public readonly mode = model<CalendarMode>('day');
   public readonly placeholder = input('');

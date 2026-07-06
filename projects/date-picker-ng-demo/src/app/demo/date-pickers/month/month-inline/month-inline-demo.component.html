@@ -7,7 +7,7 @@
           (close)="closed()"
           (onLeftNav)="onLeftNav($event)"
           (onRightNav)="onRightNav($event)"
-          [config]="config"
+          [config]="config()"
           [displayDate]="displayDate"
           [formControl]="control"
           [maxDate]="validationMaxDate"
@@ -51,7 +51,7 @@
     (onRequireValidationChange)="onRequireValidationChange($event)"
     (openCalendar)="openCalendar()"
     (onLocaleChange)="onLocaleChange($event)"
-    [config]="config"
+    [config]="config()"
     [localeVal]="locale"
     pickerMode="monthInline"
   >

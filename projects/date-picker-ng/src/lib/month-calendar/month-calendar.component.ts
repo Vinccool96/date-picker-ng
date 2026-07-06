@@ -67,8 +67,8 @@ export class MonthCalendarComponent implements ControlValueAccessor, OnInit, Val
 
   public readonly config = input<IMonthCalendarConfig>();
   public readonly displayDate = input<SingleCalendarValue | null>(null);
-  public readonly maxDate = input<Dayjs>();
-  public readonly minDate = input<Dayjs>();
+  public readonly maxDate = input<Dayjs | null>(null);
+  public readonly minDate = input<Dayjs | null>(null);
   public readonly theme = input<string>('');
 
   /*
@@ -185,7 +185,7 @@ export class MonthCalendarComponent implements ControlValueAccessor, OnInit, Val
   }
 
   public validate(formControl: AbstractControl): ValidationErrors | null {
-    return this.minDate() !== undefined || this.maxDate() !== undefined
+    return this.minDate() !== null || this.maxDate() !== null
       ? this.validateFn(formControl.value as CalendarValue)
       : (): ValidationErrors | null => null;
   }

@@ -61,9 +61,9 @@ export class TimeSelectComponent implements ControlValueAccessor, OnInit, Valida
 
   public readonly config = input<ITimeSelectConfig>();
   public readonly displayDate = input<SingleCalendarValue>();
-  public readonly maxDate = input<SingleCalendarValue>();
+  public readonly maxDate = input<SingleCalendarValue | null>(null);
   public readonly maxTime = input<SingleCalendarValue>();
-  public readonly minDate = input<SingleCalendarValue>();
+  public readonly minDate = input<SingleCalendarValue | null>(null);
   public readonly minTime = input<SingleCalendarValue>();
   public readonly theme = input<string>('');
 
@@ -156,8 +156,8 @@ export class TimeSelectComponent implements ControlValueAccessor, OnInit, Valida
   }
 
   public validate(formControl: AbstractControl): ValidationErrors | null {
-    return this.minDate() !== undefined ||
-      this.maxDate() !== undefined ||
+    return this.minDate() !== null ||
+      this.maxDate() !== null ||
       this.minTime() !== undefined ||
       this.maxTime() !== undefined
       ? this.validateFn(formControl.value as CalendarValue)
