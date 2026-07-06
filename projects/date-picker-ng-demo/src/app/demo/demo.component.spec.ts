@@ -1,22 +1,20 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
 
 import { DemoComponent } from './demo.component';
 
-describe('Demo', () => {
+describe('DemoComponent', () => {
+  let spectator: Spectator<DemoComponent>;
   let component: DemoComponent;
-  let fixture: ComponentFixture<DemoComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [DemoComponent],
-      providers: [{ provide: ActivatedRoute, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+  const createComponent = createComponentFactory({
+    component: DemoComponent,
+    providers: [{ provide: ActivatedRoute, useValue: {} }],
+  });
 
-    fixture = TestBed.createComponent(DemoComponent);
-    component = fixture.componentInstance;
+  beforeEach(() => {
+    spectator = createComponent();
+    component = spectator.component;
   });
 
   it('should create', () => {

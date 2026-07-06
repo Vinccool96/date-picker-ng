@@ -1,4 +1,4 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { createServiceFactory, SpectatorService } from '@ngneat/spectator/vitest';
 import { Dayjs } from 'dayjs';
 
 import { dayjsRef } from '../../dayjs/dayjs.ref';
@@ -6,23 +6,27 @@ import { IDate } from '../../models/date.model';
 import { UtilsService } from './utils.service';
 
 describe('UtilsService', () => {
+  let spectator: SpectatorService<UtilsService>;
+  let service: UtilsService;
+
+  const createService = createServiceFactory(UtilsService);
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [UtilsService],
-    });
+    spectator = createService();
+    service = spectator.service;
   });
 
-  it('should ...', inject([UtilsService], (service: UtilsService) => {
+  it('should ...', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 
-  it('should check isDateValid method', inject([UtilsService], (service: UtilsService) => {
+  it('should check isDateValid method', () => {
     expect(service.isDateValid('13-10-2015', 'DD-MM-YYYY')).toBe(true);
     expect(service.isDateValid('13-10-2015', 'DD-MM-YY')).toBe(false);
     expect(service.isDateValid('', 'DD-MM-YY')).toBe(true);
-  }));
+  });
 
-  it('should check updateSelected method for day', inject([UtilsService], (service: UtilsService) => {
+  it('should check updateSelected method for day', () => {
     const date1: IDate = {
       date: dayjsRef('21-04-2017', 'DD-MM-YYYY'),
       selected: false,
@@ -50,9 +54,9 @@ describe('UtilsService', () => {
 
     date1.selected = true;
     expect(service.updateSelected(true, [date1.date as Dayjs], date1, 'day').length).toEqual(0);
-  }));
+  });
 
-  it('should check updateSelected method for month', inject([UtilsService], (service: UtilsService) => {
+  it('should check updateSelected method for month', () => {
     const date1: IDate = {
       date: dayjsRef('21-04-2017', 'DD-MM-YYYY'),
       selected: false,
@@ -85,9 +89,9 @@ describe('UtilsService', () => {
 
     date1.selected = true;
     expect(service.updateSelected(true, [date1.date as Dayjs], date1, 'month').length).toEqual(0);
-  }));
+  });
 
-  it('should check if date is in range', inject([UtilsService], (service: UtilsService) => {
+  it('should check if date is in range', () => {
     expect(service.isDateInRange(dayjsRef(), dayjsRef().subtract(1, 'd'), dayjsRef().add(1, 'd'))).toBeTruthy();
     expect(service.isDateInRange(dayjsRef(), dayjsRef().subtract(1, 'd'), null)).toBeTruthy();
     expect(service.isDateInRange(dayjsRef(), null, dayjsRef().add(1, 'd'))).toBeTruthy();
@@ -97,16 +101,16 @@ describe('UtilsService', () => {
     expect(service.isDateInRange(dayjsRef(), dayjsRef().add(3, 'd'), null)).toBeFalsy();
     expect(service.isDateInRange(dayjsRef(), null, dayjsRef().subtract(3, 'd'))).toBeFalsy();
     expect(service.isDateInRange(dayjsRef(), null, null)).toBeTruthy();
-  }));
+  });
 
-  it('should convertPropsToDayjs method', inject([UtilsService], (service: UtilsService) => {
+  it('should convertPropsToDayjs method', () => {
     const object = { max: '14-01-1987', min: '14-01-1987' };
     service.convertPropsToDayjs(object, 'DD-MM-YYYY', ['min', 'max']);
     expect(dayjsRef.isDayjs(object.min)).toBeTruthy();
     expect(dayjsRef.isDayjs(object.max)).toBeTruthy();
-  }));
+  });
 
-  it('should test datesStringToStringArray', inject([UtilsService], (service: UtilsService) => {
+  it('should test datesStringToStringArray', () => {
     expect(service.datesStringToStringArray('')).toEqual([]);
     expect(service.datesStringToStringArray('14-01-1984')).toEqual(['14-01-1984']);
     expect(service.datesStringToStringArray('14-01-1984|15-01-1984')).toEqual(['14-01-1984', '15-01-1984']);
@@ -114,9 +118,9 @@ describe('UtilsService', () => {
     expect(service.datesStringToStringArray('')).toEqual([]);
     expect(service.datesStringToStringArray('14,01-1984|15,01-1984')).toEqual(['14,01-1984', '15,01-1984']);
     expect(service.datesStringToStringArray('14,01-1984| asdasd')).toEqual(['14,01-1984', 'asdasd']);
-  }));
+  });
 
-  it('check convertToString', inject([UtilsService], (service: UtilsService) => {
+  it('check convertToString', () => {
     const format = 'MM/DD/YYYY';
     expect(service.convertToString(null, format)).toEqual('');
     expect(service.convertToString('', format)).toEqual('');
@@ -128,5 +132,5 @@ describe('UtilsService', () => {
     expect(service.convertToString([dayjsRef().format(format), dayjsRef().add(1, 'd').format(format)], format)).toEqual(
       dayjsRef().format(format) + ' | ' + dayjsRef().add(1, 'd').format(format),
     );
-  }));
+  });
 });

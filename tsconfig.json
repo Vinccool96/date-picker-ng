@@ -23,7 +23,8 @@
     "esModuleInterop": true,
     "useDefineForClassFields": false,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "types": ["node", "vitest/globals"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

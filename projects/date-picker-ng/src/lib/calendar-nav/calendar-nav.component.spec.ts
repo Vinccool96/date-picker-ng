@@ -1,4 +1,4 @@
-import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
+import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
 
 import { CalendarNavComponent } from './calendar-nav.component';
 
@@ -20,10 +20,13 @@ describe('CalendarNavComponent', () => {
   });
 
   it('should emit event when go to current click', () => {
-    const goToCurrent = spectator.query('.dp-current-location-btn') as HTMLElement;
+    let goToCurrentEmitted: boolean | undefined;
+    spectator.output('onGoToCurrent').subscribe(() => {
+      goToCurrentEmitted = true;
+    });
 
-    vi.spyOn(component.onGoToCurrent, 'emit');
-    goToCurrent.dispatchEvent(new Event('click'));
-    expect(component.onGoToCurrent.emit).toHaveBeenCalledWith();
+    spectator.click(byTestId('goToCurrentButton'));
+
+    expect(goToCurrentEmitted).toBe(true);
   });
 });

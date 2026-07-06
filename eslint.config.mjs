@@ -229,6 +229,10 @@ export default tseslint.config(
               groupName: 'styles',
             },
             {
+              elementNamePattern: '^component',
+              groupName: 'component',
+            },
+            {
               elementNamePattern: '^provide(rs)?',
               groupName: 'providers',
             },
@@ -322,6 +326,7 @@ export default tseslint.config(
             'styleUrl',
             'styleUrls',
             'styles',
+            'component',
             'providers',
             'exports',
             'bootstrap',

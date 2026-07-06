@@ -1,19 +1,22 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { createServiceFactory, SpectatorService } from '@ngneat/spectator/vitest';
 import { Dayjs } from 'dayjs';
 
 import { dayjsRef } from '../common/dayjs/dayjs.ref';
-import { UtilsService } from '../common/services/utils/utils.service';
 import { IDayCalendarConfigInternal } from './day-calendar-config.model';
 import { DayCalendarService } from './day-calendar.service';
 
 describe('DayCalendarService', () => {
+  let spectator: SpectatorService<DayCalendarService>;
+  let service: DayCalendarService;
+
+  const createService = createServiceFactory(DayCalendarService);
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [DayCalendarService, UtilsService],
-    });
+    spectator = createService();
+    service = spectator.service;
   });
 
-  it('should check the generateDaysIndexMap method', inject([DayCalendarService], (service: DayCalendarService) => {
+  it('should check the generateDaysIndexMap method', () => {
     expect(service.generateDaysIndexMap('su')).toEqual({
       0: 'su',
       1: 'mo',
@@ -41,15 +44,15 @@ describe('DayCalendarService', () => {
       5: 'mo',
       6: 'tu',
     });
-  }));
+  });
 
-  it('should check the generateDaysMap method', inject([DayCalendarService], (service: DayCalendarService) => {
+  it('should check the generateDaysMap method', () => {
     expect(service.generateDaysMap('su')).toEqual({ fr: 5, mo: 1, sa: 6, su: 0, th: 4, tu: 2, we: 3 });
     expect(service.generateDaysMap('mo')).toEqual({ fr: 4, mo: 0, sa: 5, su: 6, th: 3, tu: 1, we: 2 });
     expect(service.generateDaysMap('we')).toEqual({ fr: 2, mo: 5, sa: 3, su: 4, th: 1, tu: 6, we: 0 });
-  }));
+  });
 
-  it('should check the generateMonthArray method', inject([DayCalendarService], (service: DayCalendarService) => {
+  it('should check the generateMonthArray method', () => {
     let monthWeeks = service.generateMonthArray(
       {
         firstDayOfWeek: 'su',
@@ -130,9 +133,9 @@ describe('DayCalendarService', () => {
     expect(monthWeeks[2][1].selected).toBe(false);
     expect(monthWeeks[2][3].selected).toBe(false);
     vi.useRealTimers();
-  }));
+  });
 
-  it('should check the generateWeekdays method', inject([DayCalendarService], (service: DayCalendarService) => {
+  it('should check the generateWeekdays method', () => {
     expect(service.generateWeekdays('su').map((d) => d.format('ddd'))).toEqual([
       'Sun',
       'Mon',
@@ -152,9 +155,9 @@ describe('DayCalendarService', () => {
       'Sat',
       'Sun',
     ]);
-  }));
+  });
 
-  it('should check isDateDisabled method', inject([DayCalendarService], (service: DayCalendarService) => {
+  it('should check isDateDisabled method', () => {
     const config: IDayCalendarConfigInternal = {
       firstDayOfWeek: 'su',
       max: dayjsRef('13-10-2016', 'DD-MM-YYYY').add(1, 'day'),
@@ -173,45 +176,39 @@ describe('DayCalendarService', () => {
 
     expect(service.isDateDisabled(dayjsRef('13-10-2016', 'DD-MM-YYYY'), config)).toBe(true);
     expect(service.isDateDisabled(dayjsRef('11-10-2016', 'DD-MM-YYYY'), config)).toBe(false);
-  }));
+  });
 
-  it('should show/hide near month according to showNearMonthDays configuration', inject(
-    [DayCalendarService],
-    (service: DayCalendarService) => {
-      const config: IDayCalendarConfigInternal = {
-        firstDayOfWeek: 'su',
-        showNearMonthDays: true,
-      };
+  it('should show/hide near month according to showNearMonthDays configuration', () => {
+    const config: IDayCalendarConfigInternal = {
+      firstDayOfWeek: 'su',
+      showNearMonthDays: true,
+    };
 
-      expect(service.generateMonthArray(config, dayjsRef('27-03-2017', 'DD-MM-YYYY'), []).length).toBe(6);
-      config.showNearMonthDays = false;
-      expect(service.generateMonthArray(config, dayjsRef('27-03-2017', 'DD-MM-YYYY'), []).length).toBe(5);
-    },
-  ));
+    expect(service.generateMonthArray(config, dayjsRef('27-03-2017', 'DD-MM-YYYY'), []).length).toBe(6);
+    config.showNearMonthDays = false;
+    expect(service.generateMonthArray(config, dayjsRef('27-03-2017', 'DD-MM-YYYY'), []).length).toBe(5);
+  });
 
-  it('should not effect the calendar when no full near weeks even if showNearMonthDays is false', inject(
-    [DayCalendarService],
-    (service: DayCalendarService) => {
-      const config: IDayCalendarConfigInternal = {
-        firstDayOfWeek: 'su',
-        showNearMonthDays: false,
-      };
+  it('should not effect the calendar when no full near weeks even if showNearMonthDays is false', () => {
+    const config: IDayCalendarConfigInternal = {
+      firstDayOfWeek: 'su',
+      showNearMonthDays: false,
+    };
 
-      expect(service.generateMonthArray(config, dayjsRef('27-04-2017', 'DD-MM-YYYY'), []).length).toBe(6);
-    },
-  ));
+    expect(service.generateMonthArray(config, dayjsRef('27-04-2017', 'DD-MM-YYYY'), []).length).toBe(6);
+  });
 
-  it('should check getDayBtnText method', inject([DayCalendarService], (service: DayCalendarService) => {
+  it('should check getDayBtnText method', () => {
     const date = dayjsRef('05-04-2017', 'DD-MM-YYYY');
     expect(service.getDayBtnText({ dayBtnFormat: 'DD' }, date)).toEqual('05');
     expect(service.getDayBtnText({ dayBtnFormat: 'D' }, date)).toEqual('5');
     expect(service.getDayBtnText({ dayBtnFormatter: () => 'bla' }, date)).toEqual('bla');
     expect(service.getDayBtnText({ dayBtnFormat: 'DD', dayBtnFormatter: (m) => m.format('D') }, date)).toEqual('5');
-  }));
+  });
 
-  it('should check getDayBtnCssClass method', inject([DayCalendarService], (service: DayCalendarService) => {
+  it('should check getDayBtnCssClass method', () => {
     const date = dayjsRef('05-04-2017', 'DD-MM-YYYY');
     expect(service.getDayBtnCssClass({}, date)).toEqual('');
     expect(service.getDayBtnCssClass({ dayBtnCssClassCallback: () => 'class1 class2' }, date)).toEqual('class1 class2');
-  }));
+  });
 });
