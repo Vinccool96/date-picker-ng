@@ -407,11 +407,9 @@ export class ConfigFormComponent implements OnInit {
       requireValidation: formBuilder.control(false, { nonNullable: true }),
     });
 
-    const pickerMode = this.pickerMode();
-
     const configsForm = formBuilder.group<ConfigsForm>({
       firstDayOfWeek: formBuilder.control('su', { nonNullable: true }),
-      format: formBuilder.control(ConfigFormComponent.getDefaultFormatByMode(pickerMode), { nonNullable: true }),
+      format: formBuilder.control('DD-MM-YYYY', { nonNullable: true }),
       locale: formBuilder.control('en', { nonNullable: true }),
       max: formBuilder.control(null),
       maxTime: formBuilder.control(null),
