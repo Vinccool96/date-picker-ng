@@ -73,7 +73,7 @@ export class DatePickerService {
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);
 
-    if (config?.allowMultiSelect === true && config.closeOnSelect === undefined) {
+    if (config?.allowMultiSelect === true && (config.closeOnSelect === null || config.closeOnSelect === undefined)) {
       _config.closeOnSelect = false;
     }
 
@@ -118,7 +118,7 @@ export class DatePickerService {
   }
 
   public getOverlayPosition({ drops, opens }: IDatePickerConfig): ConnectedPosition[] | undefined {
-    if (drops === 'up' && opens === undefined) {
+    if (drops === 'up' && (opens === null || opens === undefined)) {
       return [
         {
           originX: 'start',
@@ -131,9 +131,9 @@ export class DatePickerService {
 
     return [
       {
-        originX: opens === undefined || opens === 'left' ? 'start' : 'end',
-        originY: drops !== undefined && drops === 'up' ? 'top' : 'bottom',
-        overlayX: opens === undefined || opens === 'left' ? 'start' : 'end',
+        originX: opens === 'right' ? 'end' : 'start',
+        originY: drops !== null && drops !== undefined && drops === 'up' ? 'top' : 'bottom',
+        overlayX: opens === 'right' ? 'end' : 'start',
         overlayY: drops !== undefined && drops === 'up' ? 'bottom' : 'top',
       },
     ];

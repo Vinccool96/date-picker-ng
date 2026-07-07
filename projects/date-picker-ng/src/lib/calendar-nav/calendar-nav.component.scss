@@ -43,12 +43,12 @@ dp-calendar-nav {
   .dp-calendar-nav-left,
   .dp-calendar-nav-right {
     line-height: 0;
-  @include variables.arrow(45deg);
+    @include variables.arrow(45deg);
   }
 
   .dp-calendar-secondary-nav-left,
   .dp-calendar-secondary-nav-right {
-  @include variables.double-arrow(45deg);
+    @include variables.double-arrow(45deg);
     padding: 0;
   }
 
@@ -58,11 +58,11 @@ dp-calendar-nav {
   }
 
   .dp-calendar-nav-left {
-  @include variables.arrow(-135deg);
+    @include variables.arrow(-135deg);
   }
 
   .dp-calendar-secondary-nav-left {
-  @include variables.double-arrow(-135deg);
+    @include variables.double-arrow(-135deg);
   }
 
   .dp-nav-header {

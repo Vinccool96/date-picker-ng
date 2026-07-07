@@ -5,6 +5,7 @@ export { INavEvent } from './lib/common/models/navigation-event.model';
 export { ECalendarMode } from './lib/common/types/calendar-mode-enum';
 export { CalendarValue } from './lib/common/types/calendar-value';
 export { ECalendarValue } from './lib/common/types/calendar-value-enum';
+export type { TDrops, TOpens } from './lib/common/types/poistions.type';
 export { SelectEvent } from './lib/common/types/selection-event.enum';
 export { ISelectionEvent } from './lib/common/types/selection-event.model';
 export { SingleCalendarValue } from './lib/common/types/single-calendar-value';

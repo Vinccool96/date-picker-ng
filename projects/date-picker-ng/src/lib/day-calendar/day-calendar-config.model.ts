@@ -1,6 +1,7 @@
 import { Dayjs } from 'dayjs';
 
 import { ICalendar, ICalendarInternal } from '../common/models/calendar.model';
+import { IBaseConfigWithMultiple } from '../common/models/config';
 import { ECalendarValue } from '../common/types/calendar-value-enum';
 import { WeekDays } from '../common/types/week-days.type';
 
@@ -8,8 +9,7 @@ export interface IDayCalendarConfig extends ICalendar, IConfig {}
 
 export interface IDayCalendarConfigInternal extends ICalendarInternal, IConfig {}
 
-interface IConfig {
-  allowMultiSelect?: boolean;
+interface IConfig extends IBaseConfigWithMultiple{
   dayBtnCssClassCallback?: (day: Dayjs | undefined) => string;
   dayBtnFormat?: string;
   dayBtnFormatter?: (day: Dayjs) => string;

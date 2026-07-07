@@ -2,7 +2,7 @@ import { ECalendarValue, IDatePickerConfig } from 'date-picker-ng';
 
 export const DEF_CONF: IDatePickerConfig = {
   closeOnEnter: true,
-  closeOnSelect: undefined,
+  closeOnSelect: null,
   closeOnSelectDelay: 100,
   dayBtnFormat: 'DD',
   disableKeypress: false,

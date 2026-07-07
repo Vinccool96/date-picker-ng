@@ -1,10 +1,10 @@
 import { Dayjs } from 'dayjs';
 
 import { ICalendar, ICalendarInternal } from '../common/models/calendar.model';
+import { IBaseConfigWithMultiple } from '../common/models/config';
 import { ECalendarValue } from '../common/types/calendar-value-enum';
 
-export interface IConfig {
-  allowMultiSelect?: boolean;
+export interface IConfig extends IBaseConfigWithMultiple {
   format?: string;
   isMonthDisabledCallback?: (date: Dayjs) => boolean;
   isNavHeaderBtnClickable?: boolean;

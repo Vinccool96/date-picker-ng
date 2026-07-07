@@ -1,0 +1,50 @@
+import { FormControl, FormGroup } from '@angular/forms';
+import { SingleCalendarValue, TDrops, TOpens, WeekDays } from 'date-picker-ng';
+import { Dayjs } from 'dayjs';
+
+export interface AttributesForm {
+  disabled: FormControl<boolean>;
+  displayDate: FormControl<SingleCalendarValue | null>;
+  material: FormControl<boolean>;
+  maxTimeValidation: FormControl<SingleCalendarValue | null>;
+  maxValidation: FormControl<SingleCalendarValue | null>;
+  minTimeValidation: FormControl<SingleCalendarValue | null>;
+  minValidation: FormControl<SingleCalendarValue | null>;
+  placeholder: FormControl<string>;
+  requireValidation: FormControl<boolean>;
+}
+
+export type AttributesFormValue = FormGroup<AttributesForm>['value'];
+
+export interface ConfigForm {
+  attributes: FormGroup<AttributesForm>;
+  configs: FormGroup<ConfigsForm>;
+}
+
+export interface ConfigsForm {
+  allowMultiSelect: FormControl<boolean | null>;
+  closeOnSelect: FormControl<boolean | null>;
+  closeOnSelectDelay: FormControl<number>;
+  disableKeypress: FormControl<boolean>;
+  drops: FormControl<TDrops | null>;
+  enableMonthSelector: FormControl<boolean>;
+  firstDayOfWeek: FormControl<WeekDays>;
+  format: FormControl<string>;
+  hideInputContainer: FormControl<boolean>;
+  locale: FormControl<string>;
+  max: FormControl<SingleCalendarValue | null>;
+  maxTime: FormControl<Dayjs | null>;
+  min: FormControl<SingleCalendarValue | null>;
+  minTime: FormControl<Dayjs | null>;
+  monthFormat: FormControl<string>;
+  onOpenDelay: FormControl<number>;
+  openOnClick: FormControl<boolean>;
+  openOnFocus: FormControl<boolean>;
+  opens: FormControl<TOpens | null>;
+  showNearMonthDays: FormControl<boolean>;
+  showWeekNumbers: FormControl<boolean>;
+  weekDayFormat: FormControl<string>;
+  yearFormat: FormControl<string>;
+}
+
+export type ConfigsFormValue = FormGroup<ConfigsForm>['value'];

@@ -279,7 +279,7 @@
           <label
             >Single
             <input
-              [formControl]="allowMultiSelect"
+              formControlName="allowMultiSelect"
               [value]="false"
               id="disableMultiselect"
               name="allowMultiSelect"
@@ -289,7 +289,7 @@
           <label
             >Multiple
             <input
-              [formControl]="allowMultiSelect"
+              formControlName="allowMultiSelect"
               [value]="true"
               id="enableMultiselect"
               name="allowMultiSelect"
@@ -306,12 +306,18 @@
         <div class="dp-option-playground">
           <label
             >Close
-            <input [formControl]="closeOnSelect" [value]="true" id="closeOnSelect" name="closeOnSelect" type="radio" />
+            <input
+              formControlName="closeOnSelect"
+              [value]="true"
+              id="closeOnSelect"
+              name="closeOnSelect"
+              type="radio"
+            />
           </label>
           <label
             >Don't Close
             <input
-              [formControl]="closeOnSelect"
+              formControlName="closeOnSelect"
               [value]="false"
               id="noCloseOnSelect"
               name="closeOnSelect"
@@ -326,7 +332,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Closing Delay in ms (closeOnSelectDelay): </span>
         <div class="dp-option-playground">
-          <input [formControl]="closeOnSelectDelay" id="closeDelay" type="number" />
+          <input formControlName="closeOnSelectDelay" id="closeDelay" type="number" />
         </div>
       </div>
     }
@@ -337,11 +343,11 @@
         <div class="dp-option-playground">
           <label
             >No
-            <input [formControl]="openOnFocus" [value]="false" id="noOpenOnFocus" name="openOnFocus" type="radio" />
+            <input formControlName="openOnFocus" [value]="false" id="noOpenOnFocus" name="openOnFocus" type="radio" />
           </label>
           <label
             >Yes
-            <input [formControl]="openOnFocus" [value]="true" id="yesOpenOnFocus" name="openOnFocus" type="radio" />
+            <input formControlName="openOnFocus" [value]="true" id="yesOpenOnFocus" name="openOnFocus" type="radio" />
           </label>
         </div>
       </div>
@@ -353,11 +359,11 @@
         <div class="dp-option-playground">
           <label
             >No
-            <input [formControl]="openOnClick" [value]="false" id="noOpenOnClick" name="openOnClick" type="radio" />
+            <input formControlName="openOnClick" [value]="false" id="noOpenOnClick" name="openOnClick" type="radio" />
           </label>
           <label
             >Yes
-            <input [formControl]="openOnClick" [value]="true" id="yesOpenOnClick" name="openOnClick" type="radio" />
+            <input formControlName="openOnClick" [value]="true" id="yesOpenOnClick" name="openOnClick" type="radio" />
           </label>
         </div>
       </div>
@@ -367,7 +373,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Open Delay in ms (onOpenDelay): </span>
         <div class="dp-option-playground">
-          <input [formControl]="onOpenDelay" id="onOpenDelay" type="number" />
+          <input formControlName="onOpenDelay" id="onOpenDelay" type="number" />
         </div>
       </div>
     }
@@ -376,7 +382,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Weekday Format (weekDayFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="weekDayFormat" id="weekDaysFormat" type="text" />
+          <input formControlName="weekDayFormat" id="weekDaysFormat" type="text" />
         </div>
       </div>
     }
@@ -387,11 +393,11 @@
         <div class="dp-option-playground">
           <label
             >Disabled
-            <input [formControl]="disableKeypress" [value]="true" name="disableKeypress" type="radio" />
+            <input formControlName="disableKeypress" [value]="true" name="disableKeypress" type="radio" />
           </label>
           <label
             >Enabled
-            <input [formControl]="disableKeypress" [value]="false" name="disableKeypress" type="radio" />
+            <input formControlName="disableKeypress" [value]="false" name="disableKeypress" type="radio" />
           </label>
         </div>
       </div>
@@ -403,15 +409,15 @@
         <div class="dp-option-playground">
           <label
             >Down
-            <input [formControl]="drops" name="drops" type="radio" value="down" />
+            <input formControlName="drops" name="drops" type="radio" value="down" />
           </label>
           <label
             >Up
-            <input [formControl]="drops" name="drops" type="radio" value="up" />
+            <input formControlName="drops" name="drops" type="radio" value="up" />
           </label>
           <label
             >Auto
-            <input [formControl]="drops" name="drops" type="radio" value="null" />
+            <input formControlName="drops" name="drops" type="radio" [value]="null" />
           </label>
         </div>
       </div>
@@ -423,15 +429,15 @@
         <div class="dp-option-playground">
           <label
             >Right
-            <input [formControl]="opens" name="opens" type="radio" value="right" />
+            <input formControlName="opens" name="opens" type="radio" value="right" />
           </label>
           <label
             >Left
-            <input [formControl]="opens" name="opens" type="radio" value="left" />
+            <input formControlName="opens" name="opens" type="radio" value="left" />
           </label>
           <label
             >Auto
-            <input [formControl]="opens" name="opens" type="radio" value="null" />
+            <input formControlName="opens" name="opens" type="radio" [value]="null" />
           </label>
         </div>
       </div>
@@ -444,7 +450,7 @@
           <label
             >Hidden
             <input
-              [formControl]="hideInputContainer"
+              formControlName="hideInputContainer"
               [value]="true"
               id="hideInputRadio"
               name="hideInputContainer"
@@ -454,7 +460,7 @@
           <label
             >Shown
             <input
-              [formControl]="hideInputContainer"
+              formControlName="hideInputContainer"
               [value]="false"
               id="showInputRadio"
               name="hideInputContainer"
@@ -472,7 +478,7 @@
           <label
             >Show
             <input
-              [formControl]="showNearMonthDays"
+              formControlName="showNearMonthDays"
               [value]="true"
               id="showNearMonthDaysRadio"
               name="showNearMonthDays"
@@ -482,7 +488,7 @@
           <label
             >Hide
             <input
-              [formControl]="showNearMonthDays"
+              formControlName="showNearMonthDays"
               [value]="false"
               id="hideNearMonthDaysRadio"
               name="showNearMonthDays"
@@ -500,7 +506,7 @@
           <label
             >Show
             <input
-              [formControl]="showWeekNumbers"
+              formControlName="showWeekNumbers"
               [value]="true"
               id="showWeekNumbersRadio"
               name="showWeekNumbers"
@@ -510,7 +516,7 @@
           <label
             >Hide
             <input
-              [formControl]="showWeekNumbers"
+              formControlName="showWeekNumbers"
               [value]="false"
               id="hideWeekNumbersRadio"
               name="showWeekNumbers"
@@ -528,7 +534,7 @@
           <label
             >Enabled
             <input
-              [formControl]="enableMonthSelector"
+              formControlName="enableMonthSelector"
               [value]="true"
               id="enableMonthSelector"
               name="enableMonthSelector"
@@ -538,7 +544,7 @@
           <label
             >Disabled
             <input
-              [formControl]="enableMonthSelector"
+              formControlName="enableMonthSelector"
               [value]="false"
               id="disableMonthSelector"
               name="enableMonthSelector"
@@ -553,7 +559,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Year Format (yearFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="yearFormat" id="yearFormat" type="text" />
+          <input formControlName="yearFormat" id="yearFormat" type="text" />
         </div>
       </div>
     }

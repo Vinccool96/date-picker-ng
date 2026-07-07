@@ -102,7 +102,7 @@ export class UtilsService {
 
   public convertToDayjsArray(
     value: CalendarValue | undefined,
-    config: { allowMultiSelect?: boolean; format?: string },
+    config: { allowMultiSelect?: boolean | null; format?: string },
   ): Dayjs[] {
     // todo:: add unit test
     let returnValue: Dayjs[];
@@ -254,7 +254,7 @@ export class UtilsService {
   public getDefaultDisplayDate(
     current: Dayjs | null | undefined,
     selected: Dayjs[] | undefined,
-    allowMultiSelect: boolean | undefined,
+    allowMultiSelect: boolean | null | undefined,
     minDate: Dayjs | undefined,
   ): Dayjs {
     // todo:: add unit test
@@ -277,7 +277,7 @@ export class UtilsService {
     return dayjsRef();
   }
 
-  public getInputType(value: CalendarValue, allowMultiSelect: boolean | undefined): ECalendarValue {
+  public getInputType(value: CalendarValue, allowMultiSelect: boolean | null | undefined): ECalendarValue {
     // todo:: add unit test
     if (Array.isArray(value)) {
       if (value.length === 0) {
@@ -393,7 +393,7 @@ export class UtilsService {
   }
 
   public updateSelected(
-    isMultiple: boolean | undefined,
+    isMultiple: boolean | null | undefined,
     currentlySelected: Dayjs[],
     date: IDate,
     granularity: UnitType = 'day',

@@ -7,17 +7,17 @@ import { ITimeSelectConfig, ITimeSelectConfigInternal } from '../time-select/tim
 
 export interface IConfig {
   closeOnEnter?: boolean;
-  closeOnSelect?: boolean;
+  closeOnSelect?: boolean | null;
   closeOnSelectDelay?: number;
   disableKeypress?: boolean;
-  drops?: TDrops;
+  drops?: TDrops | null;
   hideInputContainer?: boolean;
   hideOnOutsideClick?: boolean;
   inputElementContainer?: string | ElementRef | HTMLElement;
   onOpenDelay?: number;
   openOnClick?: boolean;
   openOnFocus?: boolean;
-  opens?: TOpens;
+  opens?: TOpens | null;
 }
 
 export interface IDatePickerConfig extends IConfig, IDayCalendarConfig, IMonthCalendarConfig, ITimeSelectConfig {}

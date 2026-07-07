@@ -5,7 +5,7 @@ $c-light-gray: #e0e0e0;
 
 $basic-height: 30px;
 
-@mixin arrow($deg){
+@mixin arrow($deg) {
   &::before {
     position: relative;
     content: '';
@@ -19,7 +19,7 @@ $basic-height: 30px;
   }
 }
 
-@mixin double-arrow($deg){
+@mixin double-arrow($deg) {
   &::before,
   &::after {
     position: relative;

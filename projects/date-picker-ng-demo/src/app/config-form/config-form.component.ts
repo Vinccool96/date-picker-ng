@@ -1,8 +1,9 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
-import { DatePickerComponent, ECalendarValue, IDatePickerConfig, SingleCalendarValue, WeekDays } from 'date-picker-ng';
+import { FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import { DatePickerComponent, ECalendarValue, IDatePickerConfig, SingleCalendarValue } from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
 
+import { AttributesForm, AttributesFormValue, ConfigForm, ConfigsForm, ConfigsFormValue } from './forms';
 import {
   DAY_CALENDAR_OPTION_KEYS,
   DAY_PICKER_DIRECTIVE_OPTION_KEYS,
@@ -12,38 +13,6 @@ import {
   TIME_PICKER_OPTION_KEYS,
   TIME_SELECT_OPTION_KEYS,
 } from './keys';
-
-interface AttributesForm {
-  disabled: FormControl<boolean>;
-  displayDate: FormControl<SingleCalendarValue | null>;
-  material: FormControl<boolean>;
-  maxTimeValidation: FormControl<SingleCalendarValue | null>;
-  maxValidation: FormControl<SingleCalendarValue | null>;
-  minTimeValidation: FormControl<SingleCalendarValue | null>;
-  minValidation: FormControl<SingleCalendarValue | null>;
-  placeholder: FormControl<string>;
-  requireValidation: FormControl<boolean>;
-}
-
-type AttributesFormValue = FormGroup<AttributesForm>['value'];
-
-interface ConfigForm {
-  attributes: FormGroup<AttributesForm>;
-  configs: FormGroup<ConfigsForm>;
-}
-
-interface ConfigsForm {
-  firstDayOfWeek: FormControl<WeekDays>;
-  format: FormControl<string>;
-  locale: FormControl<string>;
-  max: FormControl<SingleCalendarValue | null>;
-  maxTime: FormControl<Dayjs | null>;
-  min: FormControl<SingleCalendarValue | null>;
-  minTime: FormControl<Dayjs | null>;
-  monthFormat: FormControl<string>;
-}
-
-type ConfigsFormValue = FormGroup<ConfigsForm>['value'];
 
 @Component({
   selector: 'dp-config-form',
@@ -245,16 +214,9 @@ export class ConfigFormComponent implements OnInit {
    *****************************************************************************************************************
    */
 
-  protected allowMultiSelect!: UntypedFormControl;
   protected closeOnEnter!: UntypedFormControl;
-  protected closeOnSelect!: UntypedFormControl;
-  protected closeOnSelectDelay!: UntypedFormControl;
   protected dayBtnFormat!: UntypedFormControl;
-  protected disableKeypress!: UntypedFormControl;
-  protected drops!: UntypedFormControl;
-  protected enableMonthSelector!: UntypedFormControl;
   protected format!: UntypedFormControl;
-  protected hideInputContainer!: UntypedFormControl;
   protected hideOnOutsideClick!: UntypedFormControl;
   protected hours12Format!: UntypedFormControl;
   protected hours24Format!: UntypedFormControl;
@@ -265,23 +227,15 @@ export class ConfigFormComponent implements OnInit {
   protected monthFormat!: UntypedFormControl;
   protected multipleYearsNavigateBy!: UntypedFormControl;
   protected numOfMonthRows!: UntypedFormControl;
-  protected onOpenDelay!: UntypedFormControl;
-  protected openOnClick!: UntypedFormControl;
-  protected openOnFocus!: UntypedFormControl;
-  protected opens!: UntypedFormControl;
   protected returnedValueType!: UntypedFormControl;
   protected secondsFormat!: UntypedFormControl;
   protected secondsInterval!: UntypedFormControl;
   protected showGoToCurrent!: UntypedFormControl;
   protected showMultipleYearsNavigation!: UntypedFormControl;
-  protected showNearMonthDays!: UntypedFormControl;
   protected showSeconds!: UntypedFormControl;
   protected showTwentyFourHours!: UntypedFormControl;
-  protected showWeekNumbers!: UntypedFormControl;
   protected timeSeparator!: UntypedFormControl;
   protected unSelectOnClick!: UntypedFormControl;
-  protected weekDayFormat!: UntypedFormControl;
-  protected yearFormat!: UntypedFormControl;
 
   /*
    *****************************************************************************************************************
@@ -297,32 +251,32 @@ export class ConfigFormComponent implements OnInit {
 
     this.configForm.patchValue({
       configs: {
+        allowMultiSelect: config.allowMultiSelect,
+        closeOnSelect: config.closeOnSelect,
+        closeOnSelectDelay: config.closeOnSelectDelay,
+        disableKeypress: config.disableKeypress,
+        drops: config.drops,
+        enableMonthSelector: config.enableMonthSelector,
         firstDayOfWeek: config.firstDayOfWeek ?? 'su',
         format: this.localFormat,
+        hideInputContainer: config.hideInputContainer,
         locale: this.localeVal(),
         max: config.max,
         maxTime: config.maxTime,
         min: config.min,
         minTime: config.minTime,
         monthFormat: config.monthFormat,
+        onOpenDelay: config.onOpenDelay,
+        openOnClick: config.openOnClick,
+        openOnFocus: config.openOnFocus,
+        opens: config.opens,
+        showNearMonthDays: config.showNearMonthDays,
+        showWeekNumbers: config.showWeekNumbers,
+        weekDayFormat: config.weekDayFormat,
+        yearFormat: config.yearFormat,
       },
     });
 
-    this.allowMultiSelect = new UntypedFormControl(this.config().allowMultiSelect);
-    this.closeOnSelect = new UntypedFormControl(this.config().closeOnSelect);
-    this.closeOnSelectDelay = new UntypedFormControl(this.config().closeOnSelectDelay);
-    this.openOnFocus = new UntypedFormControl(this.config().openOnFocus);
-    this.openOnClick = new UntypedFormControl(this.config().openOnClick);
-    this.onOpenDelay = new UntypedFormControl(this.config().onOpenDelay);
-    this.weekDayFormat = new UntypedFormControl(this.config().weekDayFormat);
-    this.disableKeypress = new UntypedFormControl(this.config().disableKeypress);
-    this.drops = new UntypedFormControl(this.config().drops);
-    this.opens = new UntypedFormControl(this.config().opens);
-    this.hideInputContainer = new UntypedFormControl(this.config().hideInputContainer);
-    this.showNearMonthDays = new UntypedFormControl(this.config().showNearMonthDays);
-    this.showWeekNumbers = new UntypedFormControl(this.config().showWeekNumbers);
-    this.enableMonthSelector = new UntypedFormControl(this.config().enableMonthSelector);
-    this.yearFormat = new UntypedFormControl(this.config().yearFormat);
     this.showGoToCurrent = new UntypedFormControl(this.config().showGoToCurrent);
     this.hideOnOutsideClick = new UntypedFormControl(this.config().hideOnOutsideClick);
     this.unSelectOnClick = new UntypedFormControl(this.config().unSelectOnClick);
@@ -408,14 +362,29 @@ export class ConfigFormComponent implements OnInit {
     });
 
     const configsForm = formBuilder.group<ConfigsForm>({
+      allowMultiSelect: formBuilder.control(null),
+      closeOnSelect: formBuilder.control(null),
+      closeOnSelectDelay: formBuilder.control(100, { nonNullable: true }),
+      disableKeypress: formBuilder.control(false, { nonNullable: true }),
+      drops: formBuilder.control(null),
+      enableMonthSelector: formBuilder.control(true, { nonNullable: true }),
       firstDayOfWeek: formBuilder.control('su', { nonNullable: true }),
       format: formBuilder.control('DD-MM-YYYY', { nonNullable: true }),
+      hideInputContainer: formBuilder.control(false, { nonNullable: true }),
       locale: formBuilder.control('en', { nonNullable: true }),
       max: formBuilder.control(null),
       maxTime: formBuilder.control(null),
       min: formBuilder.control(null),
       minTime: formBuilder.control(null),
       monthFormat: formBuilder.control('', { nonNullable: true }),
+      onOpenDelay: formBuilder.control(0, { nonNullable: true }),
+      openOnClick: formBuilder.control(true, { nonNullable: true }),
+      openOnFocus: formBuilder.control(true, { nonNullable: true }),
+      opens: formBuilder.control(null),
+      showNearMonthDays: formBuilder.control(true, { nonNullable: true }),
+      showWeekNumbers: formBuilder.control(false, { nonNullable: true }),
+      weekDayFormat: formBuilder.control('', { nonNullable: true }),
+      yearFormat: formBuilder.control('', { nonNullable: true }),
     });
 
     return formBuilder.group<ConfigForm>({
@@ -497,6 +466,66 @@ export class ConfigFormComponent implements OnInit {
       newConfig.maxTime = configs.maxTime;
     }
 
+    if (configs.allowMultiSelect !== undefined) {
+      newConfig.allowMultiSelect = configs.allowMultiSelect;
+    }
+
+    if (configs.closeOnSelect !== undefined) {
+      newConfig.closeOnSelect = configs.closeOnSelect;
+    }
+
+    if (configs.closeOnSelectDelay !== undefined) {
+      newConfig.closeOnSelectDelay = configs.closeOnSelectDelay;
+    }
+
+    if (configs.openOnFocus !== undefined) {
+      newConfig.openOnFocus = configs.openOnFocus;
+    }
+
+    if (configs.openOnClick !== undefined) {
+      newConfig.openOnClick = configs.openOnClick;
+    }
+
+    if (configs.onOpenDelay !== undefined) {
+      newConfig.onOpenDelay = configs.onOpenDelay;
+    }
+
+    if (configs.weekDayFormat !== undefined) {
+      newConfig.weekDayFormat = configs.weekDayFormat;
+    }
+
+    if (configs.disableKeypress !== undefined) {
+      newConfig.disableKeypress = configs.disableKeypress;
+    }
+
+    if (configs.drops !== undefined) {
+      newConfig.drops = configs.drops;
+    }
+
+    if (configs.opens !== undefined) {
+      newConfig.opens = configs.opens;
+    }
+
+    if (configs.hideInputContainer !== undefined) {
+      newConfig.hideInputContainer = configs.hideInputContainer;
+    }
+
+    if (configs.showNearMonthDays !== undefined) {
+      newConfig.showNearMonthDays = configs.showNearMonthDays;
+    }
+
+    if (configs.showWeekNumbers !== undefined) {
+      newConfig.showWeekNumbers = configs.showWeekNumbers;
+    }
+
+    if (configs.enableMonthSelector !== undefined) {
+      newConfig.enableMonthSelector = configs.enableMonthSelector;
+    }
+
+    if (configs.yearFormat !== undefined) {
+      newConfig.yearFormat = configs.yearFormat;
+    }
+
     if (Object.keys(newConfig).length > 0) {
       this.onConfigChange.emit(newConfig);
     }
@@ -514,96 +543,6 @@ export class ConfigFormComponent implements OnInit {
     });
 
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-    this.allowMultiSelect.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        allowMultiSelect: value,
-      });
-    });
-
-    this.closeOnSelect.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        closeOnSelect: value,
-      });
-    });
-
-    this.closeOnSelectDelay.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        closeOnSelectDelay: value,
-      });
-    });
-
-    this.openOnFocus.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        openOnFocus: value,
-      });
-    });
-
-    this.openOnClick.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        openOnClick: value,
-      });
-    });
-
-    this.onOpenDelay.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        onOpenDelay: value,
-      });
-    });
-
-    this.weekDayFormat.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        weekDayFormat: value,
-      });
-    });
-
-    this.disableKeypress.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        disableKeypress: value,
-      });
-    });
-
-    this.drops.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        drops: value,
-      });
-    });
-
-    this.opens.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        opens: value,
-      });
-    });
-
-    this.hideInputContainer.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        hideInputContainer: value,
-      });
-    });
-
-    this.showNearMonthDays.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        showNearMonthDays: value,
-      });
-    });
-
-    this.showWeekNumbers.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        showWeekNumbers: value,
-      });
-    });
-
-    this.enableMonthSelector.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        enableMonthSelector: value,
-      });
-    });
-
-    this.yearFormat.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        yearFormat: value,
-      });
-    });
-
     this.showGoToCurrent.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
         showGoToCurrent: value,
