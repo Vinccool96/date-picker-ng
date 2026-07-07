@@ -1,6 +1,6 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
-import { DatePickerComponent, ECalendarValue, IDatePickerConfig, SingleCalendarValue } from 'date-picker-ng';
+import { DatePickerComponent, ECalendarValue, IDatePickerConfig, SingleCalendarValue, WeekDays } from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
@@ -33,7 +33,14 @@ interface ConfigForm {
 }
 
 interface ConfigsForm {
+  firstDayOfWeek: FormControl<WeekDays>;
+  format: FormControl<string>;
   locale: FormControl<string>;
+  max: FormControl<SingleCalendarValue | null>;
+  maxTime: FormControl<Dayjs | null>;
+  min: FormControl<SingleCalendarValue | null>;
+  minTime: FormControl<Dayjs | null>;
+  monthFormat: FormControl<string>;
 }
 
 type ConfigsFormValue = FormGroup<ConfigsForm>['value'];
@@ -246,17 +253,12 @@ export class ConfigFormComponent implements OnInit {
   protected disableKeypress!: UntypedFormControl;
   protected drops!: UntypedFormControl;
   protected enableMonthSelector!: UntypedFormControl;
-  protected firstDayOfWeek!: UntypedFormControl;
   protected format!: UntypedFormControl;
   protected hideInputContainer!: UntypedFormControl;
   protected hideOnOutsideClick!: UntypedFormControl;
   protected hours12Format!: UntypedFormControl;
   protected hours24Format!: UntypedFormControl;
-  protected max!: UntypedFormControl;
-  protected maxTime!: UntypedFormControl;
   protected meridiemFormat!: UntypedFormControl;
-  protected min!: UntypedFormControl;
-  protected minTime!: UntypedFormControl;
   protected minutesFormat!: UntypedFormControl;
   protected minutesInterval!: UntypedFormControl;
   protected monthBtnFormat!: UntypedFormControl;
@@ -291,19 +293,21 @@ export class ConfigFormComponent implements OnInit {
 
   public ngOnInit(): void {
     this.localFormat = ConfigFormComponent.getDefaultFormatByMode(this.pickerMode());
+    const config = this.config();
 
     this.configForm.patchValue({
       configs: {
+        firstDayOfWeek: config.firstDayOfWeek ?? 'su',
+        format: this.localFormat,
         locale: this.localeVal(),
+        max: config.max,
+        maxTime: config.maxTime,
+        min: config.min,
+        minTime: config.minTime,
+        monthFormat: config.monthFormat,
       },
     });
-    this.format = new UntypedFormControl(ConfigFormComponent.getDefaultFormatByMode(this.pickerMode()));
-    this.firstDayOfWeek = new UntypedFormControl(this.config().firstDayOfWeek);
-    this.monthFormat = new UntypedFormControl(this.config().monthFormat);
-    this.min = new UntypedFormControl(this.config().min);
-    this.max = new UntypedFormControl(this.config().max);
-    this.minTime = new UntypedFormControl(this.config().minTime);
-    this.maxTime = new UntypedFormControl(this.config().maxTime);
+
     this.allowMultiSelect = new UntypedFormControl(this.config().allowMultiSelect);
     this.closeOnSelect = new UntypedFormControl(this.config().closeOnSelect);
     this.closeOnSelectDelay = new UntypedFormControl(this.config().closeOnSelectDelay);
@@ -403,8 +407,17 @@ export class ConfigFormComponent implements OnInit {
       requireValidation: formBuilder.control(false, { nonNullable: true }),
     });
 
+    const pickerMode = this.pickerMode();
+
     const configsForm = formBuilder.group<ConfigsForm>({
+      firstDayOfWeek: formBuilder.control('su', { nonNullable: true }),
+      format: formBuilder.control(ConfigFormComponent.getDefaultFormatByMode(pickerMode), { nonNullable: true }),
       locale: formBuilder.control('en', { nonNullable: true }),
+      max: formBuilder.control(null),
+      maxTime: formBuilder.control(null),
+      min: formBuilder.control(null),
+      minTime: formBuilder.control(null),
+      monthFormat: formBuilder.control('', { nonNullable: true }),
     });
 
     return formBuilder.group<ConfigForm>({
@@ -455,6 +468,40 @@ export class ConfigFormComponent implements OnInit {
     if (configs.locale !== undefined) {
       this.onLocaleChange.emit(configs.locale);
     }
+
+    const newConfig: Partial<IDatePickerConfig> = {};
+
+    if (configs.format !== undefined) {
+      newConfig.format = configs.format;
+    }
+
+    if (configs.firstDayOfWeek !== undefined) {
+      newConfig.firstDayOfWeek = configs.firstDayOfWeek;
+    }
+
+    if (configs.monthFormat !== undefined) {
+      newConfig.monthFormat = configs.monthFormat;
+    }
+
+    if (configs.min !== undefined) {
+      newConfig.min = configs.min;
+    }
+
+    if (configs.max !== undefined) {
+      newConfig.max = configs.max;
+    }
+
+    if (configs.minTime !== undefined) {
+      newConfig.minTime = configs.minTime;
+    }
+
+    if (configs.maxTime !== undefined) {
+      newConfig.maxTime = configs.maxTime;
+    }
+
+    if (Object.keys(newConfig).length > 0) {
+      this.onConfigChange.emit(newConfig);
+    }
   }
 
   private initListeners(): void {
@@ -468,49 +515,7 @@ export class ConfigFormComponent implements OnInit {
       }
     });
 
-    /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment */
-    this.format.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        format: value,
-      });
-    });
-
-    this.firstDayOfWeek.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        firstDayOfWeek: value,
-      });
-    });
-
-    this.monthFormat.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        monthFormat: value,
-      });
-    });
-
-    this.min.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        min: value,
-      });
-    });
-
-    this.max.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        max: value,
-      });
-    });
-
-    this.minTime.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        minTime: value,
-      });
-    });
-
-    this.maxTime.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        maxTime: value,
-      });
-    });
-
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     this.allowMultiSelect.valueChanges.subscribe((value) => {
       this.onConfigChange.emit({
         allowMultiSelect: value,
@@ -720,8 +725,7 @@ export class ConfigFormComponent implements OnInit {
         numOfMonthRows: value,
       });
     });
-
-    /* eslint-enable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment */
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   }
 
   private static getDefaultFormatByMode(mode: string | undefined): string {

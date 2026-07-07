@@ -177,7 +177,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> First Day of The week (firstDayOfWeek): </span>
         <div class="dp-option-playground">
-          <select [formControl]="firstDayOfWeek" id="firstDayOfWeekSelect">
+          <select formControlName="firstDayOfWeek" id="firstDayOfWeekSelect">
             @for (day of DAYS; track day) {
               <option [value]="day">{{ day }}</option>
             }
@@ -190,7 +190,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Date Format (format): </span>
         <div class="dp-option-playground">
-          <input [formControl]="format" id="dateFormat" />
+          <input formControlName="format" id="dateFormat" />
         </div>
       </div>
     }
@@ -199,7 +199,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Month Format (monthFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="monthFormat" id="monthFormatInput" />
+          <input formControlName="monthFormat" id="monthFormatInput" />
         </div>
       </div>
     }
@@ -210,7 +210,7 @@
         <div class="dp-option-playground">
           <dp-date-picker
             [config]="{ format: localFormat }"
-            [formControl]="min"
+            formControlName="min"
             [mode]="pickerMode()?.startsWith('daytime') ? 'daytime' : 'day'"
             id="minSelectable"
             placeholder="Select a min date"
@@ -227,7 +227,7 @@
         <div class="dp-option-playground">
           <dp-date-picker
             [config]="{ format: localFormat }"
-            [formControl]="max"
+            formControlName="max"
             [mode]="pickerMode()?.startsWith('daytime') ? 'daytime' : 'day'"
             id="maxSelectable"
             placeholder="Select a max date"
@@ -244,7 +244,7 @@
         <div class="dp-option-playground">
           <dp-date-picker
             [config]="{ format: 'HH:mm:ss' }"
-            [formControl]="minTime"
+            formControlName="minTime"
             id="minTimeSelectable"
             mode="time"
             placeholder="Select a min time"
@@ -261,7 +261,7 @@
         <div class="dp-option-playground">
           <dp-date-picker
             [config]="{ format: 'HH:mm:ss' }"
-            [formControl]="maxTime"
+            formControlName="maxTime"
             id="maxTimeSelectable"
             mode="time"
             placeholder="Select a max time"

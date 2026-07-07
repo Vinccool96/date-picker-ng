@@ -8,6 +8,7 @@ export { ECalendarValue } from './lib/common/types/calendar-value-enum';
 export { SelectEvent } from './lib/common/types/selection-event.enum';
 export { ISelectionEvent } from './lib/common/types/selection-event.model';
 export { SingleCalendarValue } from './lib/common/types/single-calendar-value';
+export type { WeekDays } from './lib/common/types/week-days.type';
 export { DpDatePickerModule } from './lib/date-picker.module';
 export { IDatePickerConfig } from './lib/date-picker/date-picker-config.model';
 export { IDatePickerDirectiveConfig } from './lib/date-picker/date-picker-directive-config.model';

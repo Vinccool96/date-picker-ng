@@ -3,8 +3,8 @@ import { Dayjs } from 'dayjs';
 import { SingleCalendarValue } from '../types/single-calendar-value';
 
 export interface ICalendar {
-  max?: string | Dayjs;
-  min?: SingleCalendarValue;
+  max?: SingleCalendarValue | null;
+  min?: SingleCalendarValue | null;
 }
 
 export interface ICalendarInternal {

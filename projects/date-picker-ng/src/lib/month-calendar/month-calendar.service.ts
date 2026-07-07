@@ -99,11 +99,11 @@ export class MonthCalendarService {
       return config.isMonthDisabledCallback(date);
     }
 
-    if (config.min !== undefined && date.isBefore(config.min, 'month')) {
+    if (config.min !== null && config.min !== undefined && date.isBefore(config.min, 'month')) {
       return true;
     }
 
-    return config.max !== undefined && config.max !== '' && date.isAfter(config.max, 'month');
+    return config.max !== null && config.max !== undefined && config.max !== '' && date.isAfter(config.max, 'month');
   }
 
   public shouldShowLeft(min: Dayjs | undefined, currentMonthView: Dayjs): boolean {

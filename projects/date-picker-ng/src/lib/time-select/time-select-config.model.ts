@@ -10,9 +10,9 @@ export interface ITimeSelectConfigInternal extends ICalendarInternal, IConfig {}
 interface IConfig {
   hours12Format?: string;
   hours24Format?: string;
-  maxTime?: Dayjs;
+  maxTime?: Dayjs | null;
   meridiemFormat?: string;
-  minTime?: Dayjs;
+  minTime?: Dayjs | null;
   minutesFormat?: string;
   minutesInterval?: number;
   returnedValueType?: ECalendarValue;
