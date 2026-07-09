@@ -13,7 +13,7 @@ export interface IConfig extends IBaseConfigWithMultiple {
   monthBtnFormatter?: (day: Dayjs) => string;
   multipleYearsNavigateBy?: number;
   numOfMonthRows?: number;
-  returnedValueType?: ECalendarValue;
+  returnedValueType?: ECalendarValue | null;
   showGoToCurrent?: boolean;
   showMultipleYearsNavigation?: boolean;
   unSelectOnClick?: boolean;

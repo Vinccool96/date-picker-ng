@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DatePickerComponent, ECalendarValue, IDatePickerConfig, SingleCalendarValue } from 'date-picker-ng';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -210,35 +210,6 @@ export class ConfigFormComponent implements OnInit {
 
   /*
    *****************************************************************************************************************
-   * forms
-   *****************************************************************************************************************
-   */
-
-  protected closeOnEnter!: UntypedFormControl;
-  protected dayBtnFormat!: UntypedFormControl;
-  protected format!: UntypedFormControl;
-  protected hideOnOutsideClick!: UntypedFormControl;
-  protected hours12Format!: UntypedFormControl;
-  protected hours24Format!: UntypedFormControl;
-  protected meridiemFormat!: UntypedFormControl;
-  protected minutesFormat!: UntypedFormControl;
-  protected minutesInterval!: UntypedFormControl;
-  protected monthBtnFormat!: UntypedFormControl;
-  protected monthFormat!: UntypedFormControl;
-  protected multipleYearsNavigateBy!: UntypedFormControl;
-  protected numOfMonthRows!: UntypedFormControl;
-  protected returnedValueType!: UntypedFormControl;
-  protected secondsFormat!: UntypedFormControl;
-  protected secondsInterval!: UntypedFormControl;
-  protected showGoToCurrent!: UntypedFormControl;
-  protected showMultipleYearsNavigation!: UntypedFormControl;
-  protected showSeconds!: UntypedFormControl;
-  protected showTwentyFourHours!: UntypedFormControl;
-  protected timeSeparator!: UntypedFormControl;
-  protected unSelectOnClick!: UntypedFormControl;
-
-  /*
-   *****************************************************************************************************************
    * others
    *****************************************************************************************************************
    */
@@ -252,51 +223,51 @@ export class ConfigFormComponent implements OnInit {
     this.configForm.patchValue({
       configs: {
         allowMultiSelect: config.allowMultiSelect,
+        closeOnEnter: config.closeOnEnter,
         closeOnSelect: config.closeOnSelect,
         closeOnSelectDelay: config.closeOnSelectDelay,
+        dayBtnFormat: config.dayBtnFormat,
         disableKeypress: config.disableKeypress,
         drops: config.drops,
         enableMonthSelector: config.enableMonthSelector,
         firstDayOfWeek: config.firstDayOfWeek ?? 'su',
         format: this.localFormat,
         hideInputContainer: config.hideInputContainer,
+        hideOnOutsideClick: config.hideOnOutsideClick,
+        hours12Format: config.hours12Format,
+        hours24Format: config.hours24Format,
         locale: this.localeVal(),
         max: config.max,
         maxTime: config.maxTime,
+        meridiemFormat: config.meridiemFormat,
         min: config.min,
         minTime: config.minTime,
+        minutesFormat: config.minutesFormat,
+        minutesInterval: config.minutesInterval,
+        monthBtnFormat: config.monthBtnFormat,
         monthFormat: config.monthFormat,
+        multipleYearsNavigateBy: config.multipleYearsNavigateBy,
+        numOfMonthRows: config.numOfMonthRows,
         onOpenDelay: config.onOpenDelay,
         openOnClick: config.openOnClick,
         openOnFocus: config.openOnFocus,
         opens: config.opens,
+        returnedValueType: config.returnedValueType,
+        secondsFormat: config.secondsFormat,
+        secondsInterval: config.secondsInterval,
+        showGoToCurrent: config.showGoToCurrent,
+        showMultipleYearsNavigation: config.showMultipleYearsNavigation,
         showNearMonthDays: config.showNearMonthDays,
+        showSeconds: config.showSeconds,
+        showTwentyFourHours: config.showTwentyFourHours,
         showWeekNumbers: config.showWeekNumbers,
+        timeSeparator: config.timeSeparator,
+        unSelectOnClick: config.unSelectOnClick,
         weekDayFormat: config.weekDayFormat,
         yearFormat: config.yearFormat,
       },
     });
 
-    this.showGoToCurrent = new UntypedFormControl(this.config().showGoToCurrent);
-    this.hideOnOutsideClick = new UntypedFormControl(this.config().hideOnOutsideClick);
-    this.unSelectOnClick = new UntypedFormControl(this.config().unSelectOnClick);
-    this.dayBtnFormat = new UntypedFormControl(this.config().dayBtnFormat);
-    this.monthBtnFormat = new UntypedFormControl(this.config().monthBtnFormat);
-    this.hours12Format = new UntypedFormControl(this.config().hours12Format);
-    this.hours24Format = new UntypedFormControl(this.config().hours24Format);
-    this.meridiemFormat = new UntypedFormControl(this.config().meridiemFormat);
-    this.minutesFormat = new UntypedFormControl(this.config().minutesFormat);
-    this.minutesInterval = new UntypedFormControl(this.config().minutesInterval);
-    this.secondsFormat = new UntypedFormControl(this.config().secondsFormat);
-    this.secondsInterval = new UntypedFormControl(this.config().secondsInterval);
-    this.showSeconds = new UntypedFormControl(this.config().showSeconds);
-    this.showTwentyFourHours = new UntypedFormControl(this.config().showTwentyFourHours);
-    this.timeSeparator = new UntypedFormControl(this.config().timeSeparator);
-    this.showMultipleYearsNavigation = new UntypedFormControl(this.config().showMultipleYearsNavigation);
-    this.multipleYearsNavigateBy = new UntypedFormControl(this.config().multipleYearsNavigateBy);
-    this.returnedValueType = new UntypedFormControl(this.config().returnedValueType);
-    this.closeOnEnter = new UntypedFormControl(this.config().closeOnEnter);
-    this.numOfMonthRows = new UntypedFormControl(this.config().numOfMonthRows);
     this.initListeners();
   }
 
@@ -363,26 +334,46 @@ export class ConfigFormComponent implements OnInit {
 
     const configsForm = formBuilder.group<ConfigsForm>({
       allowMultiSelect: formBuilder.control(null),
+      closeOnEnter: formBuilder.control(true, { nonNullable: true }),
       closeOnSelect: formBuilder.control(null),
       closeOnSelectDelay: formBuilder.control(100, { nonNullable: true }),
+      dayBtnFormat: formBuilder.control('DD', { nonNullable: true }),
       disableKeypress: formBuilder.control(false, { nonNullable: true }),
       drops: formBuilder.control(null),
       enableMonthSelector: formBuilder.control(true, { nonNullable: true }),
       firstDayOfWeek: formBuilder.control('su', { nonNullable: true }),
       format: formBuilder.control('DD-MM-YYYY', { nonNullable: true }),
       hideInputContainer: formBuilder.control(false, { nonNullable: true }),
+      hideOnOutsideClick: formBuilder.control(true, { nonNullable: true }),
+      hours12Format: formBuilder.control('hh', { nonNullable: true }),
+      hours24Format: formBuilder.control('HH', { nonNullable: true }),
       locale: formBuilder.control('en', { nonNullable: true }),
       max: formBuilder.control(null),
       maxTime: formBuilder.control(null),
+      meridiemFormat: formBuilder.control('A', { nonNullable: true }),
       min: formBuilder.control(null),
       minTime: formBuilder.control(null),
+      minutesFormat: formBuilder.control('mm', { nonNullable: true }),
+      minutesInterval: formBuilder.control(1, { nonNullable: true }),
+      monthBtnFormat: formBuilder.control('MMM', { nonNullable: true }),
       monthFormat: formBuilder.control('', { nonNullable: true }),
+      multipleYearsNavigateBy: formBuilder.control(10, { nonNullable: true }),
+      numOfMonthRows: formBuilder.control(4, { nonNullable: true }),
       onOpenDelay: formBuilder.control(0, { nonNullable: true }),
       openOnClick: formBuilder.control(true, { nonNullable: true }),
       openOnFocus: formBuilder.control(true, { nonNullable: true }),
       opens: formBuilder.control(null),
+      returnedValueType: formBuilder.control(null),
+      secondsFormat: formBuilder.control('ss', { nonNullable: true }),
+      secondsInterval: formBuilder.control(1, { nonNullable: true }),
+      showGoToCurrent: formBuilder.control(true, { nonNullable: true }),
+      showMultipleYearsNavigation: formBuilder.control(false, { nonNullable: true }),
       showNearMonthDays: formBuilder.control(true, { nonNullable: true }),
+      showSeconds: formBuilder.control(false, { nonNullable: true }),
+      showTwentyFourHours: formBuilder.control(false, { nonNullable: true }),
       showWeekNumbers: formBuilder.control(false, { nonNullable: true }),
+      timeSeparator: formBuilder.control(':', { nonNullable: true }),
+      unSelectOnClick: formBuilder.control(true, { nonNullable: true }),
       weekDayFormat: formBuilder.control('', { nonNullable: true }),
       yearFormat: formBuilder.control('', { nonNullable: true }),
     });
@@ -526,6 +517,86 @@ export class ConfigFormComponent implements OnInit {
       newConfig.yearFormat = configs.yearFormat;
     }
 
+    if (configs.showGoToCurrent !== undefined) {
+      newConfig.showGoToCurrent = configs.showGoToCurrent;
+    }
+
+    if (configs.hideOnOutsideClick !== undefined) {
+      newConfig.hideOnOutsideClick = configs.hideOnOutsideClick;
+    }
+
+    if (configs.unSelectOnClick !== undefined) {
+      newConfig.unSelectOnClick = configs.unSelectOnClick;
+    }
+
+    if (configs.dayBtnFormat !== undefined) {
+      newConfig.dayBtnFormat = configs.dayBtnFormat;
+    }
+
+    if (configs.monthBtnFormat !== undefined) {
+      newConfig.monthBtnFormat = configs.monthBtnFormat;
+    }
+
+    if (configs.hours12Format !== undefined) {
+      newConfig.hours12Format = configs.hours12Format;
+    }
+
+    if (configs.hours24Format !== undefined) {
+      newConfig.hours24Format = configs.hours24Format;
+    }
+
+    if (configs.meridiemFormat !== undefined) {
+      newConfig.meridiemFormat = configs.meridiemFormat;
+    }
+
+    if (configs.minutesFormat !== undefined) {
+      newConfig.minutesFormat = configs.minutesFormat;
+    }
+
+    if (configs.minutesInterval !== undefined) {
+      newConfig.minutesInterval = configs.minutesInterval;
+    }
+
+    if (configs.secondsFormat !== undefined) {
+      newConfig.secondsFormat = configs.secondsFormat;
+    }
+
+    if (configs.secondsInterval !== undefined) {
+      newConfig.secondsInterval = configs.secondsInterval;
+    }
+
+    if (configs.showSeconds !== undefined) {
+      newConfig.showSeconds = configs.showSeconds;
+    }
+
+    if (configs.showTwentyFourHours !== undefined) {
+      newConfig.showTwentyFourHours = configs.showTwentyFourHours;
+    }
+
+    if (configs.timeSeparator !== undefined) {
+      newConfig.timeSeparator = configs.timeSeparator;
+    }
+
+    if (configs.showMultipleYearsNavigation !== undefined) {
+      newConfig.showMultipleYearsNavigation = configs.showMultipleYearsNavigation;
+    }
+
+    if (configs.multipleYearsNavigateBy !== undefined) {
+      newConfig.multipleYearsNavigateBy = configs.multipleYearsNavigateBy;
+    }
+
+    if (configs.returnedValueType !== undefined) {
+      newConfig.returnedValueType = configs.returnedValueType;
+    }
+
+    if (configs.closeOnEnter !== undefined) {
+      newConfig.closeOnEnter = configs.closeOnEnter;
+    }
+
+    if (configs.numOfMonthRows !== undefined) {
+      newConfig.numOfMonthRows = configs.numOfMonthRows;
+    }
+
     if (Object.keys(newConfig).length > 0) {
       this.onConfigChange.emit(newConfig);
     }
@@ -541,128 +612,6 @@ export class ConfigFormComponent implements OnInit {
         this.initializeConfigsListeners(value.configs);
       }
     });
-
-    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-    this.showGoToCurrent.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        showGoToCurrent: value,
-      });
-    });
-
-    this.hideOnOutsideClick.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        hideOnOutsideClick: value,
-      });
-    });
-
-    this.unSelectOnClick.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        unSelectOnClick: value,
-      });
-    });
-
-    this.dayBtnFormat.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        dayBtnFormat: value,
-      });
-    });
-
-    this.monthBtnFormat.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        monthBtnFormat: value,
-      });
-    });
-
-    this.hours12Format.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        hours12Format: value,
-      });
-    });
-
-    this.hours24Format.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        hours24Format: value,
-      });
-    });
-
-    this.meridiemFormat.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        meridiemFormat: value,
-      });
-    });
-
-    this.minutesFormat.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        minutesFormat: value,
-      });
-    });
-
-    this.minutesInterval.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        minutesInterval: value,
-      });
-    });
-
-    this.secondsFormat.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        secondsFormat: value,
-      });
-    });
-
-    this.secondsInterval.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        secondsInterval: value,
-      });
-    });
-
-    this.showSeconds.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        showSeconds: value,
-      });
-    });
-
-    this.showTwentyFourHours.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        showTwentyFourHours: value,
-      });
-    });
-
-    this.timeSeparator.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        timeSeparator: value,
-      });
-    });
-
-    this.showMultipleYearsNavigation.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        showMultipleYearsNavigation: value,
-      });
-    });
-
-    this.multipleYearsNavigateBy.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        multipleYearsNavigateBy: value,
-      });
-    });
-
-    this.returnedValueType.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        returnedValueType: value,
-      });
-    });
-
-    this.closeOnEnter.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        closeOnEnter: value,
-      });
-    });
-
-    this.numOfMonthRows.valueChanges.subscribe((value) => {
-      this.onConfigChange.emit({
-        numOfMonthRows: value,
-      });
-    });
-    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   }
 
   private static getDefaultFormatByMode(mode: string | undefined): string {

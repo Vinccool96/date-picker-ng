@@ -9,7 +9,7 @@ export interface IDayCalendarConfig extends ICalendar, IConfig {}
 
 export interface IDayCalendarConfigInternal extends ICalendarInternal, IConfig {}
 
-interface IConfig extends IBaseConfigWithMultiple{
+interface IConfig extends IBaseConfigWithMultiple {
   dayBtnCssClassCallback?: (day: Dayjs | undefined) => string;
   dayBtnFormat?: string;
   dayBtnFormatter?: (day: Dayjs) => string;
@@ -25,7 +25,7 @@ interface IConfig extends IBaseConfigWithMultiple{
   monthFormatter?: (month: Dayjs) => string;
   multipleYearsNavigateBy?: number;
   numOfMonthRows?: number;
-  returnedValueType?: ECalendarValue;
+  returnedValueType?: ECalendarValue | null;
   showGoToCurrent?: boolean;
   showMultipleYearsNavigation?: boolean;
   showNearMonthDays?: boolean;

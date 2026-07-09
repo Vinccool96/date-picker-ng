@@ -15,7 +15,7 @@ interface IConfig {
   minTime?: Dayjs | null;
   minutesFormat?: string;
   minutesInterval?: number;
-  returnedValueType?: ECalendarValue;
+  returnedValueType?: ECalendarValue | null;
   secondsFormat?: string;
   secondsInterval?: number;
   showSeconds?: boolean;

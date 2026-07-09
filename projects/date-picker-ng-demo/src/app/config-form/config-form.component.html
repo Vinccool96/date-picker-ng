@@ -571,7 +571,7 @@
           <label
             >Enabled
             <input
-              [formControl]="showGoToCurrent"
+              formControlName="showGoToCurrent"
               [value]="true"
               id="showGoToCurrent"
               name="showGoToCurrent"
@@ -581,7 +581,7 @@
           <label
             >Disabled
             <input
-              [formControl]="showGoToCurrent"
+              formControlName="showGoToCurrent"
               [value]="false"
               id="hideGoToCurrent"
               name="showGoToCurrent"
@@ -599,7 +599,7 @@
           <label
             >Enabled
             <input
-              [formControl]="hideOnOutsideClick"
+              formControlName="hideOnOutsideClick"
               [value]="true"
               id="hideOnOutsideClick"
               name="hideOnOutsideClick"
@@ -609,7 +609,7 @@
           <label
             >Disabled
             <input
-              [formControl]="hideOnOutsideClick"
+              formControlName="hideOnOutsideClick"
               [value]="false"
               id="showOnOutsideClick"
               name="hideOnOutsideClick"
@@ -627,7 +627,7 @@
           <label
             >Enabled
             <input
-              [formControl]="unSelectOnClick"
+              formControlName="unSelectOnClick"
               [value]="true"
               id="enableUnSelect"
               name="unSelectOnClick"
@@ -637,7 +637,7 @@
           <label
             >Disabled
             <input
-              [formControl]="unSelectOnClick"
+              formControlName="unSelectOnClick"
               [value]="false"
               id="disableUnSelect"
               name="unSelectOnClick"
@@ -652,7 +652,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Day Button Format (dayBtnFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="dayBtnFormat" id="dayBtnFormat" />
+          <input formControlName="dayBtnFormat" id="dayBtnFormat" />
         </div>
       </div>
     }
@@ -661,7 +661,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Month Button Format (monthBtnFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="monthBtnFormat" id="monthBtnFormat" />
+          <input formControlName="monthBtnFormat" id="monthBtnFormat" />
         </div>
       </div>
     }
@@ -670,7 +670,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> 12 Hour Format (hours12Format): </span>
         <div class="dp-option-playground">
-          <input [formControl]="hours12Format" id="hours12Format" />
+          <input formControlName="hours12Format" id="hours12Format" />
         </div>
       </div>
     }
@@ -679,7 +679,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> 24 Hour Format (hours24Format): </span>
         <div class="dp-option-playground">
-          <input [formControl]="hours24Format" id="hours24Format" />
+          <input formControlName="hours24Format" id="hours24Format" />
         </div>
       </div>
     }
@@ -688,7 +688,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Meridiem Format (meridiemFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="meridiemFormat" id="meridiemFormat" />
+          <input formControlName="meridiemFormat" id="meridiemFormat" />
         </div>
       </div>
     }
@@ -697,7 +697,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Minutes Format (minutesFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="minutesFormat" id="minutesFormat" />
+          <input formControlName="minutesFormat" id="minutesFormat" />
         </div>
       </div>
     }
@@ -706,7 +706,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Minutes Interval (minutesInterval): </span>
         <div class="dp-option-playground">
-          <input [formControl]="minutesInterval" id="minutesInterval" type="number" />
+          <input formControlName="minutesInterval" id="minutesInterval" type="number" />
         </div>
       </div>
     }
@@ -715,7 +715,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Seconds Format (secondsFormat): </span>
         <div class="dp-option-playground">
-          <input [formControl]="secondsFormat" id="secondsFormat" />
+          <input formControlName="secondsFormat" id="secondsFormat" />
         </div>
       </div>
     }
@@ -724,7 +724,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Seconds Interval (secondsInterval): </span>
         <div class="dp-option-playground">
-          <input [formControl]="secondsInterval" id="secondsInterval" type="number" />
+          <input formControlName="secondsInterval" id="secondsInterval" type="number" />
         </div>
       </div>
     }
@@ -735,11 +735,11 @@
         <div class="dp-option-playground">
           <label
             >Enabled
-            <input [formControl]="showSeconds" [value]="true" id="showSeconds" name="showSeconds" type="radio" />
+            <input formControlName="showSeconds" [value]="true" id="showSeconds" name="showSeconds" type="radio" />
           </label>
           <label
             >Disabled
-            <input [formControl]="showSeconds" [value]="false" id="hideSeconds" name="showSeconds" type="radio" />
+            <input formControlName="showSeconds" [value]="false" id="hideSeconds" name="showSeconds" type="radio" />
           </label>
         </div>
       </div>
@@ -752,7 +752,7 @@
           <label
             >Enabled
             <input
-              [formControl]="showTwentyFourHours"
+              formControlName="showTwentyFourHours"
               [value]="true"
               id="showTwentyFourHours"
               name="showTwentyFourHours"
@@ -762,7 +762,7 @@
           <label
             >Disabled
             <input
-              [formControl]="showTwentyFourHours"
+              formControlName="showTwentyFourHours"
               [value]="false"
               id="hideTwentyFourHours"
               name="showTwentyFourHours"
@@ -777,7 +777,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Time Separator (timeSeparator): </span>
         <div class="dp-option-playground">
-          <input [formControl]="timeSeparator" id="timeSeparator" />
+          <input formControlName="timeSeparator" id="timeSeparator" />
         </div>
       </div>
     }
@@ -789,7 +789,7 @@
           <label
             >Enabled
             <input
-              [formControl]="showMultipleYearsNavigation"
+              formControlName="showMultipleYearsNavigation"
               [value]="true"
               id="showMultipleYearsNavigation"
               name="showMultipleYearsNavigation"
@@ -799,7 +799,7 @@
           <label
             >Disabled
             <input
-              [formControl]="showMultipleYearsNavigation"
+              formControlName="showMultipleYearsNavigation"
               [value]="false"
               id="hideMultipleYearsNavigation"
               name="showMultipleYearsNavigation"
@@ -814,7 +814,7 @@
       <div class="dp-option">
         <span class="dp-option-header"> Multiple years navigate by (multipleYearsNavigateBy): </span>
         <div class="dp-option-playground">
-          <input [formControl]="multipleYearsNavigateBy" id="multipleYearsNavigateBy" />
+          <input formControlName="multipleYearsNavigateBy" id="multipleYearsNavigateBy" type="number" />
         </div>
       </div>
     }
@@ -823,8 +823,8 @@
       <div class="dp-option">
         <span class="dp-option-header"> Returned Value Type (returnedValueType): </span>
         <div class="dp-option-playground">
-          <select [formControl]="returnedValueType" id="returnedValueType">
-            @for (type of dateTypes; track type) {
+          <select formControlName="returnedValueType" id="returnedValueType">
+            @for (type of dateTypes; track type.name) {
               <option [value]="type.value">{{ type.name }}</option>
             }
           </select>
@@ -839,7 +839,7 @@
           <label
             >Enabled
             <input
-              [formControl]="closeOnEnter"
+              formControlName="closeOnEnter"
               [value]="true"
               id="enableCloseOnEnter"
               name="closeOnEnter"
@@ -849,7 +849,7 @@
           <label
             >Disabled
             <input
-              [formControl]="closeOnEnter"
+              formControlName="closeOnEnter"
               [value]="false"
               id="disableCloseOnEnter"
               name="closeOnEnter"
@@ -866,28 +866,58 @@
         <div class="dp-option-playground">
           <label
             >1
-            <input [formControl]="numOfMonthRows" [value]="1" id="numOfMonthRows1" name="numOfMonthRows" type="radio" />
+            <input
+              formControlName="numOfMonthRows"
+              [value]="1"
+              id="numOfMonthRows1"
+              name="numOfMonthRows"
+              type="radio"
+            />
           </label>
           <label
             >2
-            <input [formControl]="numOfMonthRows" [value]="2" id="numOfMonthRows2" name="numOfMonthRows" type="radio" />
+            <input
+              formControlName="numOfMonthRows"
+              [value]="2"
+              id="numOfMonthRows2"
+              name="numOfMonthRows"
+              type="radio"
+            />
           </label>
           <label
             >3
-            <input [formControl]="numOfMonthRows" [value]="3" id="numOfMonthRows3" name="numOfMonthRows" type="radio" />
+            <input
+              formControlName="numOfMonthRows"
+              [value]="3"
+              id="numOfMonthRows3"
+              name="numOfMonthRows"
+              type="radio"
+            />
           </label>
           <label
             >4
-            <input [formControl]="numOfMonthRows" [value]="4" id="numOfMonthRows4" name="numOfMonthRows" type="radio" />
+            <input
+              formControlName="numOfMonthRows"
+              [value]="4"
+              id="numOfMonthRows4"
+              name="numOfMonthRows"
+              type="radio"
+            />
           </label>
           <label
             >6
-            <input [formControl]="numOfMonthRows" [value]="6" id="numOfMonthRows6" name="numOfMonthRows" type="radio" />
+            <input
+              formControlName="numOfMonthRows"
+              [value]="6"
+              id="numOfMonthRows6"
+              name="numOfMonthRows"
+              type="radio"
+            />
           </label>
           <label
             >12
             <input
-              [formControl]="numOfMonthRows"
+              formControlName="numOfMonthRows"
               [value]="12"
               id="numOfMonthRows12"
               name="numOfMonthRows"
