@@ -42,3 +42,7 @@ bin.tgz
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Playwright
+node_modules/
+/playwright/.auth/
