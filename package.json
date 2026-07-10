@@ -24,7 +24,9 @@
     "lint:demo:fix": "ng lint date-picker-ng-demo --fix",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
-    "release": "npm run build:lib && cd dist/date-picker-ng && npm publish"
+    "release": "npm run build:lib && cd dist/date-picker-ng && npm publish",
+    "postinstall": "husky",
+    "pre-commit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -74,7 +76,9 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-unicorn": "^70.0.0",
     "globals": "^17.4.0",
+    "husky": "^9.1.7",
     "jsdom": "^29.1.1",
+    "lint-staged": "^17.0.8",
     "ng-packagr": "^21.1.0",
     "playwright": "^1.61.1",
     "prettier": "^3.8.4",
