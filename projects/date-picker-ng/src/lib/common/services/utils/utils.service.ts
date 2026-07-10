@@ -101,7 +101,7 @@ export class UtilsService {
   }
 
   public convertToDayjsArray(
-    value: CalendarValue | undefined,
+    value: CalendarValue | null | undefined,
     config: { allowMultiSelect?: boolean | null; format?: string },
   ): Dayjs[] {
     // todo:: add unit test
@@ -216,7 +216,7 @@ export class UtilsService {
       });
     }
 
-    return (inputValue: CalendarValue) => {
+    return (inputValue: CalendarValue | null) => {
       value = this.convertToDayjsArray(inputValue, {
         allowMultiSelect: true,
         format,

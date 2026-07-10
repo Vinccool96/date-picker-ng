@@ -158,7 +158,7 @@ export class DayTimeCalendarComponent implements ControlValueAccessor, OnInit, V
 
   public validate(formControl: AbstractControl<CalendarValue | null>): ValidationErrors | null {
     return this.minDate() !== null || this.maxDate() !== null
-      ? this.validateFn(formControl.value as CalendarValue)
+      ? this.validateFn(formControl.value)
       : (): ValidationErrors | null => null;
   }
 

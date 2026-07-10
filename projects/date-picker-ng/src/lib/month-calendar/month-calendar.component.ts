@@ -184,9 +184,9 @@ export class MonthCalendarComponent implements ControlValueAccessor, OnInit, Val
     // No op
   }
 
-  public validate(formControl: AbstractControl): ValidationErrors | null {
+  public validate(formControl: AbstractControl<CalendarValue | null>): ValidationErrors | null {
     return this.minDate() !== null || this.maxDate() !== null
-      ? this.validateFn(formControl.value as CalendarValue)
+      ? this.validateFn(formControl.value)
       : (): ValidationErrors | null => null;
   }
 

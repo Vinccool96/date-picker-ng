@@ -155,12 +155,12 @@ export class TimeSelectComponent implements ControlValueAccessor, OnInit, Valida
     // No op
   }
 
-  public validate(formControl: AbstractControl): ValidationErrors | null {
+  public validate(formControl: AbstractControl<CalendarValue | null>): ValidationErrors | null {
     return this.minDate() !== null ||
       this.maxDate() !== null ||
       this.minTime() !== undefined ||
       this.maxTime() !== undefined
-      ? this.validateFn(formControl.value as CalendarValue)
+      ? this.validateFn(formControl.value)
       : (): ValidationErrors | null => null;
   }
 

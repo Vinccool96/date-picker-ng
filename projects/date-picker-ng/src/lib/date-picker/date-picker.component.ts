@@ -306,8 +306,8 @@ export class DatePickerComponent implements ControlValueAccessor, OnChanges, OnD
     this.cd.markForCheck();
   }
 
-  public validate(formControl: AbstractControl): ValidationErrors | null {
-    return this.validateFn(formControl.value as CalendarValue);
+  public validate(formControl: AbstractControl<CalendarValue | null>): ValidationErrors | null {
+    return this.validateFn(formControl.value);
   }
 
   public writeValue(value: CalendarValue | null): void {

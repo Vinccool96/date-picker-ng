@@ -1,5 +1,5 @@
-import { Directive, viewChild, WritableSignal } from '@angular/core';
-import { AbstractControl, UntypedFormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Directive, inject, viewChild, WritableSignal } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   DatePickerComponent,
   DatePickerDirective,
@@ -27,7 +27,7 @@ export abstract class DateComponent {
    */
 
   protected abstract readonly config: WritableSignal<IDatePickerConfig>;
-  protected abstract control: UntypedFormControl;
+  protected abstract control: FormControl<Dayjs | null>;
 
   protected displayDate: string | Dayjs = '';
   protected locale: string = dayjs.locale();
@@ -42,8 +42,17 @@ export abstract class DateComponent {
   private validationMaxTime: Dayjs | null = null;
   private validationMinTime: Dayjs | null = null;
 
-  protected buildForm(): UntypedFormControl {
-    return new UntypedFormControl({ disabled: this.disabled, value: this.date }, this.getValidations());
+  protected buildForm(): FormControl<Dayjs | null> {
+    const formBuilder = inject(FormBuilder);
+    const control = formBuilder.control(this.date, { validators: this.getValidations() });
+
+    if (this.disabled) {
+      control.disable();
+    } else {
+      control.enable();
+    }
+
+    return control;
   }
 
   protected closeCalendar(): void {
@@ -155,27 +164,27 @@ export abstract class DateComponent {
   private getValidations(): ValidatorFn[] {
     return [
       this.required ? Validators.required : (): ValidationErrors | null => null,
-      (control: AbstractControl): ValidationErrors | null => {
+      (control: AbstractControl<SingleCalendarValue | null>): ValidationErrors | null => {
         return this.validationMinDate !== null &&
-          dayjs(control.value as dayjs.ConfigType, this.config().format).isBefore(this.validationMinDate)
+          dayjs(control.value, this.config().format).isBefore(this.validationMinDate)
           ? { minDate: 'minDate Invalid' }
           : null;
       },
-      (control: AbstractControl): ValidationErrors | null => {
+      (control: AbstractControl<SingleCalendarValue | null>): ValidationErrors | null => {
         return this.validationMaxDate !== null &&
-          dayjs(control.value as dayjs.ConfigType, this.config().format).isAfter(this.validationMaxDate)
+          dayjs(control.value, this.config().format).isAfter(this.validationMaxDate)
           ? { maxDate: 'maxDate Invalid' }
           : null;
       },
-      (control: AbstractControl): ValidationErrors | null => {
+      (control: AbstractControl<SingleCalendarValue | null>): ValidationErrors | null => {
         return this.validationMinTime !== null &&
-          dayjs(control.value as dayjs.ConfigType, this.config().format).isBefore(this.validationMinTime)
+          dayjs(control.value, this.config().format).isBefore(this.validationMinTime)
           ? { minDate: 'minDate Invalid' }
           : null;
       },
-      (control: AbstractControl): ValidationErrors | null => {
+      (control: AbstractControl<SingleCalendarValue | null>): ValidationErrors | null => {
         return this.validationMaxTime !== null &&
-          dayjs(control.value as dayjs.ConfigType, this.config().format).isAfter(this.validationMaxTime)
+          dayjs(control.value, this.config().format).isAfter(this.validationMaxTime)
           ? { maxDate: 'maxDate Invalid' }
           : null;
       },
