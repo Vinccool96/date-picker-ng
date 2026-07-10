@@ -1,43 +1,70 @@
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { EventEmitter, inject, Injectable } from '@angular/core';
-import { IDatePickerConfig, IDatePickerConfigInternal } from './date-picker-config.model';
+import { Dayjs } from 'dayjs';
 
 import { UtilsService } from '../common/services/utils/utils.service';
+import { CalendarMode } from '../common/types/calendar-mode';
 import { IDayCalendarConfig } from '../day-calendar/day-calendar-config.model';
-import { TimeSelectService } from '../time-select/time-select.service';
+import { IDayTimeCalendarConfig } from '../day-time-calendar/day-time-calendar-config.model';
 import { DayTimeCalendarService } from '../day-time-calendar/day-time-calendar.service';
 import { ITimeSelectConfig } from '../time-select/time-select-config.model';
-import { CalendarMode } from '../common/types/calendar-mode';
-import { Dayjs } from 'dayjs';
-import { IDayTimeCalendarConfig } from '../day-time-calendar/day-time-calendar-config.model';
-import { ConnectedPosition } from '@angular/cdk/overlay';
+import { TimeSelectService } from '../time-select/time-select.service';
+import { IDatePickerConfig, IDatePickerConfigInternal } from './date-picker-config.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DatePickerService {
+  /*
+   *****************************************************************************************************************
+   * outputs
+   *****************************************************************************************************************
+   */
+
   public readonly onPickerClosed = new EventEmitter<null>();
+
+  /*
+   *****************************************************************************************************************
+   * globals
+   *****************************************************************************************************************
+   */
+
   private readonly defaultConfig: IDatePickerConfigInternal = {
+    closeOnEnter: true,
     closeOnSelect: true,
     closeOnSelectDelay: 100,
-    closeOnEnter: true,
-    format: 'DD-MM-YYYY',
-    openOnFocus: true,
-    openOnClick: true,
-    onOpenDelay: 0,
     disableKeypress: false,
+    enableMonthSelector: true,
+    format: 'DD-MM-YYYY',
+    hideOnOutsideClick: true,
+    onOpenDelay: 0,
+    openOnClick: true,
+    openOnFocus: true,
+    showGoToCurrent: true,
     showNearMonthDays: true,
     showWeekNumbers: false,
-    enableMonthSelector: true,
-    showGoToCurrent: true,
-    hideOnOutsideClick: true,
   };
 
-  private readonly utilsService = inject(UtilsService);
-  private readonly timeSelectService = inject(TimeSelectService);
-  private readonly daytimeCalendarService = inject(DayTimeCalendarService);
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
 
-  // todo:: add unit tests
+  private readonly daytimeCalendarService = inject(DayTimeCalendarService);
+  private readonly timeSelectService = inject(TimeSelectService);
+  private readonly utilsService = inject(UtilsService);
+
+  public convertInputValueToDayjsArray(value: string | null | undefined, config: IDatePickerConfig): Dayjs[] {
+    // todo:: add unit tests
+    const usedValue = value ?? '';
+    const datesStringArray = this.utilsService.datesStringToStringArray(usedValue);
+
+    return this.utilsService.convertToDayjsArray(datesStringArray, config);
+  }
+
   public getConfig(config: IDatePickerConfig | undefined, mode: CalendarMode = 'daytime'): IDatePickerConfigInternal {
+    // todo:: add unit tests
     const _config = {
       ...this.defaultConfig,
       format: DatePickerService.getDefaultFormatByMode(mode),
@@ -46,7 +73,7 @@ export class DatePickerService {
 
     this.utilsService.convertPropsToDayjs(_config, _config.format, ['min', 'max']);
 
-    if (config !== undefined && config.allowMultiSelect && config.closeOnSelect === undefined) {
+    if (config?.allowMultiSelect === true && (config.closeOnSelect === null || config.closeOnSelect === undefined)) {
       _config.closeOnSelect = false;
     }
 
@@ -55,34 +82,34 @@ export class DatePickerService {
 
   public getDayConfigService(pickerConfig: IDatePickerConfig): IDayCalendarConfig {
     return {
-      min: pickerConfig.min,
-      max: pickerConfig.max,
-      isDayDisabledCallback: pickerConfig.isDayDisabledCallback,
-      weekDayFormat: pickerConfig.weekDayFormat,
-      weekDayFormatter: pickerConfig.weekDayFormatter,
-      showNearMonthDays: pickerConfig.showNearMonthDays,
-      showWeekNumbers: pickerConfig.showWeekNumbers,
-      firstDayOfWeek: pickerConfig.firstDayOfWeek,
-      format: pickerConfig.format,
       allowMultiSelect: pickerConfig.allowMultiSelect,
-      monthFormat: pickerConfig.monthFormat,
-      monthFormatter: pickerConfig.monthFormatter,
-      enableMonthSelector: pickerConfig.enableMonthSelector,
-      yearFormat: pickerConfig.yearFormat,
-      yearFormatter: pickerConfig.yearFormatter,
+      dayBtnCssClassCallback: pickerConfig.dayBtnCssClassCallback,
       dayBtnFormat: pickerConfig.dayBtnFormat,
       dayBtnFormatter: pickerConfig.dayBtnFormatter,
-      dayBtnCssClassCallback: pickerConfig.dayBtnCssClassCallback,
+      enableMonthSelector: pickerConfig.enableMonthSelector,
+      firstDayOfWeek: pickerConfig.firstDayOfWeek,
+      format: pickerConfig.format,
+      isDayDisabledCallback: pickerConfig.isDayDisabledCallback,
+      isMonthDisabledCallback: pickerConfig.isMonthDisabledCallback,
+      max: pickerConfig.max,
+      min: pickerConfig.min,
+      monthBtnCssClassCallback: pickerConfig.monthBtnCssClassCallback,
       monthBtnFormat: pickerConfig.monthBtnFormat,
       monthBtnFormatter: pickerConfig.monthBtnFormatter,
-      monthBtnCssClassCallback: pickerConfig.monthBtnCssClassCallback,
-      isMonthDisabledCallback: pickerConfig.isMonthDisabledCallback,
+      monthFormat: pickerConfig.monthFormat,
+      monthFormatter: pickerConfig.monthFormatter,
       multipleYearsNavigateBy: pickerConfig.multipleYearsNavigateBy,
-      showMultipleYearsNavigation: pickerConfig.showMultipleYearsNavigation,
+      numOfMonthRows: pickerConfig.numOfMonthRows,
       returnedValueType: pickerConfig.returnedValueType,
       showGoToCurrent: pickerConfig.showGoToCurrent,
+      showMultipleYearsNavigation: pickerConfig.showMultipleYearsNavigation,
+      showNearMonthDays: pickerConfig.showNearMonthDays,
+      showWeekNumbers: pickerConfig.showWeekNumbers,
       unSelectOnClick: pickerConfig.unSelectOnClick,
-      numOfMonthRows: pickerConfig.numOfMonthRows,
+      weekDayFormat: pickerConfig.weekDayFormat,
+      weekDayFormatter: pickerConfig.weekDayFormatter,
+      yearFormat: pickerConfig.yearFormat,
+      yearFormatter: pickerConfig.yearFormatter,
     };
   }
 
@@ -90,32 +117,8 @@ export class DatePickerService {
     return this.daytimeCalendarService.getConfig(pickerConfig);
   }
 
-  public getTimeConfig(pickerConfig: IDatePickerConfig): ITimeSelectConfig {
-    return this.timeSelectService.getConfig(pickerConfig);
-  }
-
-  public pickerClosed() {
-    this.onPickerClosed.emit();
-  }
-
-  // todo:: add unit tests
-  public isValidInputDateValue(value: string, config: IDatePickerConfig): boolean {
-    value = value ? value : '';
-    const datesStrArr: string[] = this.utilsService.datesStringToStringArray(value);
-
-    return datesStrArr.every((date) => this.utilsService.isDateValid(date, config.format));
-  }
-
-  // todo:: add unit tests
-  public convertInputValueToDayjsArray(value: string, config: IDatePickerConfig): Dayjs[] {
-    value = value ? value : '';
-    const datesStrArr: string[] = this.utilsService.datesStringToStringArray(value);
-
-    return this.utilsService.convertToDayjsArray(datesStrArr, config);
-  }
-
   public getOverlayPosition({ drops, opens }: IDatePickerConfig): ConnectedPosition[] | undefined {
-    if (!drops && !opens) {
+    if (drops === 'up' && (opens === null || opens === undefined)) {
       return [
         {
           originX: 'start',
@@ -128,24 +131,44 @@ export class DatePickerService {
 
     return [
       {
-        originX: opens ? (opens === 'left' ? 'start' : 'end') : 'start',
-        originY: drops ? (drops === 'up' ? 'top' : 'bottom') : 'bottom',
-        overlayX: opens ? (opens === 'left' ? 'start' : 'end') : 'start',
-        overlayY: drops ? (drops === 'up' ? 'bottom' : 'top') : 'top',
+        originX: opens === 'right' ? 'end' : 'start',
+        originY: drops !== null && drops !== undefined && drops === 'up' ? 'top' : 'bottom',
+        overlayX: opens === 'right' ? 'end' : 'start',
+        overlayY: drops !== undefined && drops === 'up' ? 'bottom' : 'top',
       },
     ];
   }
 
+  public getTimeConfig(pickerConfig: IDatePickerConfig): ITimeSelectConfig {
+    return this.timeSelectService.getConfig(pickerConfig);
+  }
+
+  public isValidInputDateValue(value: string | null | undefined, config: IDatePickerConfig): boolean {
+    // todo:: add unit tests
+    const usedValue = value ?? '';
+    const datesStringArray: string[] = this.utilsService.datesStringToStringArray(usedValue);
+
+    return datesStringArray.every((date) => this.utilsService.isDateValid(date, config.format));
+  }
+
+  public pickerClosed(): void {
+    this.onPickerClosed.emit();
+  }
+
   private static getDefaultFormatByMode(mode: CalendarMode): string {
     switch (mode) {
-      case 'day':
+      case 'day': {
         return 'DD-MM-YYYY';
-      case 'daytime':
+      }
+      case 'daytime': {
         return 'DD-MM-YYYY HH:mm:ss';
-      case 'time':
-        return 'HH:mm:ss';
-      case 'month':
+      }
+      case 'month': {
         return 'MMM, YYYY';
+      }
+      case 'time': {
+        return 'HH:mm:ss';
+      }
     }
   }
 }

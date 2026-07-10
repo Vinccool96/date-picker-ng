@@ -1,19 +1,20 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
 
 import { App } from './app';
 
 describe('App', () => {
+  let spectator: Spectator<App>;
   let component: App;
-  let fixture: ComponentFixture<App>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App],
-    }).compileComponents();
+  const createComponent = createComponentFactory({
+    component: App,
+    providers: [{ provide: ActivatedRoute, useValue: {} }],
+  });
 
-    fixture = TestBed.createComponent(App);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+  beforeEach(() => {
+    spectator = createComponent();
+    component = spectator.component;
   });
 
   it('should create', () => {

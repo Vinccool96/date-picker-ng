@@ -1,19 +1,24 @@
-import { DatePickerComponent } from './date-picker.component';
-import { CalendarMode } from '../common/types/calendar-mode';
-import { By } from '@angular/platform-browser';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { By } from '@angular/platform-browser';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
+
+import { CalendarMode } from '../common/types/calendar-mode';
+import { DatePickerComponent } from './date-picker.component';
 
 describe('DatePickerComponent', () => {
   let spectator: Spectator<DatePickerComponent>;
   let component: DatePickerComponent;
 
   const createComponent = createComponentFactory({
-    component: DatePickerComponent,
     imports: [OverlayModule],
+    component: DatePickerComponent,
   });
 
-  function setComponentMode(mode: CalendarMode) {
+  /**
+   * Sets the mode of the component
+   * @param mode The mode
+   */
+  function setComponentMode(mode: CalendarMode): void {
     spectator.setInput('mode', mode);
     component.init();
   }

@@ -1,5 +1,6 @@
-import { DayTimeCalendarComponent } from './day-time-calendar.component';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
+
+import { DayTimeCalendarComponent } from './day-time-calendar.component';
 
 describe('DayTimeCalendarComponent', () => {
   let spectator: Spectator<DayTimeCalendarComponent>;

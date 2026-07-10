@@ -1,3 +1,3 @@
 import { Dayjs } from 'dayjs';
 
-export type CalendarValue = Dayjs | Dayjs[] | string | string[];
+export type CalendarValue = string | Dayjs | Dayjs[] | string[];

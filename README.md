@@ -5,7 +5,7 @@ Supports latest (Angular 21) version. For older versions please checkout the CHA
 
 [DEMO](https://wondrous-crostata-172891.netlify.app/)
 
-[![npm version](https://badge.fury.io/js/date-picker-ng.svg)](https://badge.fury.io/js/date-picker-ng) [![Build Status](https://travis-ci.org/vinccool96/date-picker-ng.svg?branch=master)](https://travis-ci.org/vinccool/date-picker-ng) [![Package Quality](http://npm.packagequality.com/shield/ng2-date-picker.svg)](http://packagequality.com/#?package=ng2-date-picker)
+[![npm version](https://badge.fury.io/js/date-picker-ng.svg)](https://badge.fury.io/js/date-picker-ng) [![Build Status](https://travis-ci.org/vinccool96/date-picker-ng.svg?branch=master)](https://travis-ci.org/vinccool96/date-picker-ng) [![Package Quality](http://npm.packagequality.com/shield/ng2-date-picker.svg)](http://packagequality.com/#?package=ng2-date-picker)
 
 ## Screenshots
 

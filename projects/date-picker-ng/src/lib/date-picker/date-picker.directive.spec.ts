@@ -1,6 +1,7 @@
+import { createDirectiveFactory, SpectatorDirective } from '@ngneat/spectator/vitest';
+
 import { UtilsService } from '../common/services/utils/utils.service';
 import { DatePickerDirective } from './date-picker.directive';
-import { createDirectiveFactory, SpectatorDirective } from '@ngneat/spectator/vitest';
 
 describe('DatePickerDirective', () => {
   let spectator: SpectatorDirective<DatePickerDirective>;

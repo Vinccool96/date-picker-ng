@@ -1,6 +1,7 @@
-import { TimeSelectComponent } from './time-select.component';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/vitest';
+
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
+import { TimeSelectComponent } from './time-select.component';
 
 describe('TimeSelectComponent', () => {
   let spectator: Spectator<TimeSelectComponent>;

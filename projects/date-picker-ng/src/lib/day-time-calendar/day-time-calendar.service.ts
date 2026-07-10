@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
+import { Dayjs } from 'dayjs';
 
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { UtilsService } from '../common/services/utils/utils.service';
+import { IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
 import { DayCalendarService } from '../day-calendar/day-calendar.service';
 import { TimeSelectService } from '../time-select/time-select.service';
 import { IDayTimeCalendarConfig, IDayTimeCalendarConfigInternal } from './day-time-calendar-config.model';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
-import { Dayjs } from 'dayjs';
-import { IDayCalendarConfigInternal } from '../day-calendar/day-calendar-config.model';
 
 const DAY_FORMAT = 'YYYYMMDD';
 const TIME_FORMAT = 'HH:mm:ss';
@@ -16,11 +16,23 @@ const COMBINED_FORMAT = DAY_FORMAT + TIME_FORMAT;
   providedIn: 'root',
 })
 export class DayTimeCalendarService {
+  /*
+   *****************************************************************************************************************
+   * defaults
+   *****************************************************************************************************************
+   */
+
   private readonly DEFAULT_CONFIG: IDayTimeCalendarConfig = {};
 
-  private readonly utilsService = inject(UtilsService);
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
+
   private readonly dayCalendarService = inject(DayCalendarService);
   private readonly timeSelectService = inject(TimeSelectService);
+  private readonly utilsService = inject(UtilsService);
 
   public getConfig(config: IDayTimeCalendarConfig | undefined): IDayTimeCalendarConfigInternal {
     const _config = {
@@ -35,16 +47,16 @@ export class DayTimeCalendarService {
   }
 
   public updateDay(current: Dayjs | undefined, day: Dayjs | undefined, config: IDayCalendarConfigInternal): Dayjs {
-    const time = current ? current : dayjsRef();
+    const time = current ?? dayjsRef();
     const usedDay = day ?? dayjsRef();
     let updated = dayjsRef(usedDay.format(DAY_FORMAT) + time.format(TIME_FORMAT), COMBINED_FORMAT);
 
-    if (config.min) {
+    if (config.min !== undefined) {
       const min = config.min;
       updated = min.isAfter(updated) ? min : updated;
     }
 
-    if (config.max) {
+    if (config.max !== undefined) {
       const max = config.max;
       updated = max.isBefore(updated) ? max : updated;
     }
@@ -53,7 +65,7 @@ export class DayTimeCalendarService {
   }
 
   public updateTime(current: Dayjs | undefined, time: Dayjs | undefined): Dayjs {
-    const day = current ? current : dayjsRef();
+    const day = current ?? dayjsRef();
     const usedTime = time ?? dayjsRef();
 
     return dayjsRef(day.format(DAY_FORMAT) + usedTime.format(TIME_FORMAT), COMBINED_FORMAT);

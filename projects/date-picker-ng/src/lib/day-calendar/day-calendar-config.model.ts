@@ -1,37 +1,38 @@
-import { ICalendar, ICalendarInternal } from '../common/models/calendar.model';
-import { WeekDays } from '../common/types/week-days.type';
 import { Dayjs } from 'dayjs';
-import { ECalendarValue } from '../common/types/calendar-value-enum';
 
-interface IConfig {
-  isDayDisabledCallback?: (date: Dayjs) => boolean;
-  isMonthDisabledCallback?: (date: Dayjs) => boolean;
-  weekDayFormat?: string;
-  weekDayFormatter?: (dayIndex: number) => string;
-  showNearMonthDays?: boolean;
-  showWeekNumbers?: boolean;
-  firstDayOfWeek?: WeekDays;
-  format?: string;
-  allowMultiSelect?: boolean;
-  monthFormat?: string;
-  monthFormatter?: (month: Dayjs) => string;
-  enableMonthSelector?: boolean;
-  yearFormat?: string;
-  yearFormatter?: (year: Dayjs) => string;
+import { ICalendar, ICalendarInternal } from '../common/models/calendar.model';
+import { IBaseConfigWithMultiple } from '../common/models/config';
+import { ECalendarValue } from '../common/types/calendar-value-enum';
+import { WeekDays } from '../common/types/week-days.type';
+
+export interface IDayCalendarConfig extends ICalendar, IConfig {}
+
+export interface IDayCalendarConfigInternal extends ICalendarInternal, IConfig {}
+
+interface IConfig extends IBaseConfigWithMultiple {
+  dayBtnCssClassCallback?: (day: Dayjs | undefined) => string;
   dayBtnFormat?: string;
   dayBtnFormatter?: (day: Dayjs) => string;
-  dayBtnCssClassCallback?: (day: Dayjs | undefined) => string;
+  enableMonthSelector?: boolean;
+  firstDayOfWeek?: WeekDays;
+  format?: string;
+  isDayDisabledCallback?: (date: Dayjs) => boolean;
+  isMonthDisabledCallback?: (date: Dayjs) => boolean;
+  monthBtnCssClassCallback?: (day: Dayjs) => string;
   monthBtnFormat?: string;
   monthBtnFormatter?: (day: Dayjs) => string;
-  monthBtnCssClassCallback?: (day: Dayjs) => string;
+  monthFormat?: string;
+  monthFormatter?: (month: Dayjs) => string;
   multipleYearsNavigateBy?: number;
-  showMultipleYearsNavigation?: boolean;
-  returnedValueType?: ECalendarValue;
-  showGoToCurrent?: boolean;
-  unSelectOnClick?: boolean;
   numOfMonthRows?: number;
+  returnedValueType?: ECalendarValue | null;
+  showGoToCurrent?: boolean;
+  showMultipleYearsNavigation?: boolean;
+  showNearMonthDays?: boolean;
+  showWeekNumbers?: boolean;
+  unSelectOnClick?: boolean;
+  weekDayFormat?: string;
+  weekDayFormatter?: (dayIndex: number) => string;
+  yearFormat?: string;
+  yearFormatter?: (year: Dayjs) => string;
 }
-
-export interface IDayCalendarConfig extends IConfig, ICalendar {}
-
-export interface IDayCalendarConfigInternal extends IConfig, ICalendarInternal {}

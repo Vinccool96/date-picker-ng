@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
+import { Dayjs } from 'dayjs';
 
+import { dayjsRef } from '../common/dayjs/dayjs.ref';
 import { UtilsService } from '../common/services/utils/utils.service';
 import { ITimeSelectConfig, ITimeSelectConfigInternal } from './time-select-config.model';
-import { Dayjs } from 'dayjs';
-import { dayjsRef } from '../common/dayjs/dayjs.ref';
 
 export type TimeUnit = 'hour' | 'minute' | 'second';
 export const FIRST_PM_HOUR = 12;
@@ -12,6 +12,12 @@ export const FIRST_PM_HOUR = 12;
   providedIn: 'root',
 })
 export class TimeSelectService {
+  /*
+   *****************************************************************************************************************
+   * defaults
+   *****************************************************************************************************************
+   */
+
   private readonly DEFAULT_CONFIG: ITimeSelectConfigInternal = {
     hours12Format: 'hh',
     hours24Format: 'HH',
@@ -25,12 +31,33 @@ export class TimeSelectService {
     timeSeparator: ':',
   };
 
+  /*
+   *****************************************************************************************************************
+   * injects
+   *****************************************************************************************************************
+   */
+
   private readonly utilsService = inject(UtilsService);
+
+  public decrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
+    let amount = 1;
+    switch (unit) {
+      case 'minute': {
+        amount = config.minutesInterval as number;
+        break;
+      }
+      case 'second': {
+        amount = config.secondsInterval as number;
+        break;
+      }
+    }
+    return time.subtract(amount, unit);
+  }
 
   public getConfig(config: ITimeSelectConfig | undefined): ITimeSelectConfigInternal {
     const timeConfigs = {
-      maxTime: this.utilsService.onlyTime(config && config.maxTime),
-      minTime: this.utilsService.onlyTime(config && config.minTime),
+      maxTime: this.utilsService.onlyTime(config?.maxTime),
+      minTime: this.utilsService.onlyTime(config?.minTime),
     };
 
     return {
@@ -40,104 +67,96 @@ export class TimeSelectService {
     } as ITimeSelectConfigInternal;
   }
 
-  public getTimeFormat(config: ITimeSelectConfigInternal): string {
-    return (
-      (config.showTwentyFourHours ? (config.hours24Format as string) : (config.hours12Format as string)) +
-      (config.timeSeparator as string) +
-      (config.minutesFormat as string) +
-      (config.showSeconds ? (config.timeSeparator as string) + (config.secondsFormat as string) : '') +
-      (config.showTwentyFourHours ? '' : ' ' + (config.meridiemFormat as string))
-    );
+  public getHours(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
+    const time = t ?? dayjsRef();
+    return time.format(config.showTwentyFourHours === true ? config.hours24Format : config.hours12Format);
   }
 
-  public getHours(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
-    const time = t || dayjsRef();
-    return time.format(config.showTwentyFourHours ? config.hours24Format : config.hours12Format);
+  public getMeridiem(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
+    const time = t ?? dayjsRef();
+    return time.format(config.meridiemFormat);
   }
 
   public getMinutes(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
-    const time = t || dayjsRef();
+    const time = t ?? dayjsRef();
     return time.format(config.minutesFormat);
   }
 
   public getSeconds(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
-    const time = t || dayjsRef();
+    const time = t ?? dayjsRef();
     return time.format(config.secondsFormat);
   }
 
-  public getMeridiem(config: ITimeSelectConfigInternal, t: Dayjs | null | undefined): string {
-    const time = t || dayjsRef();
-    return time.format(config.meridiemFormat);
-  }
-
-  public decrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
-    let amount = 1;
-    switch (unit) {
-      case 'minute':
-        amount = config.minutesInterval as number;
-        break;
-      case 'second':
-        amount = config.secondsInterval as number;
-        break;
-    }
-    return time.subtract(amount, unit);
+  public getTimeFormat(config: ITimeSelectConfigInternal): string {
+    return (
+      (config.showTwentyFourHours === true ? (config.hours24Format as string) : (config.hours12Format as string)) +
+      (config.timeSeparator as string) +
+      (config.minutesFormat as string) +
+      (config.showSeconds === true ? (config.timeSeparator as string) + (config.secondsFormat as string) : '') +
+      (config.showTwentyFourHours === true ? '' : ' ' + (config.meridiemFormat as string))
+    );
   }
 
   public increase(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): Dayjs {
     let amount = 1;
     switch (unit) {
-      case 'minute':
+      case 'minute': {
         amount = config.minutesInterval as number;
         break;
-      case 'second':
+      }
+      case 'second': {
         amount = config.secondsInterval as number;
         break;
+      }
     }
     return time.add(amount, unit);
   }
 
-  public toggleMeridiem(time: Dayjs): Dayjs {
-    if (time.hour() < FIRST_PM_HOUR) {
-      return time.add(12, 'hour');
-    } else {
-      return time.subtract(12, 'hour');
-    }
-  }
-
   public shouldShowDecrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): boolean {
-    if (!config.min && !config.minTime) {
+    if (config.min === undefined && config.minTime === undefined) {
       return true;
     }
+
     const newTime = this.decrease(config, time, unit);
 
     return (
-      (!config.min || config.min.isSameOrBefore(newTime)) &&
-      (!config.minTime || config.minTime.isSameOrBefore(this.utilsService.onlyTime(newTime)))
+      (config.min?.isSameOrBefore(newTime) ?? true) &&
+      (config.minTime?.isSameOrBefore(this.utilsService.onlyTime(newTime)) ?? true)
     );
   }
 
   public shouldShowIncrease(config: ITimeSelectConfigInternal, time: Dayjs, unit: TimeUnit): boolean {
-    if (!config.max && !config.maxTime) {
+    if (config.max === undefined && config.maxTime === undefined) {
       return true;
     }
     const newTime = this.increase(config, time, unit);
 
     return (
-      (!config.max || config.max.isSameOrAfter(newTime)) &&
-      (!config.maxTime || config.maxTime.isSameOrAfter(this.utilsService.onlyTime(newTime)))
+      (config.max?.isSameOrAfter(newTime) ?? true) &&
+      (config.maxTime?.isSameOrAfter(this.utilsService.onlyTime(newTime)) ?? true)
     );
   }
 
   public shouldShowToggleMeridiem(config: ITimeSelectConfigInternal, time: Dayjs): boolean {
-    if (!config.min && !config.max && !config.minTime && !config.maxTime) {
+    if (
+      config.min === undefined &&
+      config.max === undefined &&
+      config.minTime === undefined &&
+      config.maxTime === undefined
+    ) {
       return true;
     }
+
     const newTime = this.toggleMeridiem(time);
     return (
-      (!config.max || config.max.isSameOrAfter(newTime)) &&
-      (!config.min || config.min.isSameOrBefore(newTime)) &&
-      (!config.maxTime || config.maxTime.isSameOrAfter(this.utilsService.onlyTime(newTime))) &&
-      (!config.minTime || config.minTime.isSameOrBefore(this.utilsService.onlyTime(newTime)))
+      (config.max?.isSameOrAfter(newTime) ?? true) &&
+      (config.min?.isSameOrBefore(newTime) ?? true) &&
+      (config.maxTime?.isSameOrAfter(this.utilsService.onlyTime(newTime)) ?? true) &&
+      (config.minTime?.isSameOrBefore(this.utilsService.onlyTime(newTime)) ?? true)
     );
+  }
+
+  public toggleMeridiem(time: Dayjs): Dayjs {
+    return time.hour() < FIRST_PM_HOUR ? time.add(12, 'hour') : time.subtract(12, 'hour');
   }
 }
