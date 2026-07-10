@@ -1,1 +1,1 @@
-npm run pre-commit
+pnpm run commit:check

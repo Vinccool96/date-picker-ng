@@ -1,0 +1,3 @@
+{
+  "*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,mdx,scss,html}": ["prettier --write"]
+}
