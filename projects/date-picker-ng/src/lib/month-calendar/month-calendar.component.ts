@@ -307,14 +307,17 @@ export class MonthCalendarComponent implements ControlValueAccessor, OnInit, Val
 
   private init(): void {
     this.componentConfig = this.monthCalendarService.getConfig(this.config());
+    const displayDate = this.displayDate();
     this.currentDateView =
-      (this.displayDate() as Dayjs | undefined) ??
-      this.utilsService.getDefaultDisplayDate(
-        this.currentDateView,
-        this.selected,
-        this.componentConfig.allowMultiSelect,
-        this.componentConfig.min,
-      );
+      displayDate === null || displayDate === ''
+        ? this.utilsService.getDefaultDisplayDate(
+            this.currentDateView,
+            this.selected,
+            this.componentConfig.allowMultiSelect,
+            this.componentConfig.min,
+          )
+        : dayjsRef(displayDate);
+    console.log(this.currentDateView);
     this.inputValueType = this.utilsService.getInputType(this.inputValue, this.componentConfig.allowMultiSelect);
     this._shouldShowCurrent = this.shouldShowCurrent();
   }
@@ -364,6 +367,7 @@ export class MonthCalendarComponent implements ControlValueAccessor, OnInit, Val
   }
 
   private set currentDateView(current: Dayjs | null) {
+    console.log(current);
     this._currentDateView = dayjsRef(current?.toDate());
     this.yearMonths = this.monthCalendarService.generateYear(
       this.componentConfig,
