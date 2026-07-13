@@ -25,6 +25,7 @@ runs:
     - name: Install pnpm
       uses: pnpm/action-setup@v6
       with:
+        version: 11.12.0
         cache: true
         package_json_file: ${{ inputs.working-directory }}/package.json
         cache_dependency_path: ${{ inputs.working-directory }}/pnpm-lock.yaml
