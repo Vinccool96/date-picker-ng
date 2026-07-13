@@ -1,5 +1,6 @@
-import { DemoPage } from './app.po';
 import { expect, Page, test } from '@playwright/test';
+
+import { DemoPage } from './app.po';
 
 test.describe('dpDayPicker timePicker', () => {
   let po: DemoPage;
@@ -50,10 +51,10 @@ test.describe('dpDayPicker timePicker', () => {
     await po.timePickerInput().click();
     await po.timePickerInput().clear();
     await po.setText(po.timePickerInput(), '09:00:00');
-    await expect(await po.hourDownBtn()).toBeDisabled();
-    await expect(await po.minuteDownBtn()).not.toBeDisabled();
-    await expect(await po.meridiemUpBtn()).not.toBeDisabled();
-    await expect(await po.meridiemDownBtn()).not.toBeDisabled();
+    await expect(po.hourDownBtn()).toBeDisabled();
+    await expect(po.minuteDownBtn()).not.toBeDisabled();
+    await expect(po.meridiemUpBtn()).not.toBeDisabled();
+    await expect(po.meridiemDownBtn()).not.toBeDisabled();
   });
 
   test('should check that the max selectable time option is working', async () => {

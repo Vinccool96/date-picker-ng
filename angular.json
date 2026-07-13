@@ -141,6 +141,23 @@
           }
         }
       }
+    },
+    "dp-e2e": {
+      "projectType": "library",
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "architect": {
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "e2e/**/*.ts",
+              "playwright.config.ts"
+            ],
+            "eslintConfig": "eslint.config.mjs"
+          }
+        }
+      }
     }
   },
   "schematics": {

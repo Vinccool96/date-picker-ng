@@ -1,5 +1,6 @@
-import { DemoPage } from './app.po';
 import { expect, Locator, Page, test } from '@playwright/test';
+
+import { DemoPage } from './app.po';
 
 test.describe('Move to date api', () => {
   let po: DemoPage;
@@ -15,15 +16,20 @@ test.describe('Move to date api', () => {
   });
 
   test('should move to date API on day', async () => {
-    const runner = async (menuItem: Locator, input: Locator | null, isPicker: boolean, cont: Locator) => {
+    const runner = async (
+      menuItem: Locator,
+      input: Locator | null,
+      isPicker: boolean,
+      cont: Locator,
+    ): Promise<void> => {
       await menuItem.click();
       await po.moveCalendarTo().click();
 
       if (isPicker) {
-        await input.click();
+        await input?.click();
       }
 
-      await expect(await cont.textContent()).toContain('1987');
+      expect(await cont.textContent()).toContain('1987');
     };
 
     await runner(po.dayPickerMenu(), po.dayPickerInput(), true, po.dayCalendarNavHeaderBtn());

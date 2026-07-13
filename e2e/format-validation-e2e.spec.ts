@@ -1,5 +1,6 @@
-import { DemoPage } from './app.po';
 import { expect, Locator, Page, test } from '@playwright/test';
+
+import { DemoPage } from './app.po';
 
 test.describe('format validation', () => {
   let po: DemoPage;
@@ -15,7 +16,7 @@ test.describe('format validation', () => {
   });
 
   test('should check that the format validation is working', async () => {
-    const common = async (menu: Locator, input: Locator) => {
+    const common = async (menu: Locator, input: Locator): Promise<void> => {
       await menu.click();
       await input.click();
       await input.clear();

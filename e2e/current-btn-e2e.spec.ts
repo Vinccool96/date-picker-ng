@@ -1,6 +1,7 @@
-import { DemoPage } from './app.po';
-import dayjs from 'dayjs';
 import { expect, Locator, Page, test } from '@playwright/test';
+import dayjs from 'dayjs';
+
+import { DemoPage } from './app.po';
 
 test.describe('dpDayPicker dayPicker', () => {
   let po: DemoPage;
@@ -18,49 +19,49 @@ test.describe('dpDayPicker dayPicker', () => {
   test('should check if go to current location btn is working as expected', async () => {
     const currentMonth = dayjs().format('MMM, YYYY');
     const currentYear = dayjs().format('YYYY');
-    const prevMonth = dayjs().subtract(1, 'month').format('MMM, YYYY');
-    const prevYear = dayjs().subtract(1, 'year').format('YYYY');
+    const previousMonth = dayjs().subtract(1, 'month').format('MMM, YYYY');
+    const previousYear = dayjs().subtract(1, 'year').format('YYYY');
 
-    const commonDayCalendar = async (menu: Locator, input: Locator) => {
+    const commonDayCalendar = async (menu: Locator, input: Locator): Promise<void> => {
       await menu.click();
       await po.showGoToCurrentRadio().click();
       await input.click();
-      await expect(await po.currentLocationBtn()).toBeVisible();
-      await expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+      await expect(po.currentLocationBtn()).toBeVisible();
+      expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
       await po.dayCalendarLeftNavBtn().click();
-      await expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(prevMonth);
+      expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(previousMonth);
       await po.currentLocationBtn().click();
-      await expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+      expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
       await po.dayCalendarNavHeaderBtn().click();
-      await expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(currentYear);
+      expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(currentYear);
       await po.monthCalendarLeftNavBtn().click();
-      await expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(prevYear);
+      expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(previousYear);
       await po.dayCalendarNavMonthHeaderBtn().click();
 
       await po.currentLocationBtn().click();
-      await expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+      expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
 
       await po.hideGoToCurrentRadio().click();
       await input.click();
-      await expect(await po.currentLocationBtn()).toBeHidden();
+      await expect(po.currentLocationBtn()).toBeHidden();
       await po.dayCalendarNavHeaderBtn().click();
-      await expect(await po.currentLocationBtn()).toBeHidden();
+      await expect(po.currentLocationBtn()).toBeHidden();
     };
 
-    const commonMonth = async (menu: Locator, input: Locator) => {
+    const commonMonth = async (menu: Locator, input: Locator): Promise<void> => {
       await menu.click();
       await po.showGoToCurrentRadio().click();
       await input.click();
-      await expect(await po.currentLocationBtn()).toBeVisible();
-      await expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
+      await expect(po.currentLocationBtn()).toBeVisible();
+      expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
       await po.monthCalendarLeftNavBtn().click();
-      await expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(prevYear);
+      expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(previousYear);
       await po.currentLocationBtn().click();
-      await expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
+      expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
 
       await po.hideGoToCurrentRadio().click();
       await input.click();
-      await expect(await po.currentLocationBtn()).toBeHidden();
+      await expect(po.currentLocationBtn()).toBeHidden();
     };
 
     await commonDayCalendar(po.daytimePickerMenu(), po.daytimePickerInput());
@@ -77,6 +78,6 @@ test.describe('dpDayPicker dayPicker', () => {
     await po.dayPickerMenu().click();
     await po.setText(po.minSelectableInput(), dayjs().add(3, 'month').format('DD-MM-YYYY'));
     await po.dayPickerInput().click();
-    await expect(await po.currentLocationBtn()).toBeHidden();
+    await expect(po.currentLocationBtn()).toBeHidden();
   });
 });

@@ -1,6 +1,7 @@
-import { DemoPage } from '../app.po';
 import { expect, Locator, Page, test } from '@playwright/test';
 import dayjs from 'dayjs';
+
+import { DemoPage } from '../app.po';
 
 test.describe('dpDayPicker timePicker', () => {
   let po: DemoPage;
@@ -16,9 +17,9 @@ test.describe('dpDayPicker timePicker', () => {
   });
 
   test('should make sure unSelectOnClick feature works as expected for day calendar', async () => {
-    const dayRunner = async (menuItem: Locator, input: Locator, isPicker: boolean) => {
+    const dayRunner = async (menuItem: Locator, input: Locator | null, isPicker: boolean): Promise<void> => {
       const date = dayjs().date(15);
-      const dayClick = async () => {
+      const dayClick = async (): Promise<void> => {
         if (isPicker) {
           await po.clickOnDayButton(date.format('DD'));
         } else {
@@ -30,6 +31,10 @@ test.describe('dpDayPicker timePicker', () => {
       await po.enableUnselectSelected().click();
 
       if (isPicker) {
+        if (input === null) {
+          throw new Error('input is required');
+        }
+
         await po.noCloseOnSelect().click();
         await po.clearInput(input);
         await input.click();
@@ -39,33 +44,41 @@ test.describe('dpDayPicker timePicker', () => {
       }
 
       await dayClick();
-      expect(await po.selectedDay()).toBeVisible();
+      await expect(po.selectedDay()).toBeVisible();
       await dayClick();
-      expect(await po.selectedDay()).toBeHidden();
+      await expect(po.selectedDay()).toBeHidden();
 
       await po.clickOnBody();
 
       await po.disableUnselectSelected().click();
 
       if (isPicker) {
+        if (input === null) {
+          throw new Error('input is required');
+        }
+
         await input.click();
       }
 
       await dayClick();
 
-      expect(await po.selectedDay()).toBeVisible();
+      await expect(po.selectedDay()).toBeVisible();
 
       await dayClick();
-      expect(await po.selectedDay()).toBeVisible();
+      await expect(po.selectedDay()).toBeVisible();
 
       await po.enableUnselectSelected().click();
 
       if (isPicker) {
+        if (input === null) {
+          throw new Error('input is required');
+        }
+
         await input.click();
       }
 
       await dayClick();
-      expect(await po.selectedDay()).toBeHidden();
+      await expect(po.selectedDay()).toBeHidden();
     };
 
     await dayRunner(po.dayPickerMenu(), po.dayPickerInput(), true);
@@ -74,9 +87,9 @@ test.describe('dpDayPicker timePicker', () => {
   });
 
   test('should make sure unSelectOnClick feature works as expected for month calendar', async () => {
-    const monthRunner = async (menuItem: Locator, input: Locator, isPicker: boolean) => {
+    const monthRunner = async (menuItem: Locator, input: Locator | null, isPicker: boolean): Promise<void> => {
       const date = dayjs();
-      const monthClick = async () => {
+      const monthClick = async (): Promise<void> => {
         if (isPicker) {
           await po.clickOnMonthButton(date.format('MMM'));
         } else {
@@ -88,6 +101,10 @@ test.describe('dpDayPicker timePicker', () => {
       await po.enableUnselectSelected().click();
 
       if (isPicker) {
+        if (input === null) {
+          throw new Error('input is required');
+        }
+
         await po.noCloseOnSelect().click();
         await po.clearInput(input);
         await input.click();
@@ -96,32 +113,40 @@ test.describe('dpDayPicker timePicker', () => {
       }
 
       await monthClick();
-      expect(po.selectedMonth()).toBeVisible();
+      await expect(po.selectedMonth()).toBeVisible();
       await monthClick();
-      expect(po.selectedMonth()).toBeHidden();
+      await expect(po.selectedMonth()).toBeHidden();
 
       await po.clickOnBody();
       await po.disableUnselectSelected().click();
 
       if (isPicker) {
+        if (input === null) {
+          throw new Error('input is required');
+        }
+
         await input.click();
       }
 
       await monthClick();
 
-      expect(po.selectedMonth()).toBeVisible();
+      await expect(po.selectedMonth()).toBeVisible();
 
       await monthClick();
-      expect(po.selectedMonth()).toBeVisible();
+      await expect(po.selectedMonth()).toBeVisible();
 
       await po.enableUnselectSelected().click();
 
       if (isPicker) {
+        if (input === null) {
+          throw new Error('input is required');
+        }
+
         await input.click();
       }
 
       await monthClick();
-      expect(po.selectedMonth()).toBeHidden();
+      await expect(po.selectedMonth()).toBeHidden();
     };
 
     await monthRunner(po.monthPickerMenu(), po.monthPickerInput(), true);

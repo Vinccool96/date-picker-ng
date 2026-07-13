@@ -1,5 +1,6 @@
-import { DemoPage } from './app.po';
 import { expect, Page, test } from '@playwright/test';
+
+import { DemoPage } from './app.po';
 
 test.describe('dpDayPicker dayPicker', () => {
   let po: DemoPage;
@@ -22,7 +23,7 @@ test.describe('dpDayPicker dayPicker', () => {
     await expect(po.minDateValidationMsg()).toBeHidden();
     await po.setText(po.minDateValidationPickerInput(), '10-04-2017 10:08:07');
     await po.setText(po.daytimePickerInput(), '10-04-2017 09:08:07');
-    await expect(await po.minDateValidationMsg().textContent()).toEqual('minDate invalid');
+    expect(await po.minDateValidationMsg().textContent()).toEqual('minDate invalid');
     await po.setText(po.minDateValidationPickerInput(), '10-04-2017 09:08:07');
     await expect(po.minDateValidationMsg()).toBeHidden();
   });
@@ -32,7 +33,7 @@ test.describe('dpDayPicker dayPicker', () => {
     await expect(po.maxDateValidationMsg()).toBeHidden();
     await po.setText(po.maxDateValidationPickerInput(), '12-04-2017 08:08:07');
     await po.setText(po.daytimePickerInput(), '12-04-2017 09:08:07');
-    await expect(await po.maxDateValidationMsg().textContent()).toEqual('maxDate invalid');
+    expect(await po.maxDateValidationMsg().textContent()).toEqual('maxDate invalid');
     await po.setText(po.maxDateValidationPickerInput(), '12-04-2017 09:08:07');
     await expect(po.maxDateValidationMsg()).toBeHidden();
   });
@@ -41,31 +42,31 @@ test.describe('dpDayPicker dayPicker', () => {
     await po.setText(po.minSelectableInput(), '11-04-2017 09:08:07');
     await po.setText(po.daytimePickerInput(), '17-04-2017 09:08:07');
     await po.daytimePickerInput().click();
-    await expect(await po.calendarDisabledDays().count()).toBe(16);
+    expect(await po.calendarDisabledDays().count()).toBe(16);
     await po.setText(po.daytimePickerInput(), '11-04-2017 09:18:07');
-    await expect(await po.hourDownBtn()).toBeDisabled();
-    await expect(await po.minuteDownBtn()).not.toBeDisabled();
-    await expect(await po.meridiemUpBtn()).not.toBeDisabled();
-    await expect(await po.meridiemDownBtn()).not.toBeDisabled();
+    await expect(po.hourDownBtn()).toBeDisabled();
+    await expect(po.minuteDownBtn()).not.toBeDisabled();
+    await expect(po.meridiemUpBtn()).not.toBeDisabled();
+    await expect(po.meridiemDownBtn()).not.toBeDisabled();
   });
 
   test('should check that the max selectable option is working', async () => {
     await po.setText(po.maxSelectableInput(), '11-04-2017 09:08:07');
     await po.setText(po.daytimePickerInput(), '12-04-2017 09:08:07');
     await po.daytimePickerInput().click();
-    await expect(await po.calendarDisabledDays().count()).toBe(25);
+    expect(await po.calendarDisabledDays().count()).toBe(25);
     await po.setText(po.daytimePickerInput(), '11-04-2017 09:06:07');
-    await expect(await po.hourUpBtn()).toBeDisabled();
-    await expect(await po.minuteUpBtn()).not.toBeDisabled();
-    await expect(await po.meridiemUpBtn()).toBeDisabled();
-    await expect(await po.meridiemDownBtn()).toBeDisabled();
+    await expect(po.hourUpBtn()).toBeDisabled();
+    await expect(po.minuteUpBtn()).not.toBeDisabled();
+    await expect(po.meridiemUpBtn()).toBeDisabled();
+    await expect(po.meridiemDownBtn()).toBeDisabled();
   });
 
   test('should check that the selection of days is working', async () => {
     await po.setText(po.daytimePickerInput(), '11-04-2017 09:08:07');
-    await expect(await po.selectedDays().count()).toEqual(1);
+    expect(await po.selectedDays().count()).toEqual(1);
     await po.setText(po.daytimePickerInput(), ' ');
 
-    await expect(await po.selectedDays().count()).toEqual(0);
+    expect(await po.selectedDays().count()).toEqual(0);
   });
 });

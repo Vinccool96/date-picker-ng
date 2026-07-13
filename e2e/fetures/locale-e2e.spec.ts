@@ -1,5 +1,6 @@
-import { DemoPage } from '../app.po';
 import { expect, Page, test } from '@playwright/test';
+
+import { DemoPage } from '../app.po';
 
 test.describe('Locales', () => {
   let po: DemoPage;
