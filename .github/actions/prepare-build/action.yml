@@ -1,0 +1,25 @@
+name: 'Prepare: Build'
+description: 'Prepares the repo for a job using a build'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/cache@v4
+      id: build-cache
+      with:
+        path: |
+          packages/*/dist
+          dist
+        key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ github.ref }}-${{ github.run_id }}
+
+    - name: Build lib
+      shell: bash
+      run: |
+        pnpm run build:lib
+
+    - name: Build demo
+      shell: bash
+      run: |
+        pnpm run build:demo

@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
+  merge_group:
+
+env:
+  CI: true
+  PRIMARY_NODE_VERSION: 24
+
+concurrency:
+  group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  install:
+    name: Checkout and Install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+  build:
+    name: Build All Projects
+    runs-on: ubuntu-latest
+    needs: [install]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+  format:
+    name: Verify Format
+    runs-on: ubuntu-latest
+    needs: [install]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Run check
+        run: pnpm run format:check
+
+  lint_with_build:
+    name: Verify Linting
+    runs-on: ubuntu-latest
+    needs: [build]
+    strategy:
+      matrix:
+        lint-task: ['lint:lib', 'lint:demo']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - name: Run check
+        run: npm run ${{ matrix.lint-task }}
+
+  unit_tests:
+    name: Run Unit Tests
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        # just run on the oldest and latest supported versions and assume the intermediate versions are good
+        node-version: [22, 24]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - name: Run Unit Tests Lib
+        run: pnpm run test:ci:lib
+      - name: Run Unit Tests Demo
+        run: pnpm run test:ci:demo
