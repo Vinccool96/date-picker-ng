@@ -22,6 +22,13 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: echo ${{ github.ref }}
 
+    - name: Install pnpm
+      uses: pnpm/action-setup@v6
+      with:
+        cache: true
+        package_json_file: ${{ inputs.working-directory }}/package.json
+        cache_dependency_path: ${{ inputs.working-directory }}/pnpm-lock.yaml
+
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v6
       with:
