@@ -204,8 +204,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnChanges, OnD
 
   public init(): void {
     this.componentConfig = this.dayPickerService.getConfig(this.config(), this.mode());
+    const displayDate = this.displayDate();
     this.currentDateView =
-      this.displayDate() === null
+      displayDate === null || displayDate === ''
         ? this.utilsService.getDefaultDisplayDate(
             this.currentDateView,
             this.selected,
