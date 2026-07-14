@@ -299,8 +299,9 @@ export class DayCalendarComponent implements ControlValueAccessor, OnInit, Valid
 
   private init(): void {
     this.componentConfig = this.dayCalendarService.getConfig(this.config());
+    const displayDate = this.displayDate();
     this.currentDateView =
-      this.displayDate() === null
+      displayDate === null || displayDate === ''
         ? this.utilsService.getDefaultDisplayDate(
             this.currentDateView,
             this.selected,
