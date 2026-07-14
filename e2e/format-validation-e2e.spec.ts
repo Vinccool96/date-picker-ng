@@ -15,25 +15,59 @@ test.describe('format validation', () => {
     await po.navigateTo();
   });
 
-  test('should check that the format validation is working', async () => {
-    const common = async (menu: Locator, input: Locator): Promise<void> => {
-      await menu.click();
-      await input.click();
-      await input.clear();
-      await po.setText(input, 'lmaldlad');
-      await po.clickOnBody();
+  /**
+   * Runs the test
+   * @param menu The menu item to get to the picker
+   * @param input The input of the picker
+   */
+  async function runTest(menu: Locator, input: Locator): Promise<void> {
+    await menu.click();
+    await input.click();
+    await input.clear();
+    await po.setText(input, 'lmaldlad');
+    await po.clickOnBody();
 
-      expect(await po.formatValidationMsg().textContent()).toBe('invalid format');
-      await input.clear();
-    };
+    expect(await po.formatValidationMsg().textContent()).toBe('invalid format');
+    await input.clear();
+  }
 
-    await common(po.daytimePickerMenu(), po.daytimePickerInput());
-    await common(po.daytimeDirectiveMenu(), po.daytimeDirectiveInput());
-    await common(po.dayPickerMenu(), po.dayPickerInput());
-    await common(po.dayDirectiveMenu(), po.dayDirectiveInput());
-    await common(po.monthPickerMenu(), po.monthPickerInput());
-    await common(po.monthDirectiveMenu(), po.monthDirectiveInput());
-    await common(po.timePickerMenu(), po.timePickerInput());
-    await common(po.timeDirectiveMenu(), po.timeSelectDirectiveInput());
+  test.describe('daytime', () => {
+    test('should check that the format validation is working for picker', async () => {
+      await runTest(po.daytimePickerMenu(), po.daytimePickerInput());
+    });
+
+    test('should check that the format validation is working for directive', async () => {
+      await runTest(po.daytimeDirectiveMenu(), po.daytimeDirectiveInput());
+    });
+  });
+
+  test.describe('day', () => {
+    test('should check that the format validation is working for picker', async () => {
+      await runTest(po.dayPickerMenu(), po.dayPickerInput());
+    });
+
+    test('should check that the format validation is working for directive', async () => {
+      await runTest(po.dayDirectiveMenu(), po.dayDirectiveInput());
+    });
+  });
+
+  test.describe('month', () => {
+    test('should check that the format validation is working for picker', async () => {
+      await runTest(po.monthPickerMenu(), po.monthPickerInput());
+    });
+
+    test('should check that the format validation is working for directive', async () => {
+      await runTest(po.monthDirectiveMenu(), po.monthDirectiveInput());
+    });
+  });
+
+  test.describe('time', () => {
+    test('should check that the format validation is working for picker', async () => {
+      await runTest(po.timePickerMenu(), po.timePickerInput());
+    });
+
+    test('should check that the format validation is working for directive', async () => {
+      await runTest(po.timeDirectiveMenu(), po.timeSelectDirectiveInput());
+    });
   });
 });

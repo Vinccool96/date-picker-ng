@@ -2,7 +2,7 @@ import { expect, Page, test } from '@playwright/test';
 
 import { DemoPage } from './app.po';
 
-test.describe('dpDayPicker dayPicker', () => {
+test.describe('daytime picker', () => {
   let po: DemoPage;
   let page: Page;
 

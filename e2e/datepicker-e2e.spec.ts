@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 import { DemoPage } from './app.po';
 
-test.describe('dpDayPicker dayPicker', () => {
+test.describe('day picker', () => {
   let po: DemoPage;
   let page: Page;
 

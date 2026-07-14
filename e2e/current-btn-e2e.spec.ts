@@ -3,9 +3,14 @@ import dayjs from 'dayjs';
 
 import { DemoPage } from './app.po';
 
-test.describe('dpDayPicker dayPicker', () => {
+test.describe('Move to current', () => {
   let po: DemoPage;
   let page: Page;
+
+  const currentMonth = dayjs().format('MMM, YYYY');
+  const currentYear = dayjs().format('YYYY');
+  const previousMonth = dayjs().subtract(1, 'month').format('MMM, YYYY');
+  const previousYear = dayjs().subtract(1, 'year').format('YYYY');
 
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
@@ -16,62 +21,86 @@ test.describe('dpDayPicker dayPicker', () => {
     await po.navigateTo();
   });
 
-  test('should check if go to current location btn is working as expected', async () => {
-    const currentMonth = dayjs().format('MMM, YYYY');
-    const currentYear = dayjs().format('YYYY');
-    const previousMonth = dayjs().subtract(1, 'month').format('MMM, YYYY');
-    const previousYear = dayjs().subtract(1, 'year').format('YYYY');
+  /**
+   * Run the test for the pickers that use day
+   * @param menu The menu item to get to the picker
+   * @param input The input of the picker
+   */
+  async function runTestDay(menu: Locator, input: Locator): Promise<void> {
+    await menu.click();
+    await po.showGoToCurrentRadio().click();
+    await input.click();
+    await expect(po.currentLocationBtn()).toBeVisible();
+    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+    await po.dayCalendarLeftNavBtn().click();
+    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(previousMonth);
+    await po.currentLocationBtn().click();
+    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+    await po.dayCalendarNavHeaderBtn().click();
+    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(currentYear);
+    await po.monthCalendarLeftNavBtn().click();
+    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(previousYear);
+    await po.dayCalendarNavMonthHeaderBtn().click();
 
-    const commonDayCalendar = async (menu: Locator, input: Locator): Promise<void> => {
-      await menu.click();
-      await po.showGoToCurrentRadio().click();
-      await input.click();
-      await expect(po.currentLocationBtn()).toBeVisible();
-      expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
-      await po.dayCalendarLeftNavBtn().click();
-      expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(previousMonth);
-      await po.currentLocationBtn().click();
-      expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
-      await po.dayCalendarNavHeaderBtn().click();
-      expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(currentYear);
-      await po.monthCalendarLeftNavBtn().click();
-      expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(previousYear);
-      await po.dayCalendarNavMonthHeaderBtn().click();
+    await po.currentLocationBtn().click();
+    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
 
-      await po.currentLocationBtn().click();
-      expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+    await po.hideGoToCurrentRadio().click();
+    await input.click();
+    await expect(po.currentLocationBtn()).toBeHidden();
+    await po.dayCalendarNavHeaderBtn().click();
+    await expect(po.currentLocationBtn()).toBeHidden();
+  }
 
-      await po.hideGoToCurrentRadio().click();
-      await input.click();
-      await expect(po.currentLocationBtn()).toBeHidden();
-      await po.dayCalendarNavHeaderBtn().click();
-      await expect(po.currentLocationBtn()).toBeHidden();
-    };
+  /**
+   * Run the test for the pickers that use month
+   * @param menu The menu item to get to the picker
+   * @param input The input of the picker
+   */
+  async function runTestMonth(menu: Locator, input: Locator): Promise<void> {
+    await menu.click();
+    await po.showGoToCurrentRadio().click();
+    await input.click();
+    await expect(po.currentLocationBtn()).toBeVisible();
+    expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
+    await po.monthCalendarLeftNavBtn().click();
+    expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(previousYear);
+    await po.currentLocationBtn().click();
+    expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
 
-    const commonMonth = async (menu: Locator, input: Locator): Promise<void> => {
-      await menu.click();
-      await po.showGoToCurrentRadio().click();
-      await input.click();
-      await expect(po.currentLocationBtn()).toBeVisible();
-      expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
-      await po.monthCalendarLeftNavBtn().click();
-      expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(previousYear);
-      await po.currentLocationBtn().click();
-      expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
+    await po.hideGoToCurrentRadio().click();
+    await input.click();
+    await expect(po.currentLocationBtn()).toBeHidden();
+  }
 
-      await po.hideGoToCurrentRadio().click();
-      await input.click();
-      await expect(po.currentLocationBtn()).toBeHidden();
-    };
+  test.describe('daytime', () => {
+    test('should check if go to current location btn is working as expected for picker', async () => {
+      await runTestDay(po.daytimePickerMenu(), po.daytimePickerInput());
+    });
 
-    await commonDayCalendar(po.daytimePickerMenu(), po.daytimePickerInput());
-    await commonDayCalendar(po.daytimeDirectiveMenu(), po.daytimeDirectiveInput());
+    test('should check if go to current location btn is working as expected for directive', async () => {
+      await runTestDay(po.daytimeDirectiveMenu(), po.daytimeDirectiveInput());
+    });
+  });
 
-    await commonDayCalendar(po.dayPickerMenu(), po.dayPickerInput());
-    await commonDayCalendar(po.dayDirectiveMenu(), po.dayDirectiveInput());
+  test.describe('day', () => {
+    test('should check if go to current location btn is working as expected for picker', async () => {
+      await runTestDay(po.dayPickerMenu(), po.dayPickerInput());
+    });
 
-    await commonMonth(po.monthPickerMenu(), po.monthPickerInput());
-    await commonMonth(po.monthDirectiveMenu(), po.monthDirectiveInput());
+    test('should check if go to current location btn is working as expected for directive', async () => {
+      await runTestDay(po.dayDirectiveMenu(), po.dayDirectiveInput());
+    });
+  });
+
+  test.describe('month', () => {
+    test('should check if go to current location btn is working as expected for picker', async () => {
+      await runTestMonth(po.monthPickerMenu(), po.monthPickerInput());
+    });
+
+    test('should check if go to current location btn is working as expected for directive', async () => {
+      await runTestMonth(po.monthDirectiveMenu(), po.monthDirectiveInput());
+    });
   });
 
   test('should hide current date button when not between min and max', async () => {
