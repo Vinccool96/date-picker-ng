@@ -154,6 +154,7 @@ test.describe('unSelectOnClick feature', () => {
     await expect(po.selectedMonth()).toBeHidden();
   }
 
+  /* eslint-disable playwright/expect-expect */
   test.describe('day', () => {
     test('should make sure unSelectOnClick feature works as expected for day picker', async () => {
       await runTestForDay(po.dayPickerMenu(), po.dayPickerInput(), true);
@@ -181,4 +182,5 @@ test.describe('unSelectOnClick feature', () => {
       await runTestForMonth(po.monthInlineMenu(), null, false);
     });
   });
+  /* eslint-enable playwright/expect-expect */
 });

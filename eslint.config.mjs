@@ -5,6 +5,7 @@ import vitest from '@vitest/eslint-plugin';
 import angular from 'angular-eslint';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import perfectionist from 'eslint-plugin-perfectionist';
+import playwright from 'eslint-plugin-playwright';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import { fileURLToPath } from 'node:url';
@@ -422,7 +423,7 @@ export default tseslint.config(
     rules: {},
   },
   {
-    files: ['**/*.spec.ts', '**/test/*.ts'],
+    files: ['projects/**/*.spec.ts', 'projects/**/test/*.ts'],
     plugins: {
       vitest,
     },
@@ -440,6 +441,10 @@ export default tseslint.config(
         ...vitest.environments.env.globals,
       },
     },
+  },
+  {
+    files: ['e2e/**'],
+    extends: [playwright.configs['flat/recommended']],
   },
   {
     languageOptions: {

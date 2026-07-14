@@ -22,7 +22,7 @@ test.describe('timePicker', () => {
     await po.setText(po.minTimeValidationPickerInput(), '10:00:00');
     await po.setText(po.timePickerInput(), '09:00:00');
     await po.clickOnBody();
-    expect(await po.minDateValidationMsg().textContent()).toEqual('minDate invalid');
+    await expect(po.minDateValidationMsg()).toHaveText('minDate invalid');
     await po.setText(po.minTimeValidationPickerInput(), '08:07:06');
     await po.clickOnBody();
     await expect(po.minDateValidationMsg()).toBeHidden();
@@ -38,7 +38,7 @@ test.describe('timePicker', () => {
     await po.timePickerInput().clear();
     await po.setText(po.timePickerInput(), '09:00:00');
     await po.clickOnBody();
-    expect(await po.maxDateValidationMsg().textContent()).toEqual('maxDate invalid');
+    await expect(po.maxDateValidationMsg()).toHaveText('maxDate invalid');
     await po.maxTimeValidationPickerInput().clear();
     await po.setText(po.maxTimeValidationPickerInput(), '10:11:12');
     await expect(po.maxDateValidationMsg()).toBeHidden();
@@ -52,9 +52,9 @@ test.describe('timePicker', () => {
     await po.timePickerInput().clear();
     await po.setText(po.timePickerInput(), '09:00:00');
     await expect(po.hourDownBtn()).toBeDisabled();
-    await expect(po.minuteDownBtn()).not.toBeDisabled();
-    await expect(po.meridiemUpBtn()).not.toBeDisabled();
-    await expect(po.meridiemDownBtn()).not.toBeDisabled();
+    await expect(po.minuteDownBtn()).toBeEnabled();
+    await expect(po.meridiemUpBtn()).toBeEnabled();
+    await expect(po.meridiemDownBtn()).toBeEnabled();
   });
 
   test('should check that the max selectable time option is working', async () => {
@@ -65,7 +65,7 @@ test.describe('timePicker', () => {
     await po.timePickerInput().clear();
     await po.setText(po.timePickerInput(), '09:00:00');
     await expect(po.hourUpBtn()).toBeDisabled();
-    await expect(po.minuteUpBtn()).not.toBeDisabled();
+    await expect(po.minuteUpBtn()).toBeEnabled();
     await expect(po.meridiemUpBtn()).toBeDisabled();
     await expect(po.meridiemDownBtn()).toBeDisabled();
   });
@@ -85,11 +85,11 @@ test.describe('timePicker', () => {
     await po.timePickerInput().click();
     await po.timePickerInput().clear();
     await po.setText(po.timePickerInput(), '09:08:07');
-    expect(await po.hourDisplay().textContent()).toEqual('9');
-    expect(await po.minuteDisplay().textContent()).toEqual('8');
-    expect(await po.secondDisplay().textContent()).toEqual('7');
-    expect(await po.meridiemDisplay().textContent()).toEqual('am');
-    expect(await po.timeSeparatorDisplay().textContent()).toEqual('-');
+    await expect(po.hourDisplay()).toHaveText('9');
+    await expect(po.minuteDisplay()).toHaveText('8');
+    await expect(po.secondDisplay()).toHaveText('7');
+    await expect(po.meridiemDisplay()).toHaveText('am');
+    await expect(po.timeSeparatorDisplay()).toHaveText('-');
   });
 
   test('should check that the 24 hour time format options work', async () => {
@@ -106,10 +106,10 @@ test.describe('timePicker', () => {
     await po.timePickerInput().click();
     await po.timePickerInput().clear();
     await po.setText(po.timePickerInput(), '09:08:07');
-    expect(await po.hourDisplay().textContent()).toEqual('9');
-    expect(await po.minuteDisplay().textContent()).toEqual('8');
-    expect(await po.secondDisplay().textContent()).toEqual('7');
-    expect(await po.timeSeparatorDisplay().textContent()).toEqual('-');
+    await expect(po.hourDisplay()).toHaveText('9');
+    await expect(po.minuteDisplay()).toHaveText('8');
+    await expect(po.secondDisplay()).toHaveText('7');
+    await expect(po.timeSeparatorDisplay()).toHaveText('-');
   });
 
   test('should check that the interval options work', async () => {
@@ -122,16 +122,16 @@ test.describe('timePicker', () => {
     await po.timePickerInput().clear();
     await po.setText(po.timePickerInput(), '09:08:07');
     await po.minuteUpBtn().click();
-    expect(await po.minuteDisplay().textContent()).toEqual('14');
+    await expect(po.minuteDisplay()).toHaveText('14');
     await expect(po.timePickerInput()).toHaveValue('09:14:07');
     await po.minuteDownBtn().click();
-    expect(await po.minuteDisplay().textContent()).toEqual('08');
+    await expect(po.minuteDisplay()).toHaveText('08');
     await expect(po.timePickerInput()).toHaveValue('09:08:07');
     await po.secondUpBtn().click();
-    expect(await po.secondDisplay().textContent()).toEqual('14');
+    await expect(po.secondDisplay()).toHaveText('14');
     await expect(po.timePickerInput()).toHaveValue('09:08:14');
     await po.secondDownBtn().click();
-    expect(await po.secondDisplay().textContent()).toEqual('07');
+    await expect(po.secondDisplay()).toHaveText('07');
     await expect(po.timePickerInput()).toHaveValue('09:08:07');
   });
 });

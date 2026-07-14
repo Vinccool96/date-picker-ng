@@ -33,6 +33,7 @@ test.describe('Move to date api', () => {
     expect(await cont.textContent()).toContain('1987');
   }
 
+  /* eslint-disable playwright/expect-expect */
   test.describe('day', () => {
     test('should move to date API for picker', async () => {
       await runTest(po.dayPickerMenu(), po.dayPickerInput(), true, po.dayCalendarNavHeaderBtn());
@@ -74,4 +75,5 @@ test.describe('Move to date api', () => {
       await runTest(po.monthInlineMenu(), null, false, po.monthCalendarNavHeaderInline());
     });
   });
+  /* eslint-enable playwright/expect-expect */
 });

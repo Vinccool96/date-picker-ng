@@ -31,19 +31,19 @@ test.describe('Move to current', () => {
     await po.showGoToCurrentRadio().click();
     await input.click();
     await expect(po.currentLocationBtn()).toBeVisible();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText(currentMonth);
     await po.dayCalendarLeftNavBtn().click();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(previousMonth);
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText(previousMonth);
     await po.currentLocationBtn().click();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText(currentMonth);
     await po.dayCalendarNavHeaderBtn().click();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(currentYear);
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText(currentYear);
     await po.monthCalendarLeftNavBtn().click();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(previousYear);
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText(previousYear);
     await po.dayCalendarNavMonthHeaderBtn().click();
 
     await po.currentLocationBtn().click();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(currentMonth);
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText(currentMonth);
 
     await po.hideGoToCurrentRadio().click();
     await input.click();
@@ -62,17 +62,18 @@ test.describe('Move to current', () => {
     await po.showGoToCurrentRadio().click();
     await input.click();
     await expect(po.currentLocationBtn()).toBeVisible();
-    expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
+    await expect(po.deyCalendarMonthNavHeader()).toHaveText(currentYear);
     await po.monthCalendarLeftNavBtn().click();
-    expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(previousYear);
+    await expect(po.deyCalendarMonthNavHeader()).toHaveText(previousYear);
     await po.currentLocationBtn().click();
-    expect(await po.deyCalendarMonthNavHeader().textContent()).toEqual(currentYear);
+    await expect(po.deyCalendarMonthNavHeader()).toHaveText(currentYear);
 
     await po.hideGoToCurrentRadio().click();
     await input.click();
     await expect(po.currentLocationBtn()).toBeHidden();
   }
 
+  /* eslint-disable playwright/expect-expect */
   test.describe('daytime', () => {
     test('should check if go to current location btn is working as expected for picker', async () => {
       await runTestDay(po.daytimePickerMenu(), po.daytimePickerInput());
@@ -102,6 +103,7 @@ test.describe('Move to current', () => {
       await runTestMonth(po.monthDirectiveMenu(), po.monthDirectiveInput());
     });
   });
+  /* eslint-enable playwright/expect-expect */
 
   test('should hide current date button when not between min and max', async () => {
     await po.dayPickerMenu().click();

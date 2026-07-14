@@ -489,6 +489,7 @@ export class DemoPage {
   }
 
   public async sleep(ms: number): Promise<void> {
+    // eslint-disable-next-line playwright/no-wait-for-timeout
     await this.page.waitForTimeout(ms);
   }
 

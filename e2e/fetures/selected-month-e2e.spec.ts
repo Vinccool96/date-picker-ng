@@ -23,7 +23,7 @@ test.describe('selected-month', () => {
     await po.setText(po.daytimePickerInput(), '10-04-2017 09:08:07');
 
     await po.dayCalendarNavHeaderBtn().click();
-    expect(await po.selectedMonth().textContent()).toEqual('Apr');
+    await expect(po.selectedMonth()).toHaveText('Apr');
   });
 
   test('should work on day picker', async () => {
@@ -33,6 +33,6 @@ test.describe('selected-month', () => {
     await po.setText(po.dayPickerInput(), '10-04-2017');
 
     await po.dayCalendarNavHeaderBtn().click();
-    expect(await po.selectedMonth().textContent()).toEqual('Apr');
+    await expect(po.selectedMonth()).toHaveText('Apr');
   });
 });

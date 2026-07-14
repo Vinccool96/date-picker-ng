@@ -58,37 +58,37 @@ test.describe('day picker', () => {
   test('should check that the showNearMonthDays is working as expected', async () => {
     await po.setText(po.dayPickerInput(), '27-03-2017');
     await po.dayPickerInput().click();
-    expect(await po.monthWeeks().count()).toBe(6);
+    await expect(po.monthWeeks()).toHaveCount(6);
     await po.hideNearMonthDaysRadio().click();
     await po.dayPickerInput().click();
-    expect(await po.monthWeeks().count()).toBe(5);
+    await expect(po.monthWeeks()).toHaveCount(5);
 
     await po.showNearMonthDaysRadio().click();
     await po.dayPickerInput().click();
-    expect(await po.monthWeeks().count()).toBe(6);
+    await expect(po.monthWeeks()).toHaveCount(6);
 
     await po.setText(po.dayPickerInput(), '27-04-2017');
     await po.hideNearMonthDaysRadio().click();
     await po.dayPickerInput().click();
-    expect(await po.monthWeeks().count()).toBe(6);
+    await expect(po.monthWeeks()).toHaveCount(6);
   });
 
   test('should show/hide week number according to configuration', async () => {
     await po.setText(po.dayPickerInput(), '28-03-2017');
     await po.dayPickerInput().click();
-    expect(await po.weekNumbers().count()).toBe(0);
+    await expect(po.weekNumbers()).toHaveCount(0);
     await po.showWeekNumbersRadio().click();
     await po.dayPickerInput().click();
-    expect(await po.weekNumbers().count()).toBe(6);
-    expect(await po.weekNumbers().allInnerTexts()).toEqual(['8', '9', '10', '11', '12', '13']);
+    await expect(po.weekNumbers()).toHaveCount(6);
+    await expect(po.weekNumbers()).toHaveText(['8', '9', '10', '11', '12', '13']);
   });
 
   test('should remember last position', async () => {
     await po.setText(po.dayPickerInput(), '28-03-2017');
     await po.dayPickerInput().click();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual('Mar, 2017');
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText('Mar, 2017');
     await po.currentLocationBtn().click();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(dayjs().format('MMM, YYYY'));
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText(dayjs().format('MMM, YYYY'));
   });
 
   test('should hide calendar on tab (blur)', async () => {
@@ -104,18 +104,18 @@ test.describe('day picker', () => {
     await po.dayPickerInput().click();
     await expect(po.dayCalendarNavHeaderBtn()).toBeVisible();
     await expect(po.dayCalendarContainer()).toBeVisible();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual('Apr, 2018');
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText('Apr, 2018');
 
     await po.dayCalendarNavHeaderBtn().click();
     await expect(po.dayCalendarContainer()).toBeHidden();
     await expect(po.monthCalendar()).toBeVisible();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual('2018');
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText('2018');
 
     await po.monthCalendarLeftNavBtn().click();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual('2017');
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText('2017');
     await expect(po.currentMonthCalendarBtn()).toBeHidden();
     await po.monthCalendarRightNavBtn().click();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual('2018');
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText('2018');
 
     await po.clickOnBody();
     await po.dayPickerInput().click();
@@ -137,7 +137,7 @@ test.describe('day picker', () => {
     await po.setText(po.dayPickerInput(), '08-04-2017');
     await po.dayPickerInput().click();
     await po.dayCalendarNavHeaderBtn().click();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual('2017');
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText('2017');
 
     await po.clickOnBody();
 
@@ -146,17 +146,17 @@ test.describe('day picker', () => {
 
     await po.dayPickerInput().click();
     await po.dayCalendarNavHeaderBtn().click();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual('17');
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText('17');
   });
 
   test('should check if enable/disable is working', async () => {
-    await expect(po.dayPickerInput()).not.toBeDisabled();
+    await expect(po.dayPickerInput()).toBeEnabled();
     await po.pickerDisabledRadio().click();
     await expect(po.dayPickerInput()).toBeDisabled();
     await po.dayPickerInput().focus();
     await expect(po.datePickerPopup()).toBeHidden();
     await po.pickerEnabledRadio().click();
-    await expect(po.dayPickerInput()).not.toBeDisabled();
+    await expect(po.dayPickerInput()).toBeEnabled();
   });
 
   test('should check if enable/disable required validation is working', async () => {
@@ -164,7 +164,7 @@ test.describe('day picker', () => {
     await po.clickOnBody();
     await expect(po.requiredValidationMsg()).toBeHidden();
     await po.enableRequiredValidationRadio().click();
-    expect(await po.requiredValidationMsg().textContent()).toEqual('required');
+    await expect(po.requiredValidationMsg()).toHaveText('required');
     await po.disableRequiredValidationRadio().click();
     await expect(po.requiredValidationMsg()).toBeHidden();
   });
@@ -174,7 +174,7 @@ test.describe('day picker', () => {
     await expect(po.minDateValidationMsg()).toBeHidden();
     await po.setText(po.minDateValidationPickerInput(), '11-04-2017');
     await po.setText(po.dayPickerInput(), '10-04-2017');
-    expect(await po.minDateValidationMsg().textContent()).toEqual('minDate invalid');
+    await expect(po.minDateValidationMsg()).toHaveText('minDate invalid');
     await po.setText(po.minDateValidationPickerInput(), '10-04-2017');
     await po.setText(po.minDateValidationPickerInput(), '10-04-2017');
     await expect(po.minDateValidationMsg()).toBeHidden();
@@ -185,7 +185,7 @@ test.describe('day picker', () => {
     await expect(po.maxDateValidationMsg()).toBeHidden();
     await po.setText(po.maxDateValidationPickerInput(), '11-04-2017');
     await po.setText(po.dayPickerInput(), '12-04-2017');
-    expect(await po.maxDateValidationMsg().textContent()).toEqual('maxDate invalid');
+    await expect(po.maxDateValidationMsg()).toHaveText('maxDate invalid');
     await po.clearInput(po.maxDateValidationPickerInput());
     await po.setText(po.maxDateValidationPickerInput(), '12-04-2017');
     await expect(po.maxDateValidationMsg()).toBeHidden();
@@ -193,42 +193,42 @@ test.describe('day picker', () => {
 
   test('should check that placeholder attribute is working', async () => {
     await po.setText(po.placeholderInput(), 'bla');
-    expect(await po.dayPickerInput().getAttribute('placeholder')).toEqual('bla');
+    await expect(po.dayPickerInput()).toHaveAttribute('placeholder', 'bla');
   });
 
   test('should check the first day of the week', async () => {
     await po.dayPickerInput().click();
-    expect(await po.weekDayNames().textContent()).toEqual('SunMonTueWedThuFriSat');
+    await expect(po.weekDayNames()).toHaveText('SunMonTueWedThuFriSat');
     await po.clickOnBody();
     await po.firstDayOfWeekSelect().selectOption('mo');
     await po.dayPickerInput().click();
-    expect(await po.weekDayNames().textContent()).toEqual('MonTueWedThuFriSatSun');
+    await expect(po.weekDayNames()).toHaveText('MonTueWedThuFriSatSun');
   });
 
   test('should check month format', async () => {
     await po.dayPickerInput().click();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(dayjs().format('MMM, YYYY'));
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText(dayjs().format('MMM, YYYY'));
     await po.clickOnBody();
     await po.setText(po.monthFormatInput(), 'MM-YYYY');
     await po.dayPickerInput().click();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(dayjs().format('MM-YYYY'));
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText(dayjs().format('MM-YYYY'));
   });
 
   test('should check that the min selectable option is working', async () => {
     await po.setText(po.minSelectableInput(), '11-04-2017');
     await po.setText(po.dayPickerInput(), '17-04-2017');
     await po.dayPickerInput().click();
-    expect(await po.calendarDisabledDays().count()).toBe(16);
+    await expect(po.calendarDisabledDays()).toHaveCount(16);
   });
 
   test('should check that the max selectable option is working', async () => {
     await po.setText(po.maxSelectableInput(), '11-04-2017');
     await po.setText(po.dayPickerInput(), '12-04-2017');
     await po.dayPickerInput().click();
-    expect(await po.calendarDisabledDays().count()).toBe(25);
+    await expect(po.calendarDisabledDays()).toHaveCount(25);
   });
 
-  test('should check that the date picker popup closes/opened after selection ', async () => {
+  test('should check that the date picker popup closes/opened after selection', async () => {
     await po.dayPickerInput().click();
     await po.clickOnDayButton('15');
     await expect(po.datePickerPopup()).toBeHidden();
@@ -253,7 +253,7 @@ test.describe('day picker', () => {
     await po.setText(po.weekDaysFormatInput(), 'd');
 
     await po.dayPickerInput().click();
-    expect(await po.weekDayNames().textContent()).toEqual('0123456');
+    await expect(po.weekDayNames()).toHaveText('0123456');
   });
 
   test('should check dateFormat is working', async () => {
@@ -270,7 +270,7 @@ test.describe('day picker', () => {
 
     await po.clickOnDayButton('15');
     await po.clickOnDayButton('16');
-    expect(await po.selectedDays().count()).toBe(3);
+    await expect(po.selectedDays()).toHaveCount(3);
     await expect(po.datePickerPopup()).toBeVisible();
     await expect(po.dayPickerInput()).toHaveValue(
       `${dayjs().date(18).format('DD-MM-YYYY')} | ${dayjs().date(15).format('DD-MM-YYYY')} | ${dayjs()
@@ -279,7 +279,7 @@ test.describe('day picker', () => {
     );
 
     await po.clickOnDayButton('18');
-    expect(await po.selectedDays().count()).toBe(2);
+    await expect(po.selectedDays()).toHaveCount(2);
     await expect(po.dayPickerInput()).toHaveValue(
       `${dayjs().date(15).format('DD-MM-YYYY')} | ${dayjs().date(16).format('DD-MM-YYYY')}`,
     );
@@ -289,7 +289,7 @@ test.describe('day picker', () => {
     await po.dayBtnFormatInput().clear();
     await po.setText(po.dayBtnFormatInput(), 'D');
     await po.dayPickerInput().click();
-    expect(await po.calendarFirstDayOfMonth().first().textContent()).toEqual('1');
+    await expect(po.calendarFirstDayOfMonth().first()).toHaveText('1');
   });
 
   test('should check monthBtnFormat is working', async () => {
@@ -297,7 +297,7 @@ test.describe('day picker', () => {
     await po.setText(po.monthBtnFormatInput(), 'M');
     await po.dayPickerInput().click();
     await po.dayCalendarNavHeaderBtn().click();
-    expect(await po.calendarFirstMonthOfYear().first().textContent()).toEqual('1');
+    await expect(po.calendarFirstMonthOfYear().first()).toHaveText('1');
   });
 
   test('should check showMultipleYearsNavigation is working', async () => {
@@ -313,10 +313,10 @@ test.describe('day picker', () => {
     await po.dayPickerInput().click();
     await po.dayCalendarNavHeaderBtn().click();
     await po.dayCalendarLeftSecondaryNavBtn().click();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(dayjs().subtract(20, 'year').format('YYYY'));
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText(dayjs().subtract(20, 'year').format('YYYY'));
 
     await po.dayCalendarRightSecondaryNavBtn().click();
     await po.dayCalendarRightSecondaryNavBtn().click();
-    expect(await po.dayCalendarNavMonthHeaderBtn().textContent()).toEqual(dayjs().add(20, 'year').format('YYYY'));
+    await expect(po.dayCalendarNavMonthHeaderBtn()).toHaveText(dayjs().add(20, 'year').format('YYYY'));
   });
 });

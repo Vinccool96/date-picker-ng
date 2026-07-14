@@ -27,10 +27,11 @@ test.describe('format validation', () => {
     await po.setText(input, 'lmaldlad');
     await po.clickOnBody();
 
-    expect(await po.formatValidationMsg().textContent()).toBe('invalid format');
+    await expect(po.formatValidationMsg()).toHaveText('invalid format');
     await input.clear();
   }
 
+  /* eslint-disable playwright/expect-expect */
   test.describe('daytime', () => {
     test('should check that the format validation is working for picker', async () => {
       await runTest(po.daytimePickerMenu(), po.daytimePickerInput());
@@ -70,4 +71,5 @@ test.describe('format validation', () => {
       await runTest(po.timeDirectiveMenu(), po.timeSelectDirectiveInput());
     });
   });
+  /* eslint-enable playwright/expect-expect */
 });

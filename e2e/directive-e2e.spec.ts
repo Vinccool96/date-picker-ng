@@ -30,7 +30,7 @@ test.describe('dpDayPicker directive', () => {
     await po.clickOnBody();
 
     await po.dayDirectiveInput().click();
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toEqual(dayjs().subtract(1, 'month').format('MMM, YYYY'));
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText(dayjs().subtract(1, 'month').format('MMM, YYYY'));
   });
 
   test('should check that the theme is added and removed', async () => {
@@ -69,8 +69,8 @@ test.describe('dpDayPicker directive', () => {
     await page.keyboard.press('Delete');
     await page.keyboard.press('2');
     await expect(po.dayDirectiveInput()).toHaveValue('20-04-2017');
-    expect(await po.selectedDays().count()).toBe(1);
-    expect(await po.selectedDays().first().textContent()).toBe('20');
-    expect(await po.dayCalendarNavHeaderBtn().textContent()).toBe('Apr, 2017');
+    await expect(po.selectedDays()).toHaveCount(1);
+    await expect(po.selectedDays().first()).toHaveText('20');
+    await expect(po.dayCalendarNavHeaderBtn()).toHaveText('Apr, 2017');
   });
 });
