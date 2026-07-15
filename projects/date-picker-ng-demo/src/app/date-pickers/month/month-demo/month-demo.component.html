@@ -1,6 +1,6 @@
 <div class="dp-date-wrapper">
   @if (ready) {
-    <div class="dp-date-input-container">
+    <form class="dp-date-input-container" (submit)="submission($event)">
       <div class="dp-form-item">
         <dp-date-picker
           #dateComponent
@@ -37,7 +37,9 @@
           }
         </div>
       </div>
-    </div>
+
+      <button type="submit">Validate</button>
+    </form>
   }
 
   <dp-config-form

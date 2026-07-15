@@ -311,10 +311,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnChanges, OnD
     return this.validateFn(formControl.value);
   }
 
-  public writeValue(value: CalendarValue | null): void {
+  public writeValue(value: CalendarValue | null | undefined): void {
     this.inputValue = value ?? '';
 
-    if (value !== null && value !== '') {
+    if (value !== null && value !== undefined && value !== '') {
       this.selected = this.utilsService.convertToDayjsArray(value, this.componentConfig);
       this.init();
     } else {

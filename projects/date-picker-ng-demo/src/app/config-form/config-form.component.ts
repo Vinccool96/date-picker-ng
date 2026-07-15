@@ -402,19 +402,63 @@ export class ConfigFormComponent implements OnInit {
     }
 
     if (attributes.minValidation !== undefined) {
-      this.onMinValidationChange.emit(attributes.minValidation as Dayjs | null);
+      const minConfig = attributes.minValidation;
+      let min: Dayjs | null;
+
+      if (minConfig === null || minConfig === '') {
+        min = null;
+      } else if (typeof minConfig === 'string') {
+        min = dayjs(minConfig, this.config().format);
+      } else {
+        min = minConfig;
+      }
+
+      this.onMinValidationChange.emit(min);
     }
 
     if (attributes.maxValidation !== undefined) {
-      this.onMaxValidationChange.emit(attributes.maxValidation as Dayjs | null);
+      const maxConfig = attributes.maxValidation;
+      let max: Dayjs | null;
+
+      if (maxConfig === null || maxConfig === '') {
+        max = null;
+      } else if (typeof maxConfig === 'string') {
+        max = dayjs(maxConfig, this.config().format);
+      } else {
+        max = maxConfig;
+      }
+
+      this.onMaxValidationChange.emit(max);
     }
 
     if (attributes.minTimeValidation !== undefined) {
-      this.onMinTimeValidationChange.emit(attributes.minTimeValidation as Dayjs | null);
+      const minTimeConfig = attributes.minTimeValidation;
+      let minTime: Dayjs | null;
+
+      if (minTimeConfig === null || minTimeConfig === '') {
+        minTime = null;
+      } else if (typeof minTimeConfig === 'string') {
+        minTime = dayjs(minTimeConfig, this.config().format);
+      } else {
+        minTime = minTimeConfig;
+      }
+
+      this.onMinTimeValidationChange.emit(minTime);
     }
 
     if (attributes.maxTimeValidation !== undefined) {
-      this.onMaxTimeValidationChange.emit(attributes.maxTimeValidation as Dayjs | null);
+      const maxTimeConfig = attributes.maxTimeValidation;
+      let maxTime: Dayjs | null;
+
+      if (maxTimeConfig === null || maxTimeConfig === '') {
+        maxTime = null;
+      } else if (typeof maxTimeConfig === 'string') {
+        maxTime = dayjs(maxTimeConfig, this.config().format);
+      } else {
+        maxTime = maxTimeConfig;
+      }
+
+      this.onMaxTimeValidationChange.emit(maxTime);
     }
 
     if (attributes.placeholder !== undefined) {

@@ -190,10 +190,10 @@ export class MonthCalendarComponent implements ControlValueAccessor, OnInit, Val
       : (): ValidationErrors | null => null;
   }
 
-  public writeValue(value: CalendarValue | null): void {
+  public writeValue(value: CalendarValue | null | undefined): void {
     this.inputValue = value ?? '';
 
-    if (value !== null && value !== '') {
+    if (value !== null && value !== undefined && value !== '') {
       this.selected = this.utilsService.convertToDayjsArray(value, this.componentConfig);
       this.yearMonths = this.monthCalendarService.generateYear(
         this.componentConfig,

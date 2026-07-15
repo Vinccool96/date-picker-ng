@@ -18,4 +18,8 @@ export class MonthDemoComponent extends DateComponent {
     format: 'MMM, YYYY',
   });
   protected override readonly control = this.buildForm();
+
+  protected submission(event: SubmitEvent): void {
+    event.preventDefault();
+  }
 }
